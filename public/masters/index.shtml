@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <!--#include file="head.html" -->
+<body>
+    <!--#include file="header.html" -->
+    <div id="colOne">
+        <div id="menu1">
+            <!--#include file="menu.html" -->
+        </div>
+        <div id="margin-news">
+            <!--#include file="news.html" -->
+        </div>
+    </div>
+
+	<div id="colTwo">
+        <h2>HorseRaceReporter: an embodied agent providing real-time 
+        commentary</h2>
+        <p><strong>HorseRaceReporter</strong> is an intelligent embodied agent 
+        that can provide running commentary on a continuous event in real-time.
+        It is currently implemented to commentate a horse race provided by the 
+        RaceSim system used in 
+        <a href='http://hmi.ewi.utwente.nl/gala/'>GALA '07</a>; with minimal
+        modification the system is configurable to commentate on any live 
+        continuous event (for example, sports matches, news as-it-happens, 
+        computer games, etc).</p>
+
+        <p>The HorseRaceReporter is able to generate real-time commentary for a 
+        dynamic environment, responding to ongoing events and unforseen facts.  
+        It has a sophisticated affect model, with a simulated personality, 
+        moods and emotion events.  The agent performs template-based natural 
+        language generation, using topic and context information for 
+        macro-level discourse structure, and affective state information for 
+        lexical selection.  It has a highly modular architecture based on 
+        parallel rule-based reasoning engines, implemented in Java and <a 
+            href='http://herzberg.ca.sandia.gov/jess/'>JESS</a>, a rule-based 
+        system itself implemented in Java.  The agent also follows a strict 
+        separation of general and domain-specific knowledge, for easy re-use 
+        across event domains.</p>
+
+        <p>The HorseRaceReporter system brings together a number of different 
+        components for knowledge representation and reasoning, natural language
+        generation, affective appraisal, gesture and facial expression 
+        generation, and output selection.  The output is sent to a <a 
+            href='http://www.charamel.de'>Charamel</a> embodied character, 
+        depicted by the CharaVirld player.  The overall system contains 300 
+        deduction rules as well as 70 NLG templates, and at any time each 
+        component handles several hundred facts.</p>
+        
+        <p>For more information on the architecture and individual components, 
+        see below.</p>
+        <!--#include file="menu.html" -->
+
+        <p>The HorseRaceReporter system is developed by <a 
+            href='http://www.martinstrauss.id.au'>Martin Strauss</a>as part of 
+        his Masters thesis at the <a href='http://www.dfki.de/iui/'>Intelligent 
+            User Interfaces group</a> (<a 
+            href='http://www.dfki.de/~wahlster/'>Prof.  Wahlster</a>) at the <a 
+            href='http://www.dfki.de'>German Research Center for Artificial 
+            Intelligence (DFKI)</a>, under the supervision of <a 
+            href='http://www.dfki.de/~kipp/'>Michael Kipp</a> and <a 
+            href='http://www.dfki.de/~gebhard/'>Patrick Gebhard</a>.</p>
+
+        <p>Many thanks to <a href='http://www.charamel.de/'>Charamel</a> for 
+        providing the 'Paul' character, and <a 
+            href='http://www.nuance.com/'>Nuance</a> for providing the 'Tom' 
+        voice.</p>
+    </div>
+    <!--#include file="foot.html" -->
+</body>
+</html>

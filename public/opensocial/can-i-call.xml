@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+<ModulePrefs
+  title="Can I Call?"
+  author="Martin Strauss"
+  author_email="martinstrauss@google.com"
+  author_affiliation="Google Inc."
+  author_location="Zurich, Switzerland"
+  screenshot=""
+  thumbnail=""
+  category="tools"
+  description=""
+  scrolling="true">
+  <Require feature="setprefs"/>
+</ModulePrefs>
+
+<UserPref name="wakeUp" datatype="enum" default_value="8" display_name="Start of day">
+  <EnumValue value="1" display_value="1:00 AM" />
+  <EnumValue value="2" display_value="2:00 AM" />
+  <EnumValue value="3" display_value="3:00 AM" />
+  <EnumValue value="4" display_value="4:00 AM" />
+  <EnumValue value="5" display_value="5:00 AM" />
+  <EnumValue value="6" display_value="6:00 AM" />
+  <EnumValue value="7" display_value="7:00 AM" />
+  <EnumValue value="8" display_value="8:00 AM" />
+  <EnumValue value="9" display_value="9:00 AM" />
+  <EnumValue value="10" display_value="10:00 AM" />
+  <EnumValue value="11" display_value="11:00 AM" />
+  <EnumValue value="12" display_value="12:00 noon" />
+  <EnumValue value="13" display_value="1:00 PM" />
+  <EnumValue value="14" display_value="2:00 PM" />
+  <EnumValue value="15" display_value="3:00 PM" />
+  <EnumValue value="16" display_value="4:00 PM" />
+  <EnumValue value="17" display_value="5:00 PM" />
+  <EnumValue value="18" display_value="6:00 PM" />
+  <EnumValue value="19" display_value="7:00 PM" />
+  <EnumValue value="20" display_value="8:00 PM" />
+  <EnumValue value="21" display_value="9:00 PM" />
+  <EnumValue value="22" display_value="10:00 PM" />
+  <EnumValue value="23" display_value="11:00 PM" />
+  <EnumValue value="0" display_value="12:00 midnight" />
+</UserPref>
+<UserPref name="nineAM" datatype="enum" default_value="9" display_name="Start of business">
+  <EnumValue value="1" display_value="1:00 AM" />
+  <EnumValue value="2" display_value="2:00 AM" />
+  <EnumValue value="3" display_value="3:00 AM" />
+  <EnumValue value="4" display_value="4:00 AM" />
+  <EnumValue value="5" display_value="5:00 AM" />
+  <EnumValue value="6" display_value="6:00 AM" />
+  <EnumValue value="7" display_value="7:00 AM" />
+  <EnumValue value="8" display_value="8:00 AM" />
+  <EnumValue value="9" display_value="9:00 AM" />
+  <EnumValue value="10" display_value="10:00 AM" />
+  <EnumValue value="11" display_value="11:00 AM" />
+  <EnumValue value="12" display_value="12:00 noon" />
+  <EnumValue value="13" display_value="1:00 PM" />
+  <EnumValue value="14" display_value="2:00 PM" />
+  <EnumValue value="15" display_value="3:00 PM" />
+  <EnumValue value="16" display_value="4:00 PM" />
+  <EnumValue value="17" display_value="5:00 PM" />
+  <EnumValue value="18" display_value="6:00 PM" />
+  <EnumValue value="19" display_value="7:00 PM" />
+  <EnumValue value="20" display_value="8:00 PM" />
+  <EnumValue value="21" display_value="9:00 PM" />
+  <EnumValue value="22" display_value="10:00 PM" />
+  <EnumValue value="23" display_value="11:00 PM" />
+  <EnumValue value="0" display_value="12:00 midnight" />
+</UserPref>
+<UserPref name="fivePM" datatype="enum" default_value="17" display_name="End of business">
+  <EnumValue value="1" display_value="1:00 AM" />
+  <EnumValue value="2" display_value="2:00 AM" />
+  <EnumValue value="3" display_value="3:00 AM" />
+  <EnumValue value="4" display_value="4:00 AM" />
+  <EnumValue value="5" display_value="5:00 AM" />
+  <EnumValue value="6" display_value="6:00 AM" />
+  <EnumValue value="7" display_value="7:00 AM" />
+  <EnumValue value="8" display_value="8:00 AM" />
+  <EnumValue value="9" display_value="9:00 AM" />
+  <EnumValue value="10" display_value="10:00 AM" />
+  <EnumValue value="11" display_value="11:00 AM" />
+  <EnumValue value="12" display_value="12:00 noon" />
+  <EnumValue value="13" display_value="1:00 PM" />
+  <EnumValue value="14" display_value="2:00 PM" />
+  <EnumValue value="15" display_value="3:00 PM" />
+  <EnumValue value="16" display_value="4:00 PM" />
+  <EnumValue value="17" display_value="5:00 PM" />
+  <EnumValue value="18" display_value="6:00 PM" />
+  <EnumValue value="19" display_value="7:00 PM" />
+  <EnumValue value="20" display_value="8:00 PM" />
+  <EnumValue value="21" display_value="9:00 PM" />
+  <EnumValue value="22" display_value="10:00 PM" />
+  <EnumValue value="23" display_value="11:00 PM" />
+  <EnumValue value="0" display_value="12:00 midnight" />
+</UserPref>
+<UserPref name="bedtime" datatype="enum" default_value="20" display_name="End of day">
+  <EnumValue value="1" display_value="1:00 AM" />
+  <EnumValue value="2" display_value="2:00 AM" />
+  <EnumValue value="3" display_value="3:00 AM" />
+  <EnumValue value="4" display_value="4:00 AM" />
+  <EnumValue value="5" display_value="5:00 AM" />
+  <EnumValue value="6" display_value="6:00 AM" />
+  <EnumValue value="7" display_value="7:00 AM" />
+  <EnumValue value="8" display_value="8:00 AM" />
+  <EnumValue value="9" display_value="9:00 AM" />
+  <EnumValue value="10" display_value="10:00 AM" />
+  <EnumValue value="11" display_value="11:00 AM" />
+  <EnumValue value="12" display_value="12:00 noon" />
+  <EnumValue value="13" display_value="1:00 PM" />
+  <EnumValue value="14" display_value="2:00 PM" />
+  <EnumValue value="15" display_value="3:00 PM" />
+  <EnumValue value="16" display_value="4:00 PM" />
+  <EnumValue value="17" display_value="5:00 PM" />
+  <EnumValue value="18" display_value="6:00 PM" />
+  <EnumValue value="19" display_value="7:00 PM" />
+  <EnumValue value="20" display_value="8:00 PM" />
+  <EnumValue value="21" display_value="9:00 PM" />
+  <EnumValue value="22" display_value="10:00 PM" />
+  <EnumValue value="23" display_value="11:00 PM" />
+  <EnumValue value="0" display_value="12:00 midnight" />
+</UserPref>
+<UserPref name="tz1" datatype="hidden" default_value="MTV" />
+<UserPref name="tz2" datatype="hidden" default_value="ZRH" />
+
+<Content type="html"><![CDATA[
+
+  <div align="center">
+<table id="table">
+  <tr>
+    <th><form action=''><select name='tz1' id='tz1' onChange='changeTimezones();'></select></form></th>
+    <th><form action=''><select name='tz2' id='tz2' onChange='changeTimezones();'></select></form></th>
+  </tr>
+</table>
+</div>
+
+
+<script type="text/javascript" src="common.js"></script>
+<script type="text/javascript" src="ical.js"></script>
+<script type="text/javascript" src="timezone.js"></script>
+<script type="text/javascript" src="tz_data.js"></script>
+<script type="text/javascript" src="offices.js"></script>
+<script type="text/javascript" src="can-i-call.js"></script>
+
+<style type="text/css">
+  .nowNight { 
+    background:#FFEEEE;
+    font-weight:bold;
+    text-align:center;
+    border-width: 1px 0 1px 0;
+    border-style: solid;
+  }
+  .nowDay {
+    background:#EEFFEE;
+    font-weight:bold;
+    text-align:center;
+    border-width: 1px 0 1px 0;
+    border-style: solid;
+  }
+  .nowEvening {
+    background:#FFFFEE;
+    font-weight:bold;
+    text-align:center;
+    border-width: 1px 0 1px 0;
+    border-style: solid;
+  }
+  .night1 { 
+    background:#FF9999;
+    font-size:small;
+    text-align:center;
+  }
+  .night0 { 
+    background:#FFA99F;
+    font-size:small;
+    text-align:center;
+  }
+  .day1 {
+    background:#CCFFCC;
+    font-size:small;
+    text-align:center;
+  }
+  .day0 {
+    background:#DCFFDC;
+    font-size:small;
+    text-align:center;
+  }
+  .evening1 {
+    background:#FAFACC;
+    font-size:small;
+    text-align:center;
+  }
+  .evening0 {
+    background:#FFFFCC;
+    font-size:small;
+    text-align:center;
+  }
+
+  table {
+    border-spacing: 0;
+  }
+</style>
+  
+]]></Content>
+</Module>

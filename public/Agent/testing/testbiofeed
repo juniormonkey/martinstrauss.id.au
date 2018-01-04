@@ -1,0 +1,23 @@
+#!/usr/local/bin/swipl -s
+
+go :-
+	open(biotestcases, read, Fd),
+	test(Fd),
+	close(Fd).
+
+test(Fd) :-
+	read(Fd, Term),
+	(
+		Term = end_of_file, write('\n\n');
+		write('"'), write(Term), write('": "'),
+		biofeedback:interpretFeedback(Term, Feedback),
+		write(Feedback), write('": "'),
+		bioFindEmotion(Term, Emotion),
+		write(Emotion), write('"\n'),
+		test(Fd)
+	).
+
+:- [biofeedback].
+:- go.
+:- halt.
+

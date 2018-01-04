@@ -1,0 +1,60 @@
+                                                8th November 2002
+
+
+
+
+Dear *****:
+
+Thankyou for alerting me to the situation regarding my webserver.
+
+Analysis of my server's log files shows that the vast majority of data
+transfer is downloads of my photographs. These downloads origi-
+nate exclusively from three hosts - Bellville-ppp41914.sympatico.ca
+(206.172.98.155), Bellville-ppp72559.sympatico.ca (216.208.90.66),
+and ns.hpedsb.on.ca (209.226.83.2). I have a pen-pal in Bellville,
+Ontario, Canada, to whom I recently sent the URL for my pho-
+tographs. My hypothesis is that she has used some software to
+automatically download these images, for instance onto a desktop
+background, which (due to misconfiguration on her computer), re-
+peatedly hits my server and downloads the data.
+
+From my research over summer into the college download costs, I
+was under the impression that the University did not get charged
+for outgoing data (such as downloads from .unimelb.edu.au web-
+hosts), and therefore my webserver would not incur any costs to
+the University. In any case, I never expected this many hits to my
+PC!
+
+In response to this situation, I have blocked all external access to
+bruce.ormond.unimelb.edu.au at the Ormond College firewall, en-
+suring that only Ormond computers can access bruce, and there-
+fore no further network load or costs will be incurred to the Uni-
+versity. I presume that the "questionable content" referred to by
+InfoDiv was in reference to my links to the sites "Furniture Porn",
+"Ultimate Kiddy Porn" and "Brushpr0n", all of which are humorous
+satire sites poking fun at the Internet pornography industry. On
+further searching of the sites linked from my website, it appears
+that "Bert is Evil" has had pornographic advertising added since I
+added the link to my website, and I have replaced my link to this
+site with a local mirror where I have removed the pornographic im-
+ages. I vehemently oppose the distribution of pornographic images
+over the Internet and would under no circumstances knowingly
+link to such sites from my own, let alone host such content on my
+own server.
+
+While I must say I am somewhat amused that my server has hit the
+top 10 .unimelb.edu.au webhosts by data transfer, I did not intend
+this to happen and most certainly would never want to cause the
+Uni financial costs or tarnish the University of Melbourne's repu-
+tation.
+
+I sincerely apologise for the inconvenience I have inadvertently
+caused you, Ormond and the University, and I assure you the se-
+curity measures I have undertaken will ensure it does not reoccur.
+
+Yours sincerely,
+
+
+
+
+Martin Strauss

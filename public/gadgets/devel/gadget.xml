@@ -1,0 +1,3198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+  <ModulePrefs
+    title="Google Gadget Editor"
+    title_url="http://www.google.com/apis/gadgets/gs.html#Scratchpad"
+    directory_title="Google Gadget Editor"
+    description="A gadget that lets you build gadgets!  Load source code of gadgets by URL into a color-coded editor, make changes, and preview the gadget on the fly.  If you have a Google account, you'll also be able to save and publish your gadget through the built-in hosting service."
+    author="William W."
+    author_email="william.feedback+googlegadgeteditor@gmail.com"
+    author_affiliation="Google Inc."
+    author_location="Mountain View, CA"
+    screenshot="/ig/modules/gge.png"
+    thumbnail="/ig/modules/gge-thm.png"
+    height="420"
+    scaling="false"
+    singleton="false">
+    <Locale messages="/ig/modules/gge_content/ALL_ALL.xml"/>
+    <Require feature="tabs"/>
+    <Require feature="minimessage"/>
+    <Require feature="dynamic-height"/>
+    <Require feature="google-domain"/>
+    <Require feature="multisize"/>
+  </ModulePrefs>
+  <UserPref name="height" display_name="Height" datatype="enum" default_value="350">
+    <EnumValue value="100" display_value="smallest"/>
+    <EnumValue value="200" display_value="smaller"/>
+    <EnumValue value="300" display_value="small"/>
+    <EnumValue value="350" display_value="normal"/>
+    <EnumValue value="400" display_value="large"/>
+    <EnumValue value="500" display_value="larger"/>
+    <EnumValue value="650" display_value="largest"/>
+  </UserPref>
+  <!-- GGAE parameters -->
+  <!-- enable HTML snippet generation for 3PAS support -->
+  <UserPref name="enable3pas" datatype="hidden" default_value="0"/>
+  <!-- enable gadget render service macro in 3PAS snippet -->
+  <UserPref name="enableRenderMacro" datatype="hidden" default_value="0"/>
+  <!-- enable macro default values in 3PAS snippet -->
+  <UserPref name="enableMacroDefaults" datatype="hidden" default_value="0"/>
+  <!-- use legacy frontend to render gadgets instead of GGS (default=yes) -->
+  <UserPref name="enableLegacyRenderer" datatype="hidden" default_value="1"/>
+  <!-- enable debug mode for development purposes -->
+  <UserPref name="debug" datatype="hidden" default_value="0"/>
+  <!-- preload GGE w/ given URL -->
+  <UserPref name="preload_url" datatype="hidden" default_value=""/>
+  <!-- begin auto-validate -->
+  <UserPref name="validate" datatype="hidden" default_value="0"/>
+  <!-- Determines which ad size is validated when running in full automation mode: WxH -->
+  <UserPref name="validatesize" datatype="hidden" default_value=""/>
+  <!-- GGAE mode -->
+  <UserPref name="selftest_beta" datatype="hidden" default_value="0"/>
+  <!-- Don't show the initial warning dialog when users aren't logged in -->
+  <UserPref name="nowarn" datatype="hidden" default_value="0"/>
+  <!-- Don't show the Preview tab (for hosting mode only) -->
+  <UserPref name="nopreview" datatype="hidden" default_value="0"/>
+  <!-- Don't show the Help tab (TEMPORARILY DISABLED) -->
+  <UserPref name="nohelp" datatype="hidden" default_value="1"/>
+
+  <!-- parent container communication parameters -->
+  <UserPref name="relayurl" datatype="hidden" default_value=""/>
+  <UserPref name="framename" datatype="hidden" default_value=""/>
+  <UserPref name="callback" datatype="hidden" default_value=""/>
+  <Content type="html"><![CDATA[
+  <script src="/ig/modules/filenewgadgets.js?ts=042409" type="text/javascript"></script>
+  <script src="/ig/modules/codepress/codepress.js?ts=042409" type="text/javascript"></script>
+  <script src="/ig/modules/codepress/codepress_wrapper.js?ts=042409" type="text/javascript"></script>
+  <!-- TODO(wwen) Use requires feature in the future -->
+  <script src="/ig/modules/libhosting.js?ts=042409" type="text/javascript"></script>
+  <script src="/ig/modules/staticvalidator.js?ts=042409" type="text/javascript"></script>
+  <script src="/ig/modules/gge_content/messagecatalog.js?ts=042409" type="text/javascript"></script>
+  <script src="/ig/modules/gge_content/adsnippet.js?ts=042409" type="text/javascript"></script>
+  <script src="/ig/modules/gge_content/spreadsheetloader.js?ts=042409" type="text/javascript"></script>
+  <script src="/ig/modules/gge_content/libclosure.js?ts=042409" type="text/javascript"></script>
+  <script src="/ig/modules/json.js?ts=042409" type="text/javascript"></script>
+
+  <style><!--
+  body {
+    overflow: hidden;
+  }
+
+  body, table, td {
+    font-size: 12px;
+    font-family: Arial, sans-serif;
+  }
+
+  code {
+    color: #007000;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 100%;
+  }
+
+  form {
+    margin: 0px;
+    padding: 0px;
+  }
+
+  .tablib_selected, .tablib_unselected {
+    width: 25%;
+  }
+
+  .tablib_content_container {
+    border: 1px solid #676767;
+    border-top-width: 0px;
+    zoom: 1;
+  }
+
+  #menuContainer {
+    width: 100%;
+    border-bottom: 1px solid #676767;
+    padding: 3px;
+    zoom: 1;
+  }
+
+  #menuContainer input, select {
+    font-size: 12px;
+  }
+
+  .mmlib_table {
+    background-color: #fff;
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+  .mmlib_table .statusMessage {
+    padding: 1px 20px;
+    -moz-border-radius-bottomleft:4px;
+    -moz-border-radius-bottomright:4px;
+    -moz-border-radius-topleft:4px;
+    -moz-border-radius-topright:4px;
+  }
+
+  #editorTab, #previewTab, #validateTab, #helpTab, #debugTab, #hiddenEditor {
+    display: none;
+  }
+
+  #editor {
+    width: 100%;
+  }
+
+  #editor textarea, #debugTab textarea {
+    color: #000000;
+    font-family: "Courier New", Courier;
+    background-color: #eeeeee;
+    border-width: 0px;
+    overflow: auto;
+    font-size: 11px;
+    width: 100%;
+  }
+
+  #previewTab {
+    text-align: center;
+  }
+
+  #previewTab #previewDiv {
+    border: 1px dotted #676767;
+    margin: 0px auto;
+    overflow: auto;
+  }
+
+  #helpTab {
+    overflow: auto;
+    padding: 20px;
+  }
+
+  #helpTab table {
+    border: 1px solid Gray;
+    border-spacing: 0px;
+    border-collapse: collapse;
+  }
+
+  #helpTab table td {
+    border: 1px solid Gray;
+    padding: 4px;
+  }
+
+  #validateTab {
+    text-align: center;
+  }
+  #validateTab #resultSummary {
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 125%;
+  }
+  #validateTab #resultSummary #snippetContainer {
+    margin-top: 5px;
+    font-weight: bold;
+    font-size: 0.9em;
+    display: none;
+  }
+  #validateTab #resultSummary #snippetBtn {
+    margin-left: 10px;
+  }
+  #validateTab #resultSummary #snippetText {
+    width: 90%;
+    height: 100px;
+    padding: 2px;
+  }
+  #validateTab #resultTable {
+    margin: 10px auto;
+    width: 95%;
+    font-size: 95%;
+    border-bottom: 1px solid #bbb;
+  }
+  #validateTab #resultTable th {
+    font-size: 110%;
+    font-weight: bold;
+    background-color: #e8eef7;
+    text-align: left;
+  }
+  #validateTab #resultTable th, #validateTab #resultTable td {
+    border-top: 1px solid #bbb;
+    padding: 3px 5px;
+    height: 20px;
+  }
+  #validateTab #resultTable .icon {
+    text-align: center;
+    width: 60px;
+  }
+  #validateTab th#resultStat {
+    text-align: right;
+  }
+  #validateTab tr.errorRow {
+    background-color: #ffdddd;
+  }
+  #validateTab tr.passRow {
+    color: #676767;
+  }
+  #validateTab .error {
+    color: #cc0000;
+    font-size: 90%;
+  }
+  #validateTab .pass {
+    color: #009900;
+    font-size: 90%;
+  }
+  #validateTab .load {
+    font-weight: bold;
+    font-size: 125%;
+    margin: 15px 0px;
+  }
+  #validateTabContent {
+    overflow: auto;
+  }
+
+  #statusContainer {
+    height: 20px;
+    border-top: 1px solid #676767;
+  }
+
+  .menuTabContainer {
+    width: 33%;
+  }
+
+  .menuTab {
+    border-color: #AAA;
+    border-style: solid;
+    border-width: .5pt;
+    width: 50px;
+    padding: 1px 0px 1px 3px;
+    cursor: pointer;
+    background: transparent url(/ig/modules/icon-dropdn.gif)
+        no-repeat scroll 100% 50%;
+  }
+
+  .menuDropDown {
+    position: absolute;
+    display: none;
+    background-color: #FFF;
+    border-collapse: collapse;
+    border-color: #CCCCCC rgb(103, 103, 103) rgb(103, 103, 103)
+        rgb(204, 204, 204);
+    border-style: solid;
+    border-width: 1px;
+    width: 120px;
+  }
+
+  .menuDropDown td {
+    cursor: pointer;
+    color: #112ABB;
+  }
+
+  .seperator {
+    border-color: #AAA;
+    border-style: solid;
+    border-width: .5pt 0 0 0;
+    zoom: 1;
+  }
+
+  .highlight {
+    background-color: #E8EEF7;
+  }
+
+  .unhighlight {
+    background-color: White;
+  }
+
+  .disabled {
+    color: #676767;
+    filter: alpha(opacity=50);
+    opacity: 0.50;
+  }
+
+  #dialog {
+    position: absolute;
+    display: none;
+    border: 1px solid #676767;
+    z-index: 100;
+    background-color: #fff;
+  }
+
+  #dialog #dialogPanel {
+    position: absolute;
+    border: 0px;
+    background-color: #fff;
+    z-index: -1;
+  }
+
+  #dialog table {
+    width: 100%;
+    border: none;
+  }
+
+  #dialog table td {
+    padding: 4px;
+  }
+
+  #dialog td#dialogTitle {
+    font-weight: bold;
+    font-size: 110%;
+    border-bottom: 1px solid #aaa;
+    background-color: #dbe6de;
+  }
+
+  #dialog td#dialogClose {
+    width: 15px;
+    border-bottom: 1px solid #aaa;
+    background-color: #dbe6de;
+  }
+
+  #dialog #dialogContents {
+    padding: 5px;
+  }
+
+  #disableDiv {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: Gray;
+    display: none;
+    z-index: 5;
+    opacity: .50;
+    filter: alpha(opacity=50);
+  }
+  --></style>
+
+  <div id="editState" style="display:block">
+    <div id="tabContainer"></div>
+    <div id="editorTab">
+      <table id="menuContainer" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td class="menuTabContainer">
+            <div id="file" class="menuTab"
+                onclick="toggle(event, 'fileMenu');">File</div>
+            <table border="0" id="fileMenu" bgcolor="white"
+                class="menuDropDown" onmouseout="hide('fileMenu');"
+                onmouseover="show('fileMenu');">
+              <tr id="filenewrow"
+                  onmouseover="highlight(this);"
+                  onmouseout="unHighlight(this);">
+                <td>&nbsp;</td>
+                <td>
+                  <div id="fileNew" onclick="hide('fileMenu');doNew();">
+                    New...
+                  </div>
+                </td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr id="fileopenrow"
+                  onmouseover="highlight(this);"
+                  onmouseout="unHighlight(this);">
+                <td>&nbsp;</td>
+                <td>
+                  <div id="fileOpen" onclick="hide('fileMenu');doOpen();">
+                    Open...
+                  </div>
+                </td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr id="fileopenurlrow"
+                  onmouseover="highlight(this);"
+                  onmouseout="unHighlight(this);">
+                <td>&nbsp;</td>
+                <td>
+                  <div id="fileOpenURL"
+                      onclick="hide('fileMenu');doOpenByUrl();">
+                    Open from URL...
+                  </div>
+                </td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr id="filesaverow" onmouseover="highlight(this);"
+                  onmouseout="unHighlight(this);">
+                <td>&nbsp;</td>
+                <td>
+                  <div id="fileSave" onclick="hide('fileMenu');doSave();">
+                    Save
+                  </div>
+                </td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr id="filesaveasrow" onmouseover="highlight(this);"
+                  onmouseout="unHighlight(this);">
+                <td>&nbsp;</td>
+                <td>
+                  <div id="fileSaveAs"
+                      onclick="hide('fileMenu');doSaveAs();">
+                    Save As
+                  </div>
+                </td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr id="filerenamerow" onmouseover="highlight(this);"
+                  onmouseout="unHighlight(this);">
+                <td>&nbsp;</td>
+                <td>
+                  <div id="fileRename"
+                      onclick="hide('fileMenu');doRename();">
+                    Rename...
+                  </div>
+                </td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr id="fileuploadrow" onmouseover="highlight(this);"
+                  onmouseout="unHighlight(this);">
+                <td>&nbsp;</td>
+                <td>
+                  <div id="fileUpload"
+                      onclick="hide('fileMenu');doUpload();">
+                    Upload...
+                  </div>
+                </td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr id='filevalidaterow' onmouseover="highlight(this);"
+                  onmouseout="unHighlight(this);">
+                <td>&nbsp;</td>
+                <td>
+                  <div id="fileValidate" onclick=
+                      "hide('fileMenu');doValidation(doDiagnostics);">
+                    Validate...
+                  </div>
+                </td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr id='filepublishrow' onmouseover="highlight(this);"
+                  onmouseout="unHighlight(this);">
+                <td>&nbsp;</td>
+                <td>
+                  <div id="filePublish" onclick=
+                      "hide('fileMenu');doValidation(doPublish);">
+                    Publish...
+                  </div>
+                </td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr id="filedeleterow" onmouseover="highlight(this);"
+                  onmouseout="unHighlight(this);">
+                <td class="seperator">&nbsp;</td>
+                <td class="seperator">
+                  <div id="fileDelete"
+                      onclick="hide('fileMenu');doDelete();">
+                    Delete...
+                  </div>
+                </td>
+                <td class="seperator">&nbsp;</td>
+              </tr>
+            </table>
+          </td>
+          <!--
+          <td class="menuTabContainer">
+            <div id="insert" class="menuTab"
+              onclick="toggle(event, 'insertMenu');">Insert</div>
+            <table border="0" id="insertMenu" bgcolor="white"
+                class="menuDropDown" onmouseout="hide('insertMenu');"
+                onmouseover="show('insertMenu');">
+              <tbody id="insertMenuBody"></tbody>
+            </table>
+          </td>
+          -->
+          <td id="msgContainer" class="menuTabContainer" align="center"></td>
+          <td class="menuTabContainer" align="right"><div id="currentFile"></div></td>
+        </tr>
+      </table>
+
+      <div id="editor">
+        <textarea id="EditorFrame" class="codepress gadget"></textarea>
+        <textarea id="hiddenEditor"></textarea>
+      </div>
+
+      <div id="statusContainer">
+        <table width="100%" border=0 cellspacing=0 cellpadding=0>
+          <tr>
+            <td>
+              <span id="filesize"></span>
+            </td>
+            <td align="right" style="display:none;">
+              <span id="used"></span> of <span id="quota"></span> bytes used
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div id="previewTab">
+      <div id="previewDiv"></div>
+    </div>
+
+    <div id="validateTab">
+      <div id="validateTabContent"></div>
+    </div>
+
+    <div id="debugTab"><textarea id="debugText"></textarea></div>
+
+    <div id="helpTab">
+      <!-- bring in the autocomplete file -->
+      <script type="text/javascript">
+        var Language = new Object();
+      </script>
+      <script src="/ig/modules/codepress/languages/gadget.js?ts=042409"
+          type="text/javascript"></script>
+
+      <b>AutoComplete Help</b>
+      <br/><br/>
+      Type the shortcut and hit tab to expand.
+      Also works with any HTML, i.e. &lt;img, &lt;a, etc.
+      <br/><br/>
+      <table width="100%">
+        <thead>
+          <tr>
+            <td>Shortcut</td>
+            <td>Expansion</td>
+          </tr>
+        </thead>
+        <tbody id="helpBody">
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- The HTML for the dialog, which is absolutely positioned. -->
+  <div id="dialog">
+    <iframe id="dialogPanel" frameborder=0 scrollbar=no></iframe>
+    <table border=0 cellspacing=0 cellpadding=0>
+      <tr>
+        <td id="dialogTitle">Dialog Box Title</td>
+        <td id="dialogClose">
+          <img src="/ig/modules/close_box.gif" style="cursor:pointer;"
+              width="15" height="15" onclick="closeDialog();"/>
+        </td>
+      </tr>
+    </table>
+    <div id="dialogContents"></div>
+  </div>
+
+  <!-- This is the DIV overlay used to prevent focus on GGE -->
+  <div id="disableDiv"></div>
+
+  <!--
+    Generic form used to send rawxml to /ig/ifr via POST and render the gadget
+    inside a target iframe.
+  -->
+  <form style="display:none;" name="renderer" method="post">
+    <input name="rawxml" type="hidden"/>
+  </form>
+
+  <!-- ////////////// JavaScript /////////////////// -->
+  <script type="text/javascript">
+  /**
+   * Private helper method parses the raw gadget XML and gets the list of all
+   * available sizes.  If multisize support is detected, then the
+   * ModulePrefs width/height attributes are ignored and not used.
+   * @return {Array.<Array.<number>>} Array of sizes where each size is an
+   *      Array with two elements where [0]=width and [1]=height.
+   */
+  function GadgetSpec_parseAvailableSizes_() {
+    // Detect the list of available sizes supported by this gadget.
+    var availSizes = new Array();
+    var mPrefsNode = this.selectSingleNode("//ModulePrefs");
+    if (!mPrefsNode) {
+      return availSizes;
+    }
+
+    var altSizeNodes = mPrefsNode.getElementsByTagName('AlternateSize');
+    if (altSizeNodes.length > 0) {
+      // Supports multiple sizes.  Read list of supported sizes from
+      // <AlternateSize> elements.
+      for (var n = 0; n < altSizeNodes.length; n++) {
+        var altSizeNode = altSizeNodes[n];
+        availSizes.push([
+          parseInt(altSizeNode.getAttribute('width'), 10),
+          parseInt(altSizeNode.getAttribute('height'), 10)
+        ]);
+      }
+    } else {
+      // Supports a single size.  Read size from width/height attributes.
+      var width = parseInt(mPrefsNode.getAttribute('width'), 10);
+      var height = parseInt(mPrefsNode.getAttribute('height'), 10);
+      if (width && height) {
+        availSizes.push([
+          width,
+          height
+        ]);
+      }
+    }
+    return availSizes;
+  }
+
+  /**
+   * Returns whether the gadget contains multiple sizes.
+   * @return {boolean} True if gadget supports multisize.  False otherwise.
+   */
+  function GadgetSpec_isMultiSize() {
+    return this.availableSizes_.length > 1;
+  }
+  /**
+   * Get a single element based on the XPath passed in.
+   * @return {Element} Element object if it exists.
+   */
+  function GadgetSpec_selectSingleNode(xpath) {
+    return GGE.Util.selectSingleNode(this.xmlDoc_, xpath);
+  }
+  /**
+   * Get list of supported gadget sizes.
+   * @return {Array.<Array.<number>>} Array of sizes where each size is an
+   *      Array with two elements where [0]=width and [1]=height.
+   */
+  function GadgetSpec_getAvailableSizes() {
+    return this.availableSizes_;
+  }
+  /**
+   * Get the location of the gadget source, if one exists.
+   * @return {string} Gadget URL
+   */
+  function GadgetSpec_getSourceUrl() {
+    return this.sourceUrl_;
+  }
+  /**
+   * Set the gadget URL for this spec.
+   * @param {string} url Gadget URL
+   */
+  function GadgetSpec_setSourceUrl(url) {
+    this.sourceUrl_ = url;
+  }
+  /**
+   * Get the raw gadget XML as text.
+   * @return {string} Raw XML markup as text.
+   */
+  function GadgetSpec_getRawXml() {
+    return this.rawXml_;
+  }
+  /**
+   * Get the gadget XML as an object.
+   * @return {Object} XML object
+   */
+  function GadgetSpec_getXmlDocument() {
+    return this.xmlDoc_;
+  }
+
+  /**
+   * GadgetSpec object contains various information about a particular
+   * gadget XML file.
+   * @param {string} rawXml Raw gadget XML as text to initialize the gadget.
+   */
+  function GadgetSpec(rawXml) {
+    // Public methods
+    this.isMultiSize = GadgetSpec_isMultiSize;
+    this.selectSingleNode = GadgetSpec_selectSingleNode;
+    this.getAvailableSizes = GadgetSpec_getAvailableSizes;
+    this.getSourceUrl = GadgetSpec_getSourceUrl;
+    this.setSourceUrl = GadgetSpec_setSourceUrl;
+    this.getRawXml = GadgetSpec_getRawXml;
+    this.getXmlDocument = GadgetSpec_getXmlDocument;
+
+    // Private helper methods
+    this.parseAvailableSizes_ = GadgetSpec_parseAvailableSizes_;
+
+    // Private properties
+    this.sourceUrl_ = '';
+    this.rawXml_ = rawXml;
+    this.xmlDoc_ = GGE.Util.loadXMLDOM(rawXml);
+    this.availableSizes_ = this.parseAvailableSizes_();
+  }
+
+  ///////////////////// END GadgetSpec Definition /////////////////
+
+  /**
+   * This function is used as the callback when static validation is complete.
+   * When finished, execute nextFunction().
+   * @param {GSV_TotalResult} totalResult Object defined in staticvalidator.js
+   * @param {Function} nextFunction Next function to call after static
+   *      validation is complete.
+   */
+  function GGE_validateStaticCallback(totalResult, nextFunction) {
+    // Configure the messages in each result
+    GGE.configureValidationResults(totalResult.results);
+
+    switch (GGE.mode) {
+    case GGE.Mode.CONSUMER:
+      // In consumer mode, show a validation warning dialog urging users to
+      // fix the validation errors before publishing.
+      if (!totalResult.success) {
+        var msg = [
+          '<div>',
+          'Please consider fixing the following issues below before ',
+          'publishing your gadget:',
+          '</div>',
+          '<ul>'
+        ];
+        for (var i = 0, result; result = totalResult.results[i]; i++) {
+          if (!result.success) {
+            msg.push(
+              '<li>',
+              _hesc(result.error),
+              '</li>'
+            );
+          }
+        }
+        msg.push('</ul>');
+
+        // Show warning dialog to user containing all failed validation checks
+        showConfirmDialog('Validation Warning', msg.join(''), nextFunction);
+      } else {
+        nextFunction();
+      }
+      break;
+    case GGE.Mode.ADS:
+      // We still need to perform dynamic validation. Store the results
+      // and create the full report after the dynamic validation has finished.
+      // Save a separate copy of the results array.
+      cache["GGAE_total_result"] = totalResult;
+
+      // When gadget ad is whiteisted, only ICS specific validation rules are
+      // required.  Dynamic validation is bypassed entirely.
+      if (GGE.bypassValidation) {
+        // Gadget ad is whitelisted.  Reset the bypass flag and skip to the
+        // dynamic validation callback.
+        GGE.bypassValidation = false;
+        GGE.validateDynamicCallback(true, new Array());
+      } else {
+        // Gadget ad is not whitelisted.  Call the nextFunction to proceed
+        // to dynamic validation.
+        nextFunction();
+      }
+      break;
+    }
+  }
+
+  /**
+   * Called when the dynamic validator completes and the results are
+   * passed in as parameters.  Iterate through each result and create the
+   * validation report.  This is the final callback executed which signifies
+   * the end of validation mode.
+   * @param success {Boolean} True if all tests have passed.
+   * @param results {Array.<ValidationResult>} Contains all result objects
+   *      containing more information about each specific validation check.
+   */
+  function GGE_validateDynamicCallback(success, results) {
+    // Configure the messages in each result
+    GGE.configureValidationResults(results);
+
+    // Create the overall success and results array from both static
+    // and dynamic validation checks combined.
+    var totalResult = cache["GGAE_total_result"];
+    totalResult.success = totalResult.success && success;
+    totalResult.results = totalResult.results.concat(results);
+
+    // Create the full validation report
+    GGE.createValidationReport(totalResult.results);
+
+    // Pass along the validation results to an IFPC parent container
+    // if one exists.
+    parentContainerCallback(totalResult);
+  }
+
+  /**
+   * Create the validation report to be shown under the validate tab.
+   * Should be executed after all validation checks have been executed
+   * and finished.
+   */
+  function GGE_createValidationReport(results) {
+    // Generate the HTML for the report
+    var failCnt = 0;
+    var html = [
+      '<div id="resultSummary"></div>',
+      '<table id="resultTable" border=0 cellspacing=0 cellpadding=0>',
+      '<tr>',
+      '<th class="icon">Status</th>',
+      '<th>XML Requirements</th>',
+      '<th id="resultStat"></th>',
+      '</tr>'
+    ];
+
+    // Iterate through the saved validation results and create a new row
+    // for each.
+    for (var n = 0, result; result = results[n]; n++) {
+      // Set a different icon and message based on the result success flag
+      var resultRowClass = 'passRow';
+      var icon = 'check.gif';
+      var msg = new Array(result.error);
+      if (!result.success) {
+        resultRowClass = 'errorRow';
+        icon = 'redex.gif';
+        msg = [
+          '<b>' + result.error + '</b>',
+          '<div>' + result.description + '</div>'
+        ];
+
+        // Display any additional details in a list if available.
+        // Details are set within the dynamic or static validation class and
+        // may contain HTML-safe content.  No escaping is necessary here.
+        if (result.details.length > 0) {
+          msg.push('<ul>');
+          for (var k = 0, detail; detail = result.details[k]; k++) {
+            msg.push('<li>' + detail + '</li>');
+          }
+          msg.push('</ul>');
+        }
+
+        // Increment the failed results counter
+        failCnt++;
+      }
+
+      html.push(
+        '<tr class="' + resultRowClass + '">',
+        '<td class="icon">',
+        '<img width=14 height=13 ',
+        'src="/ig/modules/gge_content/' + icon + '"/>',
+        '</td>',
+        '<td colspan=2>',
+        msg.join(''),
+        '</td>',
+        '</tr>'
+      );
+    }
+    html.push('</table>');
+
+    // Insert the HTML into the DOM
+    _gel('validateTabContent').innerHTML = html.join('');
+
+    // Update the result stat column
+    var statMsg = '';
+    var progressClass;
+    if (failCnt == 0) {
+      statMsg = 'All checks passed!';
+      progressClass = 'pass';
+    } else {
+      statMsg = failCnt + ' checks failed';
+      progressClass = 'error';
+    }
+    var resultStat = _gel('resultStat');
+    resultStat.className = progressClass;
+    resultStat.innerHTML = statMsg;
+
+    // Show progress percentage in the result summary which equates
+    // to total_success_checks / total_checks
+    var totalCnt = results.length;
+    var progressPercent = Math.floor((totalCnt - failCnt) * 100 / totalCnt);
+
+    // Display 'Show Snippet' button only if 3pas is enabled and gadget
+    // validates 100%.
+    var snippetBtnHtml = '';
+    var snippetContainerHtml = '';
+    if (GGE.enable3pas && failCnt == 0) {
+      snippetBtnHtml = [
+        '<input id="snippetBtn" ',
+        'onclick="GGE.toggleSnippet();" ',
+        'type="button"/>'
+      ].join('');
+
+      snippetContainerHtml = [
+        '<div id="snippetContainer">',
+          'Copy and paste the HTML below to serve this gadget ad as 3PAS ',
+          'in AdSense.<br>',
+          '<textarea id="snippetText" onclick="this.select();"></textarea>',
+        '</div>'
+      ].join('');
+    }
+
+    var summaryHtml = [
+      '<div>',
+      'Total Progress: ',
+      '<span class="' + progressClass + '">',
+      progressPercent + '%',
+      '</span>',
+      snippetBtnHtml,
+      '</div>',
+      snippetContainerHtml
+    ];
+    _gel('resultSummary').innerHTML = summaryHtml.join('');
+
+    // Initially hide the snippet button if enabled.
+    if (GGE.enable3pas && failCnt == 0) {
+      GGE.toggleSnippet(false);
+    }
+  }
+
+  function GGE_toggleSnippet(opt_show) {
+    var button = _gel('snippetBtn');
+    var container = _gel('snippetContainer');
+    var snippetTextNode = _gel('snippetText');
+
+    if (container.style.display == 'block' || opt_show == false) {
+      // Hide the snippet container and update snippet button label.
+      container.style.display = 'none';
+      button.value = 'Show Snippet';
+    } else {
+      // Generate the HTML snippet only the first time it's toggled.
+      if (!snippetTextNode.value) {
+        var gadgetXmlDoc = this.validateGadgetSpec.getXmlDocument();
+        var gadgetUrl = this.validateGadgetSpec.getSourceUrl();
+        if (!gadgetUrl || !gadgetXmlDoc) {
+          throw new Error('Error generating snippet. Bad gadget spec or URL');
+        }
+
+        // Create a new snippet.
+        var snippet = new AdSnippet();
+        snippet.enableGadgetRenderMacro(GGE.enableRenderMacro);
+        snippet.enableDefaultValues(GGE.enableMacroDefaults);
+
+        // Enable geographic macros if whitelisted
+        var rows = GGE.whitelists.geoMacro.getRows();
+        for (var n = 0; n < rows.length; n++) {
+          var whitelistUrl = rows[n].getData('url');
+          if (GGE.isMatchingWhitelistUrl(whitelistUrl, GGE.sourceUrl)) {
+            snippet.enableGeoMacros(true);
+            break;
+          }
+        }
+
+        // Enable demographic macros if whitelisted
+        rows = GGE.whitelists.demoMacro.getRows();
+        for (var n = 0; n < rows.length; n++) {
+          var whitelistUrl = rows[n].getData('url');
+          if (GGE.isMatchingWhitelistUrl(whitelistUrl, GGE.sourceUrl)) {
+            snippet.enableDemoMacros(true);
+            break;
+          }
+        }
+
+        // Enable experimental macros if whitelisted
+        rows = GGE.whitelists.experimentalMacro.getRows();
+        for (var n = 0; n < rows.length; n++) {
+          var whitelistUrl = rows[n].getData('url');
+          if (GGE.isMatchingWhitelistUrl(whitelistUrl, GGE.sourceUrl)) {
+            snippet.enableExperimentalMacros(true);
+            break;
+          }
+        }
+
+        // Iterate through the UserPrefs in the spec and add them as macros
+        var prefs = gadgetXmlDoc.getElementsByTagName('UserPref');
+        for (var n = 0; n < prefs.length; n++) {
+          var el = prefs[n];
+          snippet.addMacro(el.getAttribute('name'),
+              el.getAttribute('default_value'));
+        }
+
+        // Get the gadget width/height.  There should only be one size
+        // available when running in 3PAS mode.
+        var size = this.validateGadgetSpec.getAvailableSizes()[0];
+        if (!size) {
+          throw new Error('At least one size must be defined.');
+        }
+        snippetTextNode.value =
+            snippet.getHtmlSnippet(gadgetUrl, size[0], size[1]);
+      }
+
+      // Show the snippet container and update the snippet button label.
+      container.style.display = 'block';
+      button.value = 'Hide Snippet';
+    }
+  }
+
+  /**
+   * Iterate through each result and set the error/description
+   * messages from the message catalog.
+   */
+  function GGE_configureValidationResults(results) {
+    for (var n = 0, result; result = results[n]; n++) {
+      result.error = GGE.catalog.getMsg(result.rule_name + '_error');
+      result.description = GGE.catalog.getMsg(result.rule_name + '_desc');
+    }
+  }
+
+  function GGE_validateByUrlDialogOnSubmit(url) {
+    // Trim the url of leading and trailing whitespaces
+    url = safeTrim(url);
+
+    // Catch all JS errors to make sure this function returns false to prevent
+    // the HTML form from submitting.
+    try {
+      if (GGE.Util.isUrl(url)) {
+        // Load in the gadget and automatically start validation.
+        GGE.autoValidate = true;
+        loadEditor(url);
+      } else {
+        showStatusMsg('URL must be an absolute path starting with http://',
+            GGE.MessageType.ERROR);
+      }
+    } catch (e) {
+      // Do nothing
+    }
+
+    return false;
+  }
+
+  /**
+   * Submits a post to the specified action from the renderer form and loads
+   * it in the specified target.  The rawxml is always loaded in from the
+   * Editor.  Lets us re-use the same form to render the gadget in different
+   * targets.
+   */
+  function GGE_renderGadgetFromEditor(action, target) {
+    var renderer = document.forms['renderer'];
+    renderer.rawxml.value = GGE.getEditorCode();
+    renderer.action = action;
+    renderer.target = target;
+    renderer.submit();
+  }
+
+  /**
+   * Gets the source code currently loaded in the editor.
+   * @return {String} The source code as text.
+   */
+  function GGE_getEditorCode() {
+    if (isCodePressAvailable()) {
+      return CodePressWrapper.getText();
+    } else {
+      return EditorFrame.value;
+    }
+  }
+
+  /**
+   * Set the source code in the editor.  Different language can be specified
+   * to enable proper syntax highlighting.
+   * @param {String} code The source code to load into the editor.
+   * @param {String} opt_lang Optional language to change syntax highlighting.
+   */
+  function GGE_setEditorCode(code, opt_lang) {
+    // If a language is passed in, make sure it's supported and isn't already
+    // set in the editor.
+    var lang = '';
+    if (opt_lang &&
+        CodePress.languages[opt_lang] &&
+        EditorFrame.language != opt_lang) {
+      lang = opt_lang;
+    }
+
+    if (isCodePressAvailable()) {
+      // If changing the editor language, update the editor in a special way
+      // using the hidden editor textarea.
+      if (lang) {
+        _gel('hiddenEditor').value = code;
+        EditorFrame.edit('hiddenEditor', lang);
+      } else {
+        CodePressWrapper.setText(code);
+      }
+    } else {
+      _gel("EditorFrame").value = code;
+    }
+  }
+
+  function GGE_isGadgetXmlSpec(str) {
+    var xmlDoc = GGE.Util.loadXMLDOM(str);
+    return xmlDoc.documentElement &&
+        xmlDoc.documentElement.nodeName == 'Module';
+  }
+
+  function GGE_isMatchingWhitelistUrl(whitelistUrl, gadgetUrl) {
+    var isMatching = false;
+    if (whitelistUrl.match(/^REGEXP\s+(.*)$/)) {
+      // Use regexp to find a match.
+      var regexp = RegExp.$1;
+      try {
+        if (gadgetUrl.match(regexp)) {
+          isMatching = true;
+        }
+      } catch (e) {
+        // Bad regexp, but don't throw a JS error
+      }
+    } else if (whitelistUrl == gadgetUrl) {
+      // No RegExp.  Exact string match was found.
+      isMatching = true;
+    }
+    return isMatching;
+  }
+
+  // TODO(daniellee): Refactor code and embed all methods inside single object.
+  // Here's the start of a new singleton to encapsulate all GGE properties
+  // and methods under a single object.
+  var GGE = {
+    // Properties that need to be initialized
+    mode: 0,
+    enable3pas: false,
+    enableRenderMacro: false,
+    enableMacroDefaults: false,
+    enableLegacyRenderer: false,
+    autoValidate: false,
+    validateSizeArr: null,  // Size Array: [width, height]
+    hideWarning: false,
+    hidePreview: false,
+    hideHelp: false,
+    catalog: new MessageCatalog(),
+    preloadUrl: '',
+    sourceUrl: '',
+    preloadUrlExists: false,
+    bypassValidation: false,
+
+    // Validation related methods and properties
+    whitelists: null,    // Contains list of Spreadsheet Objects
+    validateGadgetSpec: null,   // Holds the gadget spec object being validated
+    toggleSnippet: GGE_toggleSnippet,
+    isMatchingWhitelistUrl: GGE_isMatchingWhitelistUrl,
+    validateByUrlDialogOnSubmit: GGE_validateByUrlDialogOnSubmit,
+    configureValidationResults: GGE_configureValidationResults,
+    createValidationReport: GGE_createValidationReport,
+    validateStaticCallback: GGE_validateStaticCallback,
+    validateDynamicCallback: GGE_validateDynamicCallback,
+
+    // This is a place holder function created in the global scope referenced
+    // as the callback from the GData JSON feed.  Implementation is defined
+    // inside the scope of another function to make use of closure.
+    startValidation: function() {},
+
+    // Editor related methods
+    // TODO(daniellee): Move this into its own GGE.Editor class object.
+    renderGadgetFromEditor: GGE_renderGadgetFromEditor,
+    setEditorCode: GGE_setEditorCode,
+    getEditorCode: GGE_getEditorCode,
+    isGadgetXmlSpec: GGE_isGadgetXmlSpec,
+    isDirty: false,
+    isGadgetXml: false,
+    hostingEnabled: false,
+
+    /**
+     * Enum for which mode GGE is currently running in.  Depending on the mode
+     * certain features toggled on/off.
+     * @enum {Number}
+     */
+    Mode: {
+      CONSUMER: 0,
+      ADS: 1
+    },
+
+    /**
+     * Enum for the type of status message to display.
+     * @enum {Number}
+     */
+    MessageType: {
+      CONFIRM: 0,
+      WARNING: 1,
+      ERROR: 2
+    },
+
+    /**
+     * Contains instances of gadget API classes to be reused everywhere.
+     */
+    API: {
+      tabs: new _IG_Tabs(0, "Edit", _gel("tabContainer")),
+      mini: new _IG_MiniMessage(0, _gel("msgContainer")),
+      prefs: new _IG_Prefs(),
+      msize: new _IG_MultiSize()
+    },
+
+    // Hold a reference to the JSON object imported in from json.js
+    JSON: GGE_JSON,
+
+    /**
+     * Interface to output messages to a debug buffer.
+     */
+    Debug: {
+      enabled: false,
+      buffer: _gel('debugText'),
+
+      clear: function() {
+        // Clear the debug buffer
+        this.buffer.value = '';
+      },
+
+      write: function(title, msg) {
+        // Don't write anything unless the debug
+        if (!this.enabled) {
+          return;
+        }
+
+        // Write to debug buffer
+        this.buffer.value = [
+          '==== ' + title + ' :: ' + (new Date()).toString() + ' ====',
+          msg,
+          '\n'
+        ].join('\n') + this.buffer.value;
+      }
+    },
+
+    /**
+     * Generical utility object containing helper methods used everywhere.
+     */
+    Util: {
+      // Dynamically loads an external JavaScript file.
+      loadScript: function(url) {
+        var script = document.createElement('script');
+        script.src = url;
+        var head = document.getElementsByTagName('head')[0];
+        if (head) {
+          head.appendChild(script);
+        }
+      },
+
+      loadXMLDOM: function(source) {
+        if (window.ActiveXObject) {
+          var doc = new ActiveXObject("Microsoft.XMLDOM");
+          doc.async = "false";
+          doc.loadXML(source);
+        } else {
+          var parser = new DOMParser();
+          var doc = parser.parseFromString(source, "text/xml");
+        }
+        return doc;
+      },
+
+      selectSingleNode: function(xmlDoc, xpath) {
+        // In IE, need to use selectSingleNode method.  Other browsers don't
+        // support it.  With object detection, use it only if it's defined.
+        if (typeof xmlDoc.selectSingleNode != 'undefined') {
+          return xmlDoc.selectSingleNode(xpath);
+        } else {
+          var xpe = new XPathEvaluator();
+          var nsResolver = xpe.createNSResolver(
+              xmlDoc.ownerDocument == null ? xmlDoc.documentElement :
+                                      xmlDoc.ownerDocument.documentElement);
+          var results = xpe.evaluate(xpath, xmlDoc, nsResolver,
+              XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+          return results.singleNodeValue;
+        }
+      },
+
+      jesc: function(a) {
+        return a.replace(/"/g,'\\"').replace(/'/g,"\\'");
+      },
+
+      isUrl: function(str) {
+        return Boolean(str.match(/^https?:\/\//));
+      },
+
+      // Should only return true for text extensions supported by GGAE
+      // e.g. js, css, xml, config, txt, etc.
+      isTextExtension: function(str) {
+        return Boolean(
+            str.match(/(?:\.config|\.xml|\.js|\.css|\.txt|\.htm|\.html)$/));
+      },
+
+      isBinaryExtension: function(str) {
+        return Boolean(
+            str.match(/(?:\.jpg|\.jpeg|\.png|\.gif|\.tiff|\.swf)$/));
+      },
+
+      isXmlExtension: function(url) {
+        return Boolean(url.match(/\.xml$/));
+      },
+
+      // Returns true if running on internal corp locations.
+      isDevMode: function() {
+        return Boolean(window.location.host.match(/^[^/. ]+(?:\.mtv|\.sfo|\.nyc)?(?:\.corp\.google\.com)?:\d+$/));
+      }
+    },
+
+    init: function() {
+      // Clear the debug buffer before writing to it.
+      GGE.Debug.clear();
+
+      // Interpret UserPref values to initialize properties.
+      this.mode = this.Mode.CONSUMER;
+      if (this.API.prefs.getInt('selftest_beta') == 1) {
+        this.mode = this.Mode.ADS;
+      }
+      this.Debug.enabled = this.API.prefs.getInt('debug') == 1;
+      this.autoValidate = this.API.prefs.getInt('validate') == 1;
+      this.hideWarning = this.API.prefs.getInt('nowarn') == 1;
+      this.hidePreview = this.API.prefs.getInt('nopreview') == 1;
+      this.hideHelp = this.API.prefs.getInt('nohelp') == 1;
+      this.preloadUrl = _trim(this.API.prefs.getString('preload_url'));
+      this.enable3pas = this.API.prefs.getInt('enable3pas') == 1;
+      this.enableRenderMacro = this.API.prefs.getInt('enableRenderMacro') == 1;
+      this.enableMacroDefaults = this.API.prefs.getInt('enableMacroDefaults') == 1;
+      this.enableLegacyRenderer = this.API.prefs.getInt('enableLegacyRenderer') == 1;
+
+      // Verify preload_url userpref exists.  If not, use default.
+      if (this.preloadUrl) {
+        this.preloadUrlExists = true;
+      } else {
+        this.preloadUrl = GGE.mode == GGE.Mode.ADS ?
+            'http://gadgetads.googlecode.com/svn/trunk/skeletons/single_flash.xml' :
+            'http://www.google.com/ig/modules/hello.xml';
+      }
+
+      // Parse the ad size UserPref.  Leave as null if none exists.
+      var size = _trim(this.API.prefs.getString('validatesize')).split('x');
+      if (size.length == 2) {
+        // Size is valid and in WxH format.
+        this.validateSizeArr = [
+          parseInt(size[0], 10),  // width
+          parseInt(size[1], 10)   // height
+        ];
+      }
+
+      // Configure the GGAE whitelists for ads
+      this.whitelists = {
+        validation: new Spreadsheet(
+          'o08850623361201175368.843232051149698882',
+          'od6'),
+        geoMacro: new Spreadsheet(
+          'o08850623361201175368.843232051149698882',
+          'od7'),
+        demoMacro: new Spreadsheet(
+          'o08850623361201175368.843232051149698882',
+          'odb'),
+        experimentalMacro: new Spreadsheet(
+          'o08850623361201175368.843232051149698882',
+          'od8')
+      };
+
+      // Whitelist spreadsheet column headers all start at row 2
+      this.whitelists.validation.setHeaderRow(2);
+      this.whitelists.geoMacro.setHeaderRow(2);
+      this.whitelists.demoMacro.setHeaderRow(2);
+      this.whitelists.experimentalMacro.setHeaderRow(2);
+    }
+  };
+  // Initialize GGE object
+  GGE.init();
+
+
+  // Global variables
+  var cache = new Object();
+  var gh;
+
+  // Get the editor frame to use the same variable before CodePress loads
+  var EditorFrame = _gel('EditorFrame');
+
+  if (GGE.mode != GGE.Mode.ADS) {
+    delete gadgetLinks["Gadget Ads"];
+  }
+
+  function verifyLogin(response) {
+    if (response.status != 200) {
+      // non-logged-in user
+      hide('fileopenrow');
+      hide('filesaverow');
+      hide('filerenamerow');
+      hide('filedeleterow');
+      hide('filepublishrow');
+      hide('filesaveasrow');
+      hide('fileuploadrow');
+
+      // Publisher can opt out of displaying the warning dialog via UserPref.
+      if (GGE.hideWarning || GGE.autoValidate) {
+        return;
+      }
+
+      var title = "Warning: Not logged in to a Google Account";
+      var content = new Array();
+
+      // Add some additional messaging for gadget ads
+      if (GGE.mode == GGE.Mode.ADS) {
+        content.push(
+          '<p>',
+          'Some features are disabled because you\'re not currently ',
+          'logged in to a Google Account.  In this mode, you can only ',
+          'validate gadget ads that are hosted and loaded in by URL.  If ',
+          'you\'ve made changes to your gadget XML in the \'Editor\', upload ',
+          'the changes to your hosting server and reload the gadget by URL ',
+          'using the form below.',
+          '</p>',
+          '<p>',
+          '<b>Validate Your Google Gadget Ad</b><br>',
+          'Enter the gadget URL into the text box below and click ',
+          '\'Validate\'.  This will automatically load your gadget into the ',
+          'editor and start the validation.  You can perform this action ',
+          'again by selecting <code>Validate</code> under the ',
+          '<code>File</code> menu.',
+          '</p>',
+          '<form onsubmit="',
+          'return GGE.validateByUrlDialogOnSubmit(this.gadgetUrl.value);">',
+          '<input id="gadgetUrl" name="gadgetUrl" style="width: 80%;" ',
+          'type="text" value="http://"/>',
+          '<input type="submit" value="Validate"/>',
+          '</form>'
+        );
+      }
+      content.push(
+        '<p>',
+        '<b>Hosting Feature Disabled</b><br>',
+        'Hosting capabilities are currently unavailable which means you ',
+        'won\'t be able to save or upload files into the ',
+        'Google Gadgets Editor.',
+        '</p>',
+        '<p>',
+        'To enable all hosting features, please ',
+        '<a target="_blank" href="https://www.google.com/accounts/Login">',
+        'login</a> ',
+        'to a Google Account.  Once you\'re logged in, reload the Google ',
+        'Gadgets Editor.  Upon refreshing, all hosting features should become ',
+        'available.',
+        '</p>'
+      );
+
+      // Show dialog and set focus on the input box
+      showDialog(title, content.join(''));
+      var gadgetUrl = _gel('gadgetUrl');
+      if (gadgetUrl) {
+        gadgetUrl.focus();
+      }
+    } else {
+      GGE.hostingEnabled = true;
+      if (_args()["clearconfig"] != null) {
+        gh.deleteFile("gge.config", readGGEConfig);
+      } else {
+        readGGEConfig();
+      }
+    }
+  }
+
+  var currentMenu = "";
+
+  function hideCurrentMenu(e) {
+    if (currentMenu != "") {
+      hide(currentMenu);
+    }
+  }
+
+  function toggle(e, id) {
+    // Cancel the auto validate flag when the File menu is clicked.  When
+    // users attempt to validate a 'dirty' file and cancel the auto-save, we
+    // need to prevent subsequent saves from jumping into Validation mode.
+    if (id == 'fileMenu') {
+      GGE.autoValidate = false;
+    }
+
+    if (currentMenu != "" && currentMenu != id) {
+      hide(currentMenu);
+    }
+    var el = _gel(id);
+    if (el.style.display != "block") {
+      el.style.display = "block";
+      currentMenu = id;
+    } else {
+      el.style.display = "none";
+      currentMenu = "";
+    }
+
+    if (window.event) {
+      window.event.cancelBubble = true;
+    } else {
+      e.stopPropagation();
+    }
+  }
+
+  function show(id) {
+    _gel(id).style.display = "block";
+  }
+
+  function hide(id) {
+    _gel(id).style.display = "none";
+  }
+
+  function highlight(el) {
+    if (el.className != "disabled") {
+      el.className = "highlight";
+    }
+  }
+
+  function unHighlight(el) {
+    if (el.className != "disabled") {
+      el.className = "unhighlight";
+    }
+  }
+
+  /**
+   * Shows a warning dialog with a 'continue' and 'back' button.  Used to
+   * display a warning to users and lets them choose whether to continue
+   * or cancel process.  When clicking continue, nextFunction is executed.
+   * @param {String} title HTML text to display in the dialog title bar
+   * @param {String|Element} content HTML String or Element for content section.
+   */
+  function showConfirmDialog(title, content, nextFunction) {
+    var buttonDiv = document.createElement('div');
+    buttonDiv.style.textAlign = 'right';
+
+    var nextBtn = document.createElement('input');
+    nextBtn.type = 'button';
+    nextBtn.value = 'OK';
+    _IG_AddDOMEventHandler(nextBtn, 'click', nextFunction);
+
+    var backBtn = document.createElement('input');
+    backBtn.type = 'button';
+    backBtn.value = 'Cancel';
+    _IG_AddDOMEventHandler(backBtn, 'click', closeDialog);
+
+    buttonDiv.appendChild(nextBtn);
+    buttonDiv.appendChild(document.createTextNode('  '));
+    buttonDiv.appendChild(backBtn);
+
+    // Add the main content above the buttons.
+    // Content can either be an HTML String or Element.
+    var div = document.createElement('div');
+    if (typeof content == 'string') {
+      div.innerHTML = content;
+    } else if (typeof content == 'object') {
+      div.appendChild(content);
+    }
+    div.appendChild(buttonDiv);
+    showDialog(title, div);
+    nextBtn.focus();
+  }
+
+  /**
+   * Create a dismissible HTML dialog with title header and content section.
+   * @param {String} title HTML text to display in the title header
+   * @param {String|Element} content HTML text or element for content section.
+   */
+  function showDialog(title, content) {
+    // Use multisize library to get gadget dimensions
+    var totalWidth = GGE.API.msize.getWidth();
+    var totalHeight = GGE.API.msize.getHeight();
+
+    // Overlay DIV to disable interacting with editor
+    var dd = _gel('disableDiv');
+    dd.style.width = totalWidth;
+    dd.style.height = totalHeight;
+    show('disableDiv');
+
+    // Set the dialog title and content.  Content can either be an HTML string
+    // or an HTML element.
+    var dialogTitle = _gel('dialogTitle');
+    var dialogContents = _gel('dialogContents');
+    dialogTitle.innerHTML = title;
+    if (typeof content == 'string') {
+      dialogContents.innerHTML = content;
+    } else if (typeof content == 'object') {
+      dialogContents.innerHTML = '';
+      dialogContents.appendChild(content);
+    }
+
+    // Add a footer DIV container to place mini messages
+    var msgContainer = document.createElement('div');
+    msgContainer.id = 'dialogMessages';
+    dialogContents.appendChild(msgContainer);
+
+    // Make dialog default 50% of the total width.  Set minimum threshold
+    // at 200px.
+    var dWidth = Math.max(200, totalWidth * 0.5);
+
+    // Set the position and dimensions of the dialog
+    var d = _gel('dialog');
+    d.style.width = dWidth + 'px';
+    d.style.top = '15px';
+    d.style.left = Math.floor(totalWidth / 2) - Math.floor(dWidth / 2) + 'px';
+    show('dialog');
+
+    // Set dimensions of the iframe panel to match the size of the dialog.
+    // Iframe behind the dialog DIV ensures that it displays above all types
+    // of HTML content.
+    var panel = _gel('dialogPanel');
+    panel.style.width = d.style.width;
+    panel.style.height = dialogTitle.offsetHeight +
+        dialogContents.offsetHeight + 'px';
+  }
+
+  function closeDialog() {
+    hide('dialog');
+    hide('disableDiv');
+  }
+
+  function disable(id) {
+    _gel(id).className = "disabled";
+  }
+
+  function enable(id) {
+    _gel(id).className = "";
+  }
+
+  function updateFileMenu() {
+    if (gh.isHosted(getCurrentFile())) {
+      enable('filerenamerow');
+      enable('filepublishrow');
+      enable('fileRename');
+      enable('filePublish');
+    } else {
+      disable('filerenamerow');
+      disable('filepublishrow');
+      disable('fileRename');
+      disable('filePublish');
+    }
+  }
+
+  /**
+   * Open a file from hosted account.
+   * @param {Node} selectNode HTML Select element
+   */
+  function openFromSelect(selectNode) {
+    // Make sure an option is selected.
+    var selectedIndex = selectNode.selectedIndex;
+    if (selectedIndex < 0) {
+      return;
+    }
+
+    // No need to verify file name contains a value.  It always will.
+    var fileUrl = selectNode.options[selectedIndex].value;
+    loadEditor(fileUrl);
+  }
+
+  function showTemplates() {
+    var categories = _gel('gadgetCategories');
+    var selectedCategory = categories.options[categories.selectedIndex].text;
+
+    // Remove existing entries from the select element.
+    var target = _gel("filenewselect");
+    while (target.options.length) {
+      target.remove(0);
+    }
+
+    var templates = gadgetLinks[selectedCategory];
+    var optNew;
+    for (var url in templates) {
+      optNew = document.createElement("option");
+      optNew.value = url;
+      optNew.text = templates[url];
+      try {
+        target.add(optNew, null);  // DOM compliant browsers
+      } catch (e) {
+        target.add(optNew);  // IE
+      }
+    }
+  }
+
+  function getNewDialog() {
+    var cacheKey = "newDialog";
+    if (cache[cacheKey] == null) {
+      var html = new Array();
+      html.push(
+        '<center>',
+        '<div style="width:90%;">',
+        '<div style="text-align:left;">Category:</div>',
+        '<select id="gadgetCategories" style="width:100%" ',
+        'onchange="showTemplates();">'
+      );
+      for (var url in gadgetLinks) {
+        html.push(
+          '<option>',
+          _hesc(url),
+          '</option>'
+        );
+      }
+      html.push(
+        '</select>',
+        '<div style="text-align:left;">Gadget:</div>',
+        '<select id="filenewselect" size="10" style="width:100%" ',
+        'ondblclick="openFromSelect(this);">',
+        '</select>',
+        '<p>',
+        '<input type="button" value="Open" ',
+        'onclick="openFromSelect(this.parentNode.previousSibling);"/>',
+        '&nbsp;',
+        '<input type="button" onclick="closeDialog();" value="Cancel"/>',
+        '</p>',
+        '</div>',
+        '</center>'
+      );
+      cache[cacheKey] = html.join('');
+    }
+    return cache[cacheKey];
+  }
+
+  function doNew() {
+    if (isMenuItemDisabled('fileNew')) {
+      return;
+    }
+
+    showDialog('New Gadget', getNewDialog());
+    showTemplates();
+    _gel('filenewselect').focus();
+  }
+
+  function ellipsify(url) {
+    var length = 35;
+    if (url.length > length) {
+      return "..." + url.slice(url.length - (length - 3));
+    } else {
+      return url;
+    }
+  }
+
+  function showOpenDialog(ghResponse) {
+    var html = new Array();
+    if (ghResponse.status == 200 && ghResponse.files.length > 0) {
+      html.push(
+        '<center>',
+        '<select id="fileopenselect" size="15" style="width:90%" ',
+        'ondblclick="openFromSelect(this);">'
+      );
+      for (var i = 0, fileName; fileName = ghResponse.files[i]; i++) {
+        var fileUrl = gh.getFileURL(fileName);
+        html.push(
+          '<option value="' + fileUrl + '" ',
+          'title="' + fileName + '">',
+          _hesc(ellipsify(fileName)),
+          '</option>'
+        );
+      }
+      html.push(
+        '</select>',
+        '<p>',
+        '<input type="button" value="Open" ',
+        'onclick="openFromSelect(this.parentNode.previousSibling);"/>',
+        '&nbsp;',
+        '<input type="button" onclick="closeDialog();" value="Cancel"/>',
+        '</p>',
+        '</center>'
+      );
+    } else {
+      html.push('<span style="cursor:default;"><i>No Files</i></span>');
+    }
+    showDialog('Choose a File', html.join(''));
+    if (ghResponse.status == 200 && ghResponse.files.length > 0) {
+      _gel('fileopenselect').focus();
+    }
+  }
+
+  function doOpen() {
+    hostingDirectoryWrapper(showOpenDialog);
+  }
+
+  function doOpenByUrl() {
+    if (isMenuItemDisabled('fileOpenURL')) {
+      return;
+    }
+
+    var title = 'Open Gadget by URL';
+    var content = new Array(
+      '<p>',
+      'Enter the gadget URL in the form below and hit "Open". ',
+      'The gadget XML will be fetched and loaded into the Google Gadgets Editor.',
+      '</p>',
+      '<p>',
+      'Depending on which tab you\'re currently on, the editor will ',
+      'automatically reload the content inside the tab. ',
+      'For example, if you\'re currently in ',
+      '"Preview" mode, opening a gadget by URL will load the XML into the ',
+      'editor and automatically attempt to render it in preview mode.',
+      '</p>',
+      '<form onsubmit="return doOpenByUrlOnSubmit(this.openUrl.value);">',
+      '<input id="openUrl" name="openUrl" style="width: 80%;" type="text" value="http://"/>',
+      '<input type="submit" value="Open"/>',
+      '</form>'
+    );
+
+    showDialog(title, content.join(''));
+
+    // Set focus on the input box
+    _gel('openUrl').focus();
+  }
+
+
+  function doOpenByUrlOnSubmit(url) {
+    // Trim the url of leading and trailing whitespaces
+    url = safeTrim(url);
+
+    // Catch all JS errors to make sure this function returns false to prevent
+    // the HTML form from submitting.
+    try {
+      if (GGE.Util.isUrl(url)) {
+        loadEditor(url);
+      } else {
+        showStatusMsg('URL must be an absolute path starting with http://',
+            GGE.MessageType.ERROR);
+      }
+    } catch (e) {
+      // Do nothing
+    }
+
+    return false;
+  }
+
+  function renameDeleteCallback(response) {
+    if (response.status == 204) {
+      showStatusMsg("File rename successful.", GGE.MessageType.CONFIRM);
+    } else if (response.status == 401) {
+      showStatusMsg("File rename unauthorized.", GGE.MessageType.ERROR);
+    } else if (response.status == 404) {
+      showStatusMsg("File not found.", GGE.MessageType.ERROR);
+    } else {
+      showStatusMsg("File rename unsuccessful.", GGE.MessageType.ERROR);
+    }
+  }
+
+  function renameCallback(response) {
+    if (response.status == 201) {
+      refreshPage(response.url);
+      gh.deleteFile(cache['oldFileName'], renameDeleteCallback);
+    } else if (response.status == 401) {
+      showStatusMsg("File rename unauthorized.", GGE.MessageType.ERROR);
+    } else {
+      showStatusMsg("File rename unsuccessful.", GGE.MessageType.ERROR);
+    }
+  }
+
+  function parseFileName(sourceobj, targetid) {
+    _gel(targetid).value =
+        sourceobj.value.split(/[\/\\]/).pop().replace(/ /g, "_");
+  }
+
+  function sanitizePath(path) {
+    path = safeTrim(path);
+    path = path.replace(/\\/g, "/");
+    path = path.replace(/^\/*/, "");
+    path = path.replace(/\/+/g, "/");
+    path = path.replace(/ /g, "_");
+    return path;
+  }
+
+  function uploadComplete(uploadIFrame) {
+    // this method is fired upon the upload IFrame's onload event
+    var d = uploadIFrame.contentWindow.document;
+    var status = d.getElementsByTagName("body")[0].innerHTML;
+    if (status != "") {
+      if (status.match(/^Error/)) {
+        if (status.match(/^Error: Illegal file name/)) {
+          showStatusMsg(_hesc(status), GGE.MessageType.ERROR);
+        } else if (status.match(/^Error: File of size/)) {
+          showStatusMsg(_hesc(status), GGE.MessageType.ERROR);
+        } else {
+          showStatusMsg("File Upload Unsuccessful", GGE.MessageType.ERROR);
+        }
+      } else {
+        var fileName = _gel("upf2").value;
+
+        // TODO(daniellee): This message never gets shown because new message
+        // is created in loadEditorCallback() returns.
+        showStatusMsg(_hesc(fileName) + " uploaded successfully.",
+            GGE.MessageType.CONFIRM);
+        loadEditor(gh.getFileURL(fileName));
+      }
+    }
+  }
+
+  function uploadHandler(form) {
+    _gel("upf2").value = sanitizePath(_gel("upf2").value);
+    form.action = gh.getUploadURL(_gel("upf2").value);
+    closeDialog();
+  }
+
+  function doUpload() {
+    if (isMenuItemDisabled('fileUpload')) {
+      return;
+    }
+
+    var html = new Array(
+        '<iframe style="display:none" id="uf" name="uf" ',
+        '    onload="uploadComplete(this);"></iframe>',
+        '<form enctype="multipart/form-data" id="upload" target="uf" ',
+        'method="post" onsubmit="uploadHandler(this);">',
+        '<center>',
+        '<div style="width:90%;text-align:left;">',
+        'Choose a file:<br>',
+        '<input type="file" id="upf" name="upload" size="12"',
+        'onchange="parseFileName(this, \'upf2\');">',
+        '<p/>',
+        'Save as:<br>',
+        '<input type="text" id="upf2" style="width:100%">',
+        '</div>',
+        '<br/>',
+        '<div style="text-align: center;">',
+        '<input type="submit" value="Upload">',
+        '&nbsp;',
+        '<input type="button" value="Cancel" onclick="closeDialog()">',
+        '</div>',
+        '</center>',
+        '</form>');
+
+    showDialog('File Upload', html.join(''));
+  }
+
+  function getModulePrefs(spec) {
+    var modulePrefs = new Object();
+    var xml = GGE.Util.loadXMLDOM(getGadgetSpec());
+    var element = xml.documentElement.getElementsByTagName('ModulePrefs')[0];
+    if (element) {
+      for (var n = 0, attribute; attribute = element.attributes[n]; n++) {
+        modulePrefs[attribute.name] = attribute.value;
+      }
+    }
+
+    // Replicate default gadget dimensions as seen on iGoogle.
+    // If width attribute doesn't exist, assign the default column size of 32%
+    // but set the minimum threshold at 250.
+    // If height attribute doesn't exist, assign default height of 200px.
+    if (!modulePrefs.width) {
+      var minWidth = 250;
+      var totalWidth = GGE.API.msize.getWidth() - 5;
+      modulePrefs.width = Math.floor(totalWidth * 0.32);
+      if (modulePrefs.width < minWidth) {
+        // Set gadget to mininum width or the full GGE width if it's smaller
+        modulePrefs.width = totalWidth < minWidth ? totalWidth : minWidth;
+      }
+    }
+    if (!modulePrefs.height) {
+      modulePrefs.height = 200;
+    }
+    return modulePrefs;
+  }
+
+  /**
+   * Generates the iframe source URL to render the gadget in preview mode.
+   * @param {Array.<number>} sizeArr Array containing width and height.
+   * @return {string} Gadget renderering iframe URL
+   */
+  function getGadgetUrl(opt_sizeArr) {
+    var modulePrefs = getModulePrefs();
+
+    // If optional size Array is passed in, use it to set dimensions.
+    modulePrefs.width = opt_sizeArr && opt_sizeArr.length == 2 ?
+        opt_sizeArr[0] : Number(modulePrefs.width);
+    modulePrefs.height = opt_sizeArr && op_sizeArr.length == 2 ?
+        opt_sizeArr[1] : Number(modulePrefs.height);
+
+    // Set preview container dimensions
+    var div = _gel("previewDiv");
+    var maxWidth = div.parentNode.offsetWidth;
+    var maxHeight = div.parentNode.offsetHeight;
+    div.style.width = ((modulePrefs.width < maxWidth) ?
+        modulePrefs.width + 4 : maxWidth) + 'px';
+    div.style.height = ((modulePrefs.height < maxHeight) ?
+        modulePrefs.height + 4 : maxHeight) + 'px';
+
+    try {
+      // This fixes a bug in Firefox.  After an iframe is first loaded with some
+      // URL, the Frame object becomes unreusable afterwards.  When IFPC tries
+      // to reference and use this object, an exception is thrown.  This
+      // delete statement clears the existing Frame object before reinserting
+      // a new one into the DOM.
+      delete window.frames['previewFrame'];
+    } catch (e) {
+      // In IE, the delete statement above throws an error.  Do nothing here
+      // and let it silently fail.
+    }
+
+    // In IE, IFrame properties won't take effect unless a fresh new IFrame
+    // is inserted into the DOM.  We need to dynamically generate them.
+    // Set syndicated gadget dimensions
+    div.innerHTML = [
+      '<iframe id="previewFrame" name="previewFrame"',
+      'src="about:blank" frameborder=0',
+      'width=' + modulePrefs.width,
+      'height=' + modulePrefs.height,
+      'scrolling=' + (modulePrefs.scrolling == 'true' ? 'yes' : 'no'),
+      '></iframe>'
+    ].join(' ');
+
+    var host = GGE.mode == GGE.Mode.ADS ?
+        'http://ads.gmodules.com' : 'http://www.gmodules.com';
+
+    // If in dev mode, GGS runs on a different port.  Set default to 8080.
+    if (GGE.Util.isDevMode()) {
+      host = 'http://' + (GGE.enableLegacyRenderer ?
+          window.location.host : window.location.hostname + ':8080');
+    }
+
+    var renderer = GGE.enableLegacyRenderer ? 'ig' : 'gadgets';
+    var url = [
+      host + '/' + renderer + '/ifr?url=',
+      "title=" + _esc(modulePrefs.title).replace(/%20/g, "+"),
+      "w=" + modulePrefs.width,
+      "h=" + modulePrefs.height,
+      "synd=open",
+      "nocache=1",
+      "output=html"
+    ];
+
+    // see if this is the alpha version
+    if (window.location.search.match(/[&?]url=(?:\/ig\/modules\/)?alpha\//)) {
+      url.push("alpha=1");
+    }
+
+    // Always enable debug mode when previewing in ADS mode
+    if (GGE.mode == GGE.Mode.ADS) {
+      url.push(
+        'up_clickurl=DEBUG',
+        'up_aiturl=DEBUG'
+      );
+    }
+
+    return url.join("&");
+  }
+
+  function getGadgetSpec() {
+    var spec = GGE.getEditorCode();
+    if (spec != "") {
+      spec = spec.replace(/<br>/gi, "\n");
+      spec = spec.replace(/&lt;/gi, "<");
+      spec = spec.replace(/&gt;/gi, ">");
+      spec = spec.replace(/&amp;/gi, ">");
+    }
+    return spec;
+  }
+
+  /**
+   * Callback function accepts text response returned and loads it into the
+   * editor.  Executes the passed in callback function to signify completion.
+   * If any errors exist, pass the message back to the callback function to
+   * signify that an error has occurred.
+   * @param response {String} Response from the async request in loadEditor()
+   * @param url {String} The remote URL being fetched
+   * @param opt_callback {Function} Callback function to be executed to
+   *      signify that the 'load editor' action has completed.
+   */
+  function loadEditorCallback(response, url) {
+    var errorMsg = '';
+
+    // Clear the loadEditor timeout in the case where bad URLs are entered.
+    window.clearTimeout(cache['loadEditorTimeoutId']);
+
+    // Verify that the response is a gadget XML.  Allow other text files to
+    // be loaded only if GGAE is not running in auto-validate mode.
+    if (GGE.isGadgetXmlSpec(response)) {
+      // New file is loaded in and is a gadget XML.
+      GGE.isDirty = false;
+      GGE.isGadgetXml = true;
+
+      // Depending on which tab is currently selected, the response must
+      // be loaded into the editor differently.
+      var tabName = GGE.API.tabs.getSelectedTab().getName();
+      if (tabName.match(/editor/i)) {
+        GGE.setEditorCode(response, 'gadget');
+      } else if (tabName.match(/preview|validate/i)) {
+        // In preview or validate mode, the CodePress editor is hidden.
+        // We need to temporarily disable the CodePress editor and set the
+        // response to the HTML textarea.  After editor is loaded,
+        // automatically fire off the preview or validation.
+        toggleEditor();
+        EditorFrame.setCode(response);
+        tabCallback((tabName.match(/preview/i) ? 'previewTab' : 'validateTab'));
+      }
+
+      // We need to automatically trigger the validation if the auto validate
+      // flag is set.
+      if (GGE.autoValidate) {
+        // For IE, use a 1/2 second delay.  Without a delay, the preview tab
+        // would is shown immediately and IE tries to set focus on the editor
+        // window which is no longer visible.
+        window.setTimeout('tabCallback("validateTab");', 500);
+      }
+    } else if (GGE.Util.isTextExtension(url) && !GGE.autoValidate) {
+      // Set editor flags and language
+      GGE.isDirty = false;
+      GGE.isGadgetXml = false;
+
+      // If loading a non-gadget XML text file, switch back to the Editor.
+      if (!GGE.API.tabs.getSelectedTab().getName().match(/editor/i)) {
+        GGE.API.tabs.setSelectedTab(0);
+      }
+
+      // Update the editor and set language for correct syntax highlighting.
+      if (url.match(/\.js(?:\?.*)?$/i)) {
+        GGE.setEditorCode(response, 'javascript');
+      } else if (url.match(/\.css(?:\?.*)?$/i)) {
+        GGE.setEditorCode(response, 'css');
+      } else {
+        // Use gadget syntax highlighting as the default for other text files.
+        GGE.setEditorCode(response, 'gadget');
+      }
+    } else {
+      errorMsg = 'This file is not a valid gadget XML';
+    }
+
+    // If any errors occurred, alert the user.  Otherwise, close all dialogs
+    // and output a success message.
+    if (errorMsg) {
+      showStatusMsg(errorMsg, GGE.MessageType.ERROR);
+    } else {
+      closeDialog();
+      showStatusMsg('File successfully loaded.', GGE.MessageType.CONFIRM);
+
+      // Update menu bar
+      setEditsAreAllowed(true);
+      setCurrentFile(url);
+      updateStatusSize();
+      updateFileMenu();
+    }
+  }
+
+  function setEditsAreAllowed(editable) {
+    var menuItems = [ "filesaverow", "filesaveasrow",
+        "fileSave", "fileSaveAs", "filevalidaterow", "fileValidate" ];
+
+    CodePressWrapper.setEditable(editable);
+
+    for (var i in menuItems) {
+      if (editable) {
+        enable(menuItems[i]);
+      } else {
+        disable(menuItems[i]);
+      }
+    }
+  }
+
+  /**
+   * Attempts to fetch and load an external URL into the editor.  Text files
+   * loaded into the editor while non-text files are automatically displayed in
+   * the preview tab.  Callback function can be passed which will be called
+   * when the fetch completes.
+   * @param url {String} Absolute path pointing to the file being fetched
+   * @param opt_callback {Function} Callback function to be executed to
+   *      signify that the 'load editor' action has completed.
+   */
+  function loadEditor(url) {
+    GGE.Debug.write('loadEditor', url);
+
+    if (!GGE.Util.isBinaryExtension(url)) {
+      _IG_FetchContent(url, _IG_Callback(loadEditorCallback, url), {
+        refreshInterval: 1,
+        headers:[["Cache-Control", "no-cache"],["Pragma","no-cache"]]
+      });
+
+      // Inform the user that the file is being fetched.
+      showStatusMsg('Attempting to fetch file...', GGE.MessageType.WARNING);
+
+      // Set fetch timeout to return control back to user if it takes too long.
+      cache['loadEditorTimeoutId'] = window.setTimeout(function() {
+          showStatusMsg(
+              'Failed to load file. Please verify the URL and try again.',
+              GGE.MessageType.ERROR);
+        }, 15000);
+    } else {
+      // Preview the binary resource file in a new window and leave the editor
+      // in tact.
+      window.open(url, '_blank', '');
+    }
+  }
+
+  /**
+   * Displays a minimessage that's formatted to indicate different status.
+   * Automatically displays the message in the dialog or menu bar.
+   * @param msg {String} HTML text to be displayed.  Note that this param
+   *      will not be HTML-escaped.  The caller is responsible for escaping it.
+   * @param type {GGE.MessageType} Message type alters the appearance.
+   */
+  function showStatusMsg(msg, type) {
+    if (!msg) {
+      return;
+    }
+
+    var bgColor;
+    var color;
+    switch (type) {
+    case GGE.MessageType.WARNING:
+      // Background color for warning text.
+      bgColor = '#ffff88';
+      color = '#000';
+      break;
+    case GGE.MessageType.ERROR:
+      // Error message
+      bgColor = '#aa0033';
+      color = '#fff';
+      break;
+    case GGE.MessageType.CONFIRM:
+    default:
+      // CCC confirmation/alert banners
+      bgColor = '#ffcc33';
+      color = '#000';
+      break;
+    }
+
+    // If a dialog is currently open, show the status message in there.
+    // Otherwise, display it within the menu bar.
+    var container = _gel('msgContainer');
+    if (_gel('dialog').style.display == 'block') {
+      container = _gel('dialogMessages');
+    }
+
+    // Stylize the message with color based on the message type.
+    var htmlMsg = [
+      '<span class="statusMessage" ',
+      'style="background-color:' + bgColor + '; color:' + color + ';">',
+      msg,
+      '</span>'
+    ].join('');
+
+    // Avoid duplicate minimessages from showing by removing any existing
+    // messages before creating a new one.
+    var mm = new _IG_MiniMessage(0, container);
+    var cacheId = container.id + '_mmcontainer';
+    if (cache[cacheId]) {
+      // Prevent JS error from throwing when message is prematurely removed
+      // before the timer event fires.
+      mm.dismissMessage(cache[cacheId]);
+    }
+    cache[cacheId] = mm.createTimerMessage(htmlMsg, 5);
+
+    // Send an unsuccessful result set back to the container if GGAE is running
+    // in full automation mode and an error message comes in.
+    if (type == GGE.MessageType.ERROR && GGE.autoValidate) {
+      // Create a new validation result object with the error message.
+      var result = new GSV_ValidationResult(false, 'GGAE_ERROR');
+      result.error = msg;
+      result.description = 'An error has occurred in GGAE.';
+
+      // Create the total result object and pass it back to the parent container
+      var totalResult = new GSV_TotalResult();
+      totalResult.results.push(result);
+      parentContainerCallback(totalResult);
+    }
+  }
+
+  /**
+   * Called after file is deleted, saved, or renamed.  Updates syntax
+   * highlighting mode based on file extension.
+   * @param {string} url Absolute path of the file.
+   */
+  function refreshPage(url) {
+    setCurrentFile(url);
+
+    // if you file>save and change the file extension,
+    // load the correct syntax highlighting engine
+    if (url) {
+      if (isCodePressAvailable()) {
+        if (url.match(/\.js(?:\?.*)?$/i)) {
+          GGE.setEditorCode(GGE.getEditorCode(), 'javascript');
+          GGE.isGadgetXml = false;
+        } else if (url.match(/\.css(?:\?.*)?$/i)) {
+          GGE.setEditorCode(GGE.getEditorCode(), 'css');
+          GGE.isGadgetXml = false;
+        } else {
+          // Use gadget syntax highlighting as the default.
+          GGE.setEditorCode(GGE.getEditorCode(), 'gadget');
+          GGE.isGadgetXml = GGE.isGadgetXmlSpec(GGE.getEditorCode());
+        }
+      }
+    }
+
+    updateUsedQuota();
+    updateFileMenu();
+  }
+
+  function saveCallback(response) {
+    if (response.status == 201) {
+      showStatusMsg("File successfully saved.", GGE.MessageType.CONFIRM);
+      refreshPage(response.url);
+      GGE.isDirty = false;
+
+      // When in hosted mode, we force users to save their files before
+      // validating.  When save is finished, auto-start the validation.
+      if (GGE.autoValidate) {
+        // For IE, use a 1/2 second delay.  Without a delay, the preview tab
+        // would is shown immediately and IE tries to set focus on the editor
+        // window which is no longer visible.
+        window.setTimeout('tabCallback("validateTab");', 500);
+      }
+    } else if (response.status == 401) {
+      showStatusMsg("File save unauthorized.", GGE.MessageType.ERROR);
+    } else {
+      showStatusMsg("File save unsuccessful.", GGE.MessageType.ERROR);
+    }
+  }
+
+  /**
+   * Shows the privacy policy and commits a save.
+   * @param {string} fileName Name of file to be saved
+   * @param {string} content Content to be saved
+   * @param {Function} callback Callback after save is complete
+   */
+  function saveFileDecorator(fileName, content, callback) {
+    showPrivacyPolicy(function() {
+      showStatusMsg('Saving file...', GGE.MessageType.WARNING);
+      gh.saveFile(fileName, content, callback);
+    });
+  }
+
+  function saveGGEConfig(key, value) {
+    var re = new RegExp(key + "=\\w+;");
+    var newValue = key + "=" + value + ";";
+    if (ggeConfig.match(re)) {
+      ggeConfig = ggeConfig.replace(re, newValue);
+    } else {
+      ggeConfig += newValue;
+    }
+    gh.saveFile(configFile, ggeConfig, function() { return; });
+  }
+
+  function hidePrivacySetting(bVal) {
+    if(bVal == true) {
+      saveGGEConfig("hidePrivacyWarning", "true");
+    }
+  }
+
+  var configFile = "gge.config";
+  var ggeConfig = '';
+
+  function readGGEConfig() {
+    var configUrl = gh.getFileURL(configFile);
+    _IG_FetchContent(configUrl, function (response, url) {
+        // if 404
+        if(response.match("<html>")) {
+          ggeConfig = "";
+        } else {
+          ggeConfig = response;
+        }
+      }, { refreshInterval: 1 });
+  }
+
+  function getGGEConfig(key) {
+    var re = new RegExp(key + "=(\\w+);");
+    if (re.test(ggeConfig)) {
+      return re.exec(ggeConfig)[1];
+    } else {
+      return null;
+    }
+  }
+
+  function showPrivacyPolicy(callback) {
+    // check for setting in gge.config
+    if (getGGEConfig("hidePrivacyWarning") == "true") {
+      callback();
+      return;
+    }
+
+    var html = new Array();
+    html.push('You are about to save this file with your Google Account.');
+    html.push('<p>');
+    html.push('Only you can edit this gadget, but anyone can read it, ');
+    html.push('if they can find its URL.');
+    html.push('<p>');
+    html.push('For information about how Google protects information ');
+    html.push('saved with your Google account, please see our ');
+    html.push('<a href="http://www.google.com/privacypolicy.html" ');
+    html.push('target="_blank">Privacy Policy</a>.');
+    html.push('<p>');
+    html.push("Don't show this warning again? ");
+    html.push('<input type="checkbox" id="hidewarning" checked="true"/>');
+    html.push('<p><center>');
+    html.push('<input type="button" id="pSave" value="Save"/>');
+    html.push('&nbsp;');
+    html.push('<input type="button" id="pCancel" value="Cancel"/>');
+    html.push('</center>');
+
+    showDialog('Terms Of Service', html.join(''));
+
+    _gel("pSave").onclick = function() {
+      hidePrivacySetting(_gel("hidewarning").checked);
+      closeDialog();
+      callback();
+    };
+
+    _gel("pCancel").onclick = function() {
+      hidePrivacySetting(_gel("hidewarning").checked);
+      closeDialog();
+    };
+  }
+
+  function doSave() {
+    if (isMenuItemDisabled('fileSave')) {
+      return;
+    }
+
+    var fileUrl = getCurrentFile();
+    if (gh.isHosted(fileUrl)) {
+      var fileName = gh.getFilePart(fileUrl);
+      saveFileDecorator(fileName, GGE.getEditorCode(), saveCallback);
+    } else {
+      doSaveAs();
+    }
+  }
+
+  function hostingDirectoryWrapper(callback) {
+    // provide a single wrapper for the get directory
+    // so we can remove hidden files from the file list
+    // and enhance performance through caching
+    gh.getDirectory(function(ghResponse) {
+      // Show the config file when running on corp machines.
+      if (!GGE.Util.isDevMode()) {
+        for (var i = 0; i < ghResponse.files.length; i++) {
+          if (ghResponse.files[i].match("gge.config")) {
+            ghResponse.files.splice(i,1);
+          }
+        }
+      }
+      callback(ghResponse);
+    });
+  }
+
+  function doSaveWithOverwriteCheck(file, callback) {
+    hostingDirectoryWrapper(
+      function (ghResponse) {
+        for (var i = 0; i < ghResponse.files.length; i++) {
+          if (ghResponse.files[i] == file) {
+            var html = [
+              '<p>',
+              'A file named <code>' + _hesc(file) + '</code> already exists. ',
+              'Do you want to replace it?',
+              '</p>'
+            ];
+            showConfirmDialog('Confirm: Save File', html.join(''), function() {
+              closeDialog();
+              saveFileDecorator(file, GGE.getEditorCode(), callback);
+            });
+            return;
+          }
+        }
+        saveFileDecorator(file, GGE.getEditorCode(), callback);
+      }
+    );
+  }
+
+  function appendDefaultFileExtension(file) {
+    if (file.match(/\.\w+$/) == null) {
+      file += ".xml";
+    }
+    return file;
+  }
+
+  function isMenuItemDisabled(id) {
+    return _gel(id).className.match("disabled") != null;
+  }
+
+  // _trim throws error in IE if input is null
+  function safeTrim(str) {
+    if (str == null) {
+      return null;
+    } else {
+      return _trim(str);
+    }
+  }
+
+  function doRename() {
+    if (isMenuItemDisabled('fileRename') || !gh.isHosted(getCurrentFile())) {
+      return;
+    }
+    showSaveDialog('Rename File', renameCallback);
+  }
+
+  function doSaveAs() {
+    if (isMenuItemDisabled('fileSaveAs')) {
+      return;
+    }
+    showSaveDialog('Save File', saveCallback);
+  }
+
+  function showSaveDialog(title, nextFunction) {
+    /**
+     * Completes the action to save or rename a file based on the callback.
+     * @param {Function} callback The success callback.
+     */
+    function validateFileName(callback) {
+      var fileName = _hesc(safeTrim(_gel('fileName').value));
+      var re = new RegExp(/^\w[\w-]*\.[\w-]{2,4}$/);
+      if (fileName) {
+        fileName = appendDefaultFileExtension(fileName);
+        if (fileName.match(re)) {
+          closeDialog();
+
+          // When renaming the file, we need to
+          // pass the old filename to callback via global variable
+          cache["oldFileName"] = gh.getFilePart(getCurrentFile());
+          doSaveWithOverwriteCheck(fileName, callback);
+        } else {
+          showStatusMsg('File name is invalid.', GGE.MessageType.ERROR);
+        }
+      }
+    };
+
+    // Get the current file name
+    var url = gh.getFilePart(getCurrentFile());
+
+    // Generate the HTML form to get the file name from user
+    var form = document.createElement('form');
+    form.onsubmit = function() {
+      // Catch all JS errors to make sure this function returns false to prevent
+      // the HTML form from submitting.
+      try {
+        validateFileName(nextFunction);
+      } catch (e) {
+        // do nothing
+      }
+      return false;
+    };
+
+    var input = document.createElement('input');
+    input.id = 'fileName';
+    input.name = 'fileName';
+    input.style.width = '80%';
+    input.type = 'text';
+    input.value = url;
+    form.appendChild(input);
+
+    var p0 = document.createElement('p');
+    p0.innerHTML = '* Only alphanumeric characters, hyphens (-), and ' +
+        'underscores (_) are allowed.';
+    form.appendChild(p0);
+
+    var p1 = document.createElement('p');
+    p1.innerHTML = 'For example: <code>my-daily-gadget.xml</code>';
+    form.appendChild(p1);
+
+    showConfirmDialog(title,
+        form,
+        function() {
+          validateFileName(nextFunction);
+        });
+    _gel('fileName').focus();
+  }
+
+  function deleteCallback(response) {
+    if (response.status == 204) {
+      showStatusMsg("File successfully deleted.", GGE.MessageType.CONFIRM);
+      if (gh.getFilePart(getCurrentFile()) == cache['deletedFileName']) {
+        refreshPage('');
+      } else {
+        updateUsedQuota();
+      }
+    } else if (response.status == 401) {
+      showStatusMsg("You are not authorized to delete this file.",
+          GGE.MessageType.ERROR);
+    } else if (response.status == 404) {
+      showStatusMsg("File not found.", GGE.MessageType.ERROR);
+    } else {
+      showStatusMsg("File delete unsuccessful.", GGE.MessageType.ERROR);
+    }
+  }
+
+  /**
+   * Deletes a file from hosted account.
+   * @param {Node} selectNode HTML Select element
+   */
+  function deleteFromSelect(selectNode) {
+    // Make sure an option is selected.
+    var selectedIndex = selectNode.selectedIndex;
+    if (selectedIndex < 0) {
+      return;
+    }
+
+    // No need to verify file name contains a value.  It always will.
+    var fileName = selectNode.options[selectedIndex].value;
+    cache['deletedFileName'] = fileName;
+    gh.deleteFile(fileName, deleteCallback);
+    closeDialog();
+  }
+
+  function showDeleteDialog(ghResponse) {
+    var html = new Array();
+    if (ghResponse.status == 200 && ghResponse.files.length > 0) {
+      html.push(
+        '<center>',
+        '<select id="filedeleteselect" size="15" style="width:90%" ',
+        'ondblclick="deleteFromSelect(this);">'
+      );
+      for (var i = 0, fileName; fileName = ghResponse.files[i]; i++) {
+        // Set value to absolute path URL to the file
+        html.push(
+          '<option value="' + fileName + '" ',
+          'title="' + fileName + '">',
+          _hesc(ellipsify(fileName)),
+          '</option>'
+        );
+      }
+      html.push(
+        '</select>',
+        '<p>',
+        '<input type="button" value="Delete" ',
+        'onclick="deleteFromSelect(this.parentNode.previousSibling);"/>',
+        '&nbsp;',
+        '<input type="button" onclick="closeDialog();" value="Cancel"/>',
+        '</p>',
+        '</center>'
+      );
+    } else {
+      html.push('<span style="cursor:default;"><i>No Files</i></span>');
+    }
+    showDialog('Delete a File', html.join(''));
+    if (ghResponse.status == 200 && ghResponse.files.length > 0) {
+      _gel('filedeleteselect').focus();
+    }
+  }
+
+  function doDelete() {
+    hostingDirectoryWrapper(showDeleteDialog);
+  }
+
+  function isIGoogleHosted() {
+    try {
+      new Date(window.parent.location);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function createAnchor(url, text, opt_title) {
+    var is_on_googledotcom = isIGoogleHosted();
+    var html = new Array();
+    html.push('<a href="');
+    html.push(_hesc(url));
+    html.push('"');
+    html.push(' target="_blank"');
+    if (opt_title) {
+      html.push(' title="' + _hesc(opt_title) + '"');
+    }
+    html.push('>');
+    html.push(_hesc(text));
+    html.push('</a>');
+    return html.join('');
+  }
+
+  function doPublish() {
+    if (isMenuItemDisabled('filePublish')) {
+      return;
+    }
+    var fileUrl = getCurrentFile();
+    if (gh.isHosted(fileUrl)) {
+      var title = "Publish Your Gadget";
+      var content = new Array();
+
+      if (fileUrl.match(".xml$")) {
+        content.push('<p/>Your gadget is located ');
+        content.push(createAnchor(fileUrl, 'here', fileUrl));
+        content.push('.<p/>Would you like to:<p/>- ');
+        content.push(createAnchor("/ig/add?moduleurl=" + _esc(fileUrl),
+            'Add to my iGoogle page'));
+        content.push('<br/>- ');
+        content.push(createAnchor("/ig/submit?prefill_url=" + _esc(fileUrl),
+            'Publish to iGoogle Directory'));
+        content.push('<br/>- ');
+        content.push(createAnchor("/ig/creator?url=" + _esc(fileUrl),
+            'Add to a webpage'));
+      } else {
+        title = "Publish Your File";
+        content.push('<p/>Your file is located ');
+        content.push(createAnchor(fileUrl, 'here', fileUrl));
+        content.push('.');
+      }
+
+      showDialog(title, content.join(''));
+    }
+  }
+
+  function doDiagnostics() {
+    // Use hidden iframe to load gadget in self test mode.  To the user,
+    // static and dynamic validation checks should appear to run as a single
+    // continuous process with no breaks in between.
+    var targetFrame = 'previewFrame';
+
+    // During full automation mode, if validation size is passed in, validate
+    // this specific size by setting the dimensions of the hidden iframe.
+    var gadgetUrl = GGE.autoValidate && GGE.validateSizeArr ?
+        getGadgetUrl(GGE.validateSizeArr) : getGadgetUrl();
+
+    var actionUrl = [
+      gadgetUrl,
+      'selftest=1',
+      'ifpcparent=' + _esc(window.location.host),
+      'ifpcframe=' + _esc(targetFrame),
+      'ifpcservice=IFPC_validationCallback'
+    ].join('&');
+    GGE.renderGadgetFromEditor(actionUrl, targetFrame);
+  }
+
+  function doValidation(nextFunction) {
+    // Only continue validation if a valid gadget XML is loaded.
+    if (!GGE.isGadgetXml) {
+      showStatusMsg("Validation is not allowed for this file.",
+          GGE.MessageType.ERROR);
+      GGE.API.tabs.setSelectedTab(0);
+      return;
+    }
+
+    // don't do validation and publish
+    // if the menu items are disabled
+    if (isMenuItemDisabled('fileValidate')) {
+      // skip this step
+      return;
+    }
+    if (nextFunction == doPublish) {
+      if (isMenuItemDisabled('filePublish')) {
+        // skip this step
+        return;
+      }
+    }
+
+    // Check if file has changed, and ask user to save before validating.
+    // When hosting is disabled, force users to load validate gadgets by URL.
+    if (GGE.hostingEnabled) {
+      if (GGE.isDirty) {
+        // Reset back to the first tab.
+        GGE.API.tabs.setSelectedTab(0);
+        GGE.autoValidate = true;
+        doSave();
+        return;
+      }
+    } else if (!GGE.autoValidate) {
+      // Reset back to first tab and show warning dialog.
+      GGE.API.tabs.setSelectedTab(0);
+      verifyLogin(0);
+      return;
+    }
+
+    if (GGE.mode == GGE.Mode.ADS) {
+      // Make sure the validate tab is selected.
+      if (!GGE.API.tabs.getSelectedTab().getName().match(/validate/i)) {
+        var tabs = GGE.API.tabs.getTabs();
+        for (var n = 0; n < tabs.length; n++) {
+          if (tabs[n].getName().match(/validate/i)) {
+            GGE.API.tabs.setSelectedTab(tabs[n].getIndex());
+            return;
+          }
+        }
+      }
+
+      // Show the loading image and clear the existing content each time
+      // validation is performed.
+      _gel('validateTabContent').innerHTML = [
+        '<div class="load">Validating...</div>',
+        '<img width=32 height=32 ',
+        'src="/ig/modules/gge_content/loading.gif"/>'
+      ].join('');
+
+      // Load all whitelist spreadsheets before continuing onto validation.
+      var loader = new SpreadsheetLoader();
+      loader.addSheet(GGE.whitelists.validation);
+
+      // Add 3pas related whitelists.
+      if (GGE.enable3pas) {
+        loader.addSheet(GGE.whitelists.geoMacro);
+        loader.addSheet(GGE.whitelists.demoMacro);
+        loader.addSheet(GGE.whitelists.experimentalMacro);
+      }
+      loader.loadSheets(function(sheets) {
+        // Iterate through the rows of the validation spreadsheet to look
+        // for a matchin URL.
+        var sheet = GGE.whitelists.validation;
+        var rows = sheet.getRows();
+        for (var n = 0; n < rows.length; n++) {
+          var whitelistUrl = rows[n].getData('url');
+          if (GGE.isMatchingWhitelistUrl(whitelistUrl, GGE.sourceUrl)) {
+            GGE.bypassValidation = true;
+            break;
+          }
+        }
+
+        // Set the rules that should be checked in ads mode.
+        var rules = [];
+        if (GGE.enable3pas || (GGE.autoValidate && GGE.preloadUrlExists)) {
+          // Auto validate and preload URL both exist.  We're running in ICS.
+          // Add ICS specific validation rules.
+          rules.push('ics');
+        }
+
+        // Add additional ad validation rules only if gadget is not whitelisted.
+        if (!GGE.bypassValidation) {
+          rules.push('ads');
+        }
+
+        // Move onto the next step of validation.
+        doValidationNext(nextFunction, rules.join('|'));
+      });
+    } else {
+      // Consumer mode
+      doValidationNext(nextFunction, 'consumer');
+    }
+  }
+
+  function doValidationNext(nextFunction, validationRules) {
+    // Before we run the static validator, import the message bundle into the
+    // catalog so we can use it later to set the result messages.
+
+    // TODO(daniellee): Setting first parameter to empty string to disable the
+    // feature to import custom message bundles.
+    // Revert back to using prefs.getMsg()
+    GGE.catalog.importBundle('',
+      function() {
+        // Initialize a new GadgetSpec object to pass to the validator.
+        // Gadget URL is not always available.  Only set it if available.
+        var gadgetSpec = new GadgetSpec(GGE.getEditorCode());
+        var gadgetUrl = GGE.sourceUrl;
+        if (gadgetUrl) {
+          gadgetSpec.setSourceUrl(gadgetUrl);
+        }
+
+        // Initialize the static validator
+        var gsv = new GadgetStaticValidator(gadgetSpec);
+
+        // Pass in the size to validate only in full automation mode.
+        if (GGE.autoValidate && GGE.validateSizeArr) {
+          gsv.setValidateSize(GGE.validateSizeArr);
+        }
+
+        // Run the static validator with the specified validation rules.
+        gsv.validate(validationRules,
+            _IG_Callback(GGE.validateStaticCallback, nextFunction));
+
+        // Save the GadgetSpec object for later use.
+        GGE.validateGadgetSpec = gadgetSpec;
+      }
+    );
+
+    // Reset the auto validate flag
+    GGE.autoValidate = false;
+  }
+
+  function doPreview() {
+    if (GGE.isGadgetXml) {
+      GGE.renderGadgetFromEditor(getGadgetUrl(), 'previewFrame');
+    } else {
+      showStatusMsg("Preview is not allowed for this file.",
+          GGE.MessageType.ERROR);
+      GGE.API.tabs.setSelectedTab(0);
+    }
+  }
+
+  function tabCallback(domId) {
+    // Add the top menu bar across all tabs
+    var menuContainer = _gel('menuContainer');
+    var contentContainer = _gel(domId);
+    contentContainer.insertBefore(menuContainer, contentContainer.firstChild);
+
+    // Configure the menu bar and continue executing based on which tab
+    // is selected.
+    switch (domId) {
+    case 'editorTab':
+      // Enable menu items that are supported
+      enable('filenewrow');
+      enable('fileNew');
+      enable('fileuploadrow');
+      enable('fileUpload');
+
+      // In nopreview mode, hide the following menus:
+      // New, Open by URL, Publish
+      if (GGE.hidePreview) {
+        disable('filenewrow');
+        disable('fileNew');
+        disable('fileopenurlrow');
+        disable('fileOpenURL');
+        disable('filepublishrow');
+        disable('filePublish');
+      }
+
+      // Don't do anything if the editor is not yet initialized.
+      if (!EditorFrame.textarea) {
+        return;
+      }
+
+      // Make sure the CodePress editor is enabled
+      if (!EditorFrame.textarea.disabled) {
+        toggleEditor();
+      }
+
+      // this fixes a bug in FF
+      // where delete key does not work until another key has been pressed
+      if (navigator.userAgent.match("Firefox")) {
+        CodePressWrapper.setEditable(false);
+        CodePressWrapper.setEditable(true);
+      }
+      break;
+    case 'previewTab':
+      // Enable menu items that are supported
+      enable('filenewrow');
+      enable('fileNew');
+      enable('fileuploadrow');
+      enable('fileUpload');
+
+      doPreview();
+      break;
+    case 'helpTab':
+      break;
+    case 'validateTab':
+      // Disable menu items that aren't supported yet
+      disable('filenewrow');
+      disable('fileNew');
+      disable('fileuploadrow');
+      disable('fileUpload');
+
+      // Run the validation
+      doValidation(doDiagnostics);
+      break;
+    }
+  }
+
+  function configureTabs() {
+    GGE.API.tabs.addTab("Editor", "editorTab", tabCallback);
+
+    // Add the 'Preview' tab only if up_nopreview is not set to 1.
+    if (!GGE.hidePreview) {
+      GGE.API.tabs.addTab("Preview", "previewTab", tabCallback);
+    }
+
+    // Add a 'Validate' tab when in ads mode.
+    if (GGE.mode == GGE.Mode.ADS) {
+      GGE.API.tabs.addTab('Validate', {
+        contentContainer: _gel('validateTab'),
+        tooltip: 'Click here to validate your gadget ad for approval',
+        callback: tabCallback
+      });
+    }
+
+    // Add the 'Help' tab (currently disabled by default)
+    if (!GGE.hideHelp) {
+      GGE.API.tabs.addTab("Help", "helpTab", tabCallback);
+      renderHelpTab();
+    }
+
+    // Add a 'DEBUG' tab if debug mode is enabled.
+    if (GGE.Debug.enabled) {
+      GGE.API.tabs.addTab('<b style="color:b00;">DEBUG</b>', {
+        contentContainer: _gel('debugTab'),
+        tooltip: 'Debug output',
+        callback: tabCallback
+      });
+    }
+
+    // Align tabs to the left
+    GGE.API.tabs.alignTabs('left');
+  }
+
+  function verifySelfCheck() {
+    if (GGE.mode != GGE.Mode.ADS) {
+      _gel('filevalidaterow').style.display = "none";
+    }
+  }
+
+  function updateStatusSize() {
+    var code = GGE.getEditorCode() + "";
+    var size = code.length;
+    _gel('filesize').innerHTML = "File Size: " + size + " bytes";
+    if (size > 25600) {
+      show('filesize');
+    } else {
+      hide('filesize');
+    }
+  }
+
+  function quotaCallback(response) {
+    _gel('quota').innerHTML = response;
+  }
+
+  function usedCallback(response) {
+    _gel('used').innerHTML = response;
+  }
+
+  function updateUsedQuota() {
+    gh.getByteQuota(quotaCallback);
+    gh.getBytesUsed(usedCallback);
+  }
+
+  /**
+   * Gets the URL of the file currently loaded into the editor.
+   * @return {string} Absolute path URL
+   */
+  function getCurrentFile() {
+    var a = _gel("currentFile").getElementsByTagName("a");
+    if (a.length == 0) {
+      return "";
+    } else {
+      var href = a[0].href;
+      // if href was empty, the current GGE URL would be returned
+      // hence, return an empty string, which is the correct response.
+      if (href == window.location.href) {
+        return "";
+      }
+      return href;
+    }
+  }
+
+  /**
+   * Updates the file link in the menu bar to the file currently loaded.
+   * @param {string} url Absolute path location of the file
+   */
+  function setCurrentFile(url) {
+    // Update file link
+    _gel("currentFile").innerHTML = createAnchor(url, gh.getFilePart(url));
+
+    // Save the gadget URL being loaded in so it can be used later.
+    GGE.sourceUrl = url;
+  }
+
+  function toggleEditor() {
+    // prevents JS errors on page init when codepress is not available
+    try {
+      EditorFrame.toggleEditor();
+    } catch (e) {
+      // do nothing;
+    }
+  }
+
+  function formatOutput(str) {
+    str = _hesc(str);
+    str = str.replace(/\n/g, "<br/>");
+    str = str.replace(/  /g, "&nbsp;&nbsp;");
+    str = str.replace("$0", "");
+    return str;
+  }
+
+  function isCodePressAvailable() {
+    if (navigator.userAgent.match("Chrome")) {
+      return true;
+    } else if (navigator.userAgent.match("Safari")) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  function renderHelpTab() {
+    if (!isCodePressAvailable()) {
+      GGE.API.tabs.removeTab(2);
+      return;
+    }
+
+    var oRow;
+    var oCell;
+    var oTBody;
+    oTBody = _gel("helpBody");
+    for (var i = 0; i < Language.snippets.length; i++) {
+      // "<a" signifies end of gadget snippets and beginning of HTML snippets
+      if (Language.snippets[i].input == "<a") {
+        break;
+      }
+      oRow = document.createElement("TR");
+
+      oCell = document.createElement("TD");
+      oCell.innerHTML = _hesc(Language.snippets[i].input);
+      oCell.vAlign = "top";
+      oRow.appendChild(oCell);
+
+      oCell = document.createElement("TD");
+      oCell.innerHTML = formatOutput(Language.snippets[i].output);
+      oRow.appendChild(oCell);
+
+      oTBody.appendChild(oRow);
+    }
+  }
+
+  function initCodePress() {
+    CodePressWrapper.init({
+      postInit : function() {
+        // on the very first initialize, preload the editor with default
+        // unless one is provided via preload_url UserPref
+        if (getCurrentFile() == "") {
+          loadEditor(GGE.preloadUrl);
+        }
+      },
+      onFocus : function() {},
+      onModified : function() {
+        if (!GGE.isDirty) {
+          // Mark the file as being modified with a *
+          GGE.isDirty = true;
+          var currentFile = _gel('currentFile');
+          currentFile.insertBefore(document.createTextNode('*'),
+              currentFile.firstChild);
+        }
+      },
+      onHelp : function(word) {},
+      onTest : function() {},
+      //helpKey : "113", // F2
+      //testKey : "113",
+      _onClick : hideCurrentMenu
+    });
+  }
+
+  function configureHeight() {
+    // Resize GGE's height to fit container unless gadget is rendered on iGoogle
+    var totalHeight = _args()['synd'] == 'ig' ?
+        GGE.API.prefs.getInt('height') : GGE.API.msize.getHeight();
+    var tabHeader = GGE.API.tabs.getHeaderContainer();
+    var menuContainer = _gel('menuContainer');
+    var statusContainer = _gel('statusContainer');
+    var offset = 4;
+
+    // Set height of code editor
+    EditorFrame.style.height = totalHeight - tabHeader.offsetHeight -
+        menuContainer.offsetHeight - statusContainer.offsetHeight -
+        offset + 'px';
+
+    // Set height of gadget preview div and iframe
+    _gel('previewTab').style.height = totalHeight - tabHeader.offsetHeight -
+        offset + 'px';
+
+    // Set height of the validate tab content container
+    _gel('validateTabContent').style.height = totalHeight -
+        tabHeader.offsetHeight - menuContainer.offsetHeight - offset + 'px';
+
+    // Set height of the debug tab and buffer
+    if (GGE.Debug.enabled) {
+      _gel('debugTab').style.height = totalHeight - tabHeader.offsetHeight -
+          offset + 'px';
+      _gel('debugText').style.height = totalHeight - tabHeader.offsetHeight -
+          menuContainer.offsetHeight - offset - 5 + 'px';
+    }
+
+    // Set height of disable div
+    _gel('disableDiv').style.height = totalHeight;
+
+    // Uncomment when help tab is re-enabled
+    // _gel('helpTab').style.height = totalHeight + 'px';
+  }
+
+  function init() {
+    // Configure UI
+    configureTabs();
+    configureHeight();
+
+    // Initialize CodePress
+    initCodePress();
+
+    gh = new _IG_Hosting(verifyLogin);
+    verifySelfCheck();
+    updateUsedQuota();
+    updateFileMenu();
+
+    // Hide menu box when clicked anywhere in the window
+    _IG_AddDOMEventHandler(window, 'click', hideCurrentMenu);
+
+    // Reconfigure the height anytime the gadget resizes
+    _IG_AddDOMEventHandler(window, 'resize', configureHeight);
+
+    if (_args()['synd'] != 'open') {
+      // For iGoogle, resize gadget based on selected UserPref
+      _IG_AdjustIFrameHeight(GGE.API.prefs.getInt('height'));
+    }
+  }
+
+  _IG_RegisterOnloadHandler(init);
+
+  // Register the IFPC service with a defined callback method to handle the
+  // response returned from selftest.js.  The results array is passed back
+  // as a JSON string where it must be evaled.
+  _IFPC.registerService(
+      'IFPC_validationCallback',
+      function(success, json_results) {
+        // Call the dynamic validation callback method and pass the same
+        // argument types as the static validation callback for consistency.
+        GGE.validateDynamicCallback(success, GGE.JSON.parse(json_results));
+      });
+
+  _IFPC.registerService(
+      'IFPC_getGadgetUrl',
+      function() {
+        // Return the raw gadget XML that's required to send a POST request
+        // to the renderer from dynamicvalidator.js.
+        return [ GGE.sourceUrl ];
+      });
+
+  /**
+   * Transmits the complete validation results to some parent container
+   * via IFPC if one exists.  For gadget ads, these results are passed
+   * back to the ICS container page where results are displayed.
+   * @param overall_success {Boolean} True if all validations passed
+   *      successfully.  False otherwise.
+   * @param results {Array<ValidationResult>} Contains list of ValidationResult
+   *      objects containing information about each validation check performed.
+   */
+  function parentContainerCallback(totalResult) {
+    var relayurl = GGE.API.prefs.getString('relayurl');
+    var framename = GGE.API.prefs.getString('framename');
+    var callback = GGE.API.prefs.getString('callback');
+
+    // Send off the data via IFPC
+    // IFPC only supports transmitting data as text.  We need to
+    // convert the results array into JSON format before sending.
+    var args = [
+      totalResult.success,
+      GGE_JSON.stringify(totalResult.results),
+      GGE_JSON.stringify(totalResult.dimensions)
+    ];
+
+    // Output IFPC arguments to debug buffer
+    GGE.Debug.write('IFPC_parentContainerCallback', args.join('\n'));
+
+    if (relayurl && framename && callback) {
+      _IFPC.call(framename,
+          callback,
+          args,
+          relayurl,
+          null,
+          null);
+    }
+  }
+  </script>
+  ]]>
+  </Content>
+</Module>

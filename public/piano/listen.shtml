@@ -1,0 +1,57 @@
+<html>
+<head>
+<title>Martin Strauss</title>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-90396-1']);
+  _gaq.push(['_setDomainName', 'ockle.org']);
+  _gaq.push(['_setAllowLinker', true]);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+
+<body>
+
+<center>
+<h1>Martin Strauss - Listening Room</h1>
+</center>
+<br>
+<p align=left>
+<h2>Debussy - Preludes (book 1)</h2>
+<ul>
+<li><a href="listen/ouest.mp3">Ce qu'a vu le vent d'Ouest</a></li>
+<li><a href="listen/cathedrale.mp3">La Cathedrale Engloutie</a></li>
+</ul>
+</p>
+<p align=left>
+<h2><a href="listen/cminor.mp3">Mozart - C Minor Fantasy, K475</a></h2>
+</p>
+<p align=left>
+<h2>Mozart - Sonata in B flat, K333</h2>
+<ul>
+<li><a href="listen/k333.mp3">1st Movement</a></li>
+</ul>
+</p>
+<p align=left>
+<h2>Stravinsky - Trois Mouvements de Petrouchka</h2>
+<ul>
+<li><a href="listen/petrouchka.mp3">1. "Danse Russe"</a></li>
+</ul>
+</p>
+
+<p align=left>
+You can find the complete collection of music at <a href="http://listen.martinstrauss.cjb.net/">listen.martinstrauss.cjb.net</a>.
+</p>
+
+<!--#include virtual="contents.html" -->
+
+</body>
+</html>

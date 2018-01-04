@@ -1,0 +1,96 @@
+#!/usr/bin/perl -w
+use strict;
+
+my %stimuli = (
+	a => "i'd like to buy your (axe/staff/armour/etc) - offer the right price",
+	b => "i'd like to buy your (axe/staff/armour/etc) - offer above the right price",
+	c => "i'd like to buy your (axe/staff/armour/etc) - offer below the right price",
+	d => "is that (axe/staff/armour/etc) for sale?",
+	e => "here, buy this (axe/staff/armour/etc) off me - bargain price",
+	f => "here, buy this (axe/staff/armour/etc) off me - reasonable price",
+	g => "here, buy this (axe/staff/armour/etc) off me - unreasonable price",
+	h => "here, fix this (axe/staff/armour/etc), it's broken",
+	i => "hoi, you sold me a crap (axe/staff/piece of armour/etc), i want my money back",
+	j => "you sold me that (axe/staff/armour/etc), it was really good, great work!",
+	k => "i think you sabotaged my (axe/staff/armour/etc), is that true?",
+	l => "i've kidnapped your wife and children, give me that (axe/staff/armour/etc)",
+	m => "i'm the guy that killed your wife and children, i'm terribly sorry, i didn't realise",
+	n => "the monster who killed your wife and children is dead",
+	o => "i'm the guy that killed the monster",
+	p => "i tried to kill the monster who killed your wife and children, but failed",
+	q => "a monster killed your wife and children",
+	r => "i made the monster that killed your wife and children",
+	s => "i think YOU made the monster that killed your wife and children",
+	t => "is there any work for me around here?",
+	u => "i'm actually a woman",
+	v => "Did you see the dress the Queen was wearing at the parade?"
+);
+
+my %responses = (
+	aa => "Most certainly, sir!  I'll just put it into your inventory.",
+	ab => "I can't possibly take that much money off you for such a worthless item!  Let me sell it to you for half that.",
+	ac => "Oh dear, sir, it's certainly worth much more than that, you'll have to make a higher offer.",
+	ba => "Well, you've talked me into it.  Here it is.",
+	ad => "I'm sorry, sir, that item is not for sale.",
+	da => "Yes, sir, it is; but you'll have to make an offer.  Valuables such as these cannot have a price tag!",
+	ea => "Well, sir, you are most reasonable; I'll add it to my collection.",
+	eb => "Well, I guess I can't turn down a price like that.  Give it here.",
+	fa => "My dear sir, you can't possibly expect me to be able to afford that!",
+	ha => "What a beautiful piece of art; I'll do my best to restore its beauty.",
+	hb => "I'm sorry sir, this is not a repair-shop for petty trinkets!",
+	ia => "My most abject apologies Sir, please accept my full refund.",
+	ib => "Here's a free Latin lesson: caveat emptor.  Which means: you lucked out, pal! hahahahaha!",
+	ic => "I would never sell such a piece of shoddy handiwork.  You are trying to defraud me!",
+	ja => "Why thankyou, I live only to serve.",
+	jb => "Flattery won't get you anywhere, you'll have to pay full price, just like everybody else!",
+	ka => "Fine, I admit it; I've been selling you fakes.",
+	kb => "Never!  I would not think of such a thing!",
+	la => "You brute!  How could you do such a thing!",
+	lb => "My name is Inigo Montoya.  You killed my father.  Prepare to die.",
+	lc => "You poor creature, you must be hunted all over the Disc for that...",
+	na => "Huzzah!  What a relief!  That monster has destroyed many lives.",
+	nb => "Congratulations!  This town owes you an enormous debt.",
+	nc => "Well, that's a relief... you did something right for a change.",
+	pa => "Many have tried, and many have failed.  You stand in great company.",
+	pb => "But you ran away, and let it escape?  Coward!",
+	ld => "I knew from the start there was something not right about you, but never in my wildest dreams did I suspect.... GET OUT!",
+	sa => "How dare you make such an outrageous accusation!  Me, who has never so much as hurt a fly in his entire life...",
+	sb => "It's true... it was an old experiment gone horribly wrong... I was hoping nobody would discover our connection!",
+	qa => "No! Not my precious Lily! Please, let it not be true!",
+	qb => "I knew it would happen... you adventuring types should have killed the monster long ago!  And now it's done this...",
+	ta => "I don't have any at the moment, but I could recommend you to a friend, who always needs a hand in the shop...",
+	tb => "We don't have a need for the likes of you!",
+	tc => "Well, there is that monster who's been terrorising the neighbourhood...",
+	ua => "Oh dear, I've completely misjudged you!  My most abject apologies.",
+	ub => "I thought I spotted a bit of a limp wrist...",
+	uc => "Well, really.  What kind of a woman goes around wearing breeches anyway?",
+	va => "Yes, wasn't it just delightful!  But in my eyes she was put in shadow by Princess Mary... wasn't that just the most spectacular train?",
+	vb => "Yes, lovely.  May I show you my wares?",
+	vc => "Listen, I'd love to stand around chatting, but there's other customers to serve.  Buy something, or get out."
+);
+
+open INPUT, "<output";
+open OUTPUT, ">input";
+
+while (<INPUT>) {
+	if ($_ =~ /Options: \[(.*)\]/) {
+		print "Options:\n";
+		my @options = split(", ", $1);
+		for(my $i = 0; $i <= $#options; $i++) {
+			print $options[$i].": ".$stimuli{$options[$i]}."\n";
+		}
+	} elsif ($_ =~ /"(.*)"/) {
+		print "\"".$responses{$1}."\"\n";
+	} else {
+		print $_;
+	}
+	if ($_ =~ "Biofeedback:") {
+		print OUTPUT <STDIN>.".";
+	}
+	if ($_ =~ "Stimulus:") {
+		print OUTPUT <STDIN>.".";
+	}
+}
+
+close INPUT;
+close OUTPUT;

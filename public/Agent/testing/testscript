@@ -1,0 +1,23 @@
+#!/usr/local/bin/swipl -s
+
+go :- 
+	open(testcases, read, Fd),
+	test(Fd, [mediumPleasantness, neutralAttentionalActivity, equalControl, mediumCertainty, equalResponsibility, mediumAnticipatedEffort]),
+	close(Fd).
+
+test(Fd, Mood) :-
+	read(Fd, Term),
+	(
+		Term = end_of_file;
+		write('Input: '), write(Term), write('\n'),
+		cognitiverate(Mood, Term, NewMood, Emotions),
+		write('Output: '), write(Emotions), write('\n\n'),
+		test(Fd, NewMood)
+	).
+
+:- [agent].
+:- go.
+
+:- halt.
+
+% vim: set syntax=prolog

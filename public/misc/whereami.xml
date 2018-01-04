@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+  <ModulePrefs title="Current location" height="300" 
+    author="Martin S." 
+    author_email="martinstrauss@google.com"> 
+    <Require feature="opensocial-0.8" />
+    <Require feature="minimessage" />
+  </ModulePrefs>
+  <Content type="html">
+  <![CDATA[ 
+    <script src="http://maps.google.com/maps?file=api&v=2" type="text/javascript"></script>
+    <script src="http://code.google.com/apis/gears/gears_init.js" type="text/javascript"></script>
+    <p align='center'>
+      <input type="text" id="location" />
+      <input type="button" value="Search" onclick="getAddrPosition();" />
+      <input type="button" id="find" value="Find me" style="display:none" onclick="getGeoPosition();" />
+      <br/>
+      <input type="button" value="Update my location" onclick="savePosition();" />
+    </p>
+    <div id="map" style="width: 100%; height: 100%;"></div>
+    <script type="text/javascript">
+    // Things TODO:
+    // * a better UI: "you have moved, update position?"
+    // * a prettier popup: user image, CSS.
+    // * different pins perhaps?
+    var map;
+    var myMarker;
+    var geo;
+    var geocoder;
+
+    function initGeolocation() {
+      geocoder = new GClientGeocoder();
+      if (navigator.geolocation) {
+        geo = navigator.geolocation;
+      } else {
+        if (google.gears) {
+          geo = google.gears.factory.create('beta.geolocation');
+          geo.getPermission("iGoogle", "http://www.martinstrauss.id.au/misc/igoogle.png", "The \"Current Location\" gadget needs to use Gears to determine your current location.");
+        }
+      }
+      if (geo) {
+        _gel("find").style.display = "inline";
+      }
+    }
+
+    function getFriendsPositions() {
+      var req = opensocial.newDataRequest();
+       
+      var viewer = opensocial.newIdSpec({ "userId" : "VIEWER" });
+      var viewerFriends = opensocial.newIdSpec({ "userId" : "VIEWER", "groupId" : "FRIENDS" });
+      var opt_params = {};
+      opt_params[opensocial.DataRequest.PeopleRequestFields.MAX] = 100;
+      req.add(req.newFetchPersonRequest("VIEWER"), 'viewer');
+      req.add(req.newFetchPersonAppDataRequest(viewer, 'location', opt_params), 'viewerData');
+      req.add(req.newFetchPeopleRequest(viewerFriends, opt_params), 'viewerFriends');
+      req.add(req.newFetchPersonAppDataRequest(viewerFriends, 'location', opt_params), 'viewerFriendData');
+      req.send(onLoadFriends);
+    }
+
+    function onLoadFriends(data) {
+      var viewer = data.get('viewer').getData()
+      var viewerData = data.get('viewerData').getData();
+      var viewerFriends = data.get('viewerFriends').getData();
+      var viewerFriendData = data.get('viewerFriendData').getData();
+
+      if (viewerData[viewer.getId()]) {
+        var json = viewerData[viewer.getId()]['location'];
+
+        if (json) {
+          try {
+            var point = gadgets.json.parse(gadgets.util.unescapeString(json));
+            _gel("location").value = point.x + ", " + point.y;
+            myMarker = createMyMarker(point);
+            map.centerAndZoom(point, 5);
+            map.addOverlay(myMarker);
+          } catch (e) {
+            (new gadgets.MiniMessage()).createDismissibleMessage("Error: " + e);
+          }
+        }
+      }
+
+      viewerFriends.each(function(person) {
+        if (viewerFriendData[person.getId()]) {
+          var json = viewerFriendData[person.getId()]['location'];
+
+          if (json) {
+            try {
+              var point = gadgets.json.parse(gadgets.util.unescapeString(json));
+              var blueIcon = new GIcon(G_DEFAULT_ICON);
+              blueIcon.image = "http://gmaps-samples.googlecode.com/svn/trunk/markers/blue/blank.png";
+              var marker = new GMarker(point, { icon:blueIcon, title: person.getDisplayName()});
+              marker.bindInfoWindowHtml(person.getDisplayName());
+              map.addOverlay(marker);
+            } catch (e) {
+              (new gadgets.MiniMessage()).createDismissibleMessage("Error: " + e);
+            }
+          }
+        }
+      });
+    }
+
+    function drawMap() {
+      map = new GMap(document.getElementById("map"));
+      map.addControl(new GSmallMapControl());
+      map.addControl(new GMapTypeControl());
+    }
+
+    function createMyMarker(point) {
+      var marker = new GMarker(point, { title: "Me", draggable: true, zIndexProcess: function() {
+        return 1000;
+      }});
+      GEvent.addListener(marker, "dragstart", function() {
+        map.closeInfoWindow();
+      });
+      GEvent.addListener(marker, "dragend", function() {
+        var point = marker.getLatLng();
+        _gel("location").value = point.lat() + ", " + point.lng();
+      });
+      marker.bindInfoWindowHtml("Me");
+      return marker;
+    }
+
+    function updatePosition(position) {
+      var point = new GLatLng(position.latitude, position.longitude);
+      updatePoint(point);
+    }
+
+    function updatePoint(point) {
+      _gel("location").value = point.lat() + ", " + point.lng();
+      if (myMarker) {
+        map.removeOverlay(myMarker);
+      }
+      myMarker = createMyMarker(point);
+      map.centerAndZoom(point, 5);
+      map.addOverlay(myMarker);
+    }
+    
+    function savePosition() {
+      var address = _gel("location").value;
+      geocoder.getLatLng(address, writeToOpenSocial);
+    }
+
+    function writeToOpenSocial(point) {
+      var json = gadgets.json.stringify(point);
+
+      var req = opensocial.newDataRequest();
+      req.add(req.newUpdatePersonAppDataRequest("VIEWER", 'location', json));
+      req.send(function(response) {
+        if (response.hadError()) {
+          (new gadgets.MiniMessage()).createDismissibleMessage("Error: " + response.getErrorMessage());
+        } else {
+          (new gadgets.MiniMessage()).createTimerMessage("Location saved.", 2);
+        }
+      });
+    }
+
+    function handleError(positionError) {
+      alert('Attempt to get location failed: ' + positionError.message);
+    }
+
+    function getGeoPosition() {
+      if (geo.lastPosition != null) {
+        updatePosition(geo.lastPosition);
+      }
+      geo.getCurrentPosition(updatePosition, handleError);
+    }
+
+    function getAddrPosition() {
+      var address = _gel("location").value;
+      geocoder.getLatLng(address, updatePoint);
+    }
+
+    function init() {
+      initGeolocation();
+      drawMap();
+      getFriendsPositions();
+    }
+
+    gadgets.util.registerOnLoadHandler(init);
+    </script>
+  ]]> 
+  </Content>
+</Module>

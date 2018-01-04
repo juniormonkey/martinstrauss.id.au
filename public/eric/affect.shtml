@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <!--#include file="head.html" -->
+<body>
+    <!--#include file="header.html" -->
+    <div id="colOne">
+        <div id="menu1">
+            <!--#include file="menu.html" -->
+        </div>
+        <div id="margin-news">
+            <!--#include file="news.html" -->
+        </div>
+    </div>
+
+	<div id="colTwo">
+        <h2>Affective modelling in ERIC</h2>
+        <p><strong>Affect Generation</strong> in ERIC occurs by first using a 
+        set of cause-effect and belief relations to assign appraisals of 
+        emotion-eliciting conditions (EECs) to facts in the world model based 
+        on a set of goals and desires.  These appraisals are used by ALMA [<a 
+            href='http://scholar.google.de/scholar?hl=en&lr=&ie=UTF-8&cluster=18183707157603362131'>Gebhard, 
+            2005</a>] to generate an affective state (medium-term moods and 
+        emotion events) according to the OCC cognitive model of emotions [<a
+            href='http://www.google.com/scholar?hl=en&lr=&safe=off&client=safari&cluster=9350847958247222945'>Ortony et al, 
+            1988</a>].  The generated affective state is then expressed by the 
+        ERIC agent in his lexical selection, his gestures, and his facial 
+        expressions; in addition, expression through his prosody is planned as 
+        future work.</p>
+
+        <h3>Appraisal of Emotion-eliciting Conditions</h3>
+        <p>ALMA generates emotions using appraisals of seven emotion-eliciting 
+        conditions: desirability, probability, realization and liking of 
+        events, praiseworthiness and agency of actions, and appealingness of 
+        objects.  These appraisals are made by comparing events, actions and 
+        objects observed in the world against the agent's goals and 
+        desires.</p>
+
+        <p>If an event or action we desire occurs, this is appraised 
+        positively; conversely, if an event or action we desire to avoid 
+        occurs, this is appraised negatively.  Also, when an object we like 
+        occurs in the discourse state (because it has just been mentioned in 
+        the commentary), it is appraised positively; conversely, when an object 
+        we dislike occurs in the discourse state, it is appraised negatively.  
+        Appraisals of agency and realisation are made by observing the world 
+        model.  Agency is appraised by identifying the agent of each action.  
+        An event is appraised as realised if it has occurred in the world.  As 
+        well as these basic appraisals, cause-effect relations allow us to 
+        appraise events, actions and objects that are not specified in the 
+        goals and desires. 
+        
+        <h3>Goals and Desires</h3>
+        <p>To be able to compare events, actions and objects against goals and 
+        desires, we need to specify events or actions we would like to see 
+        occur (<em>goals</em>), events or actions we would not like to see 
+        occur (<em>antigoals</em>), and objects we like or dislike.  
+        Additionally, the agent maintains a set of beliefs about other actors'
+        goals and desires, to enable him to judge the desirability of events 
+        for the players in the scenario.</p>
+
+        <p>The goals and desires are specified in a separate configuration file 
+        to the main affect module, since they are dependent on the world model 
+        and thus domain-specific.  Thus they can easily be altered to match 
+        both a change in domain and a change in intended audience.</p>
+
+        <h3>Cause-Effect Relations</h3>
+        <p>Some of these appraisals are simply specified in the goals: for         
+        example, liking and appealingness of objects.  Similarly, agency of 
+        actions can be easily observed from the world model when the actions 
+        are observed;  and realisation of events is similarly observed from the 
+        world model.  However, in order to reason about events and actions
+        that are not directly part of our goals, but still somehow related to 
+        (or influencing) our goals, we need to codify the relations between 
+        non-goal events, actions and objects and goals.  This is done by means 
+        of the four relations: <em>leadsto</em>, <em>hinders</em>, 
+        <em>supports</em> and <em>contradicts</em>.  The first two relations 
+        model causality:
+
+        <ul>
+            <li><em>a</em> leadsto <em>b</em> if <em>a</em> increases the 
+            likelihood of <em>b</em>, and</li>
+            <li><em>a</em> hinders <em>b</em> if <em>a</em> decreases the 
+            likelihood of <em>b</em>.</li>
+        </ul>
+
+        The second two relations model logical deduction or belief:
+        <ul>
+            <li><em>a</em> supports <em>b</em> if knowledge of <em>a</em> supports 
+            belief in <em>b</em>, and</li>
+            <li><em>a</em> contradicts <em>b</em> if knowledge of <em>a</em> 
+            contradicts belief in <em>b</em>.</li>
+        </ul>
+
+        These relations are used to propagate appraisals of desirability, 
+        praiseworthiness, and likelihood in the following way:
+
+        <ul>
+            <li> <em>a</em> leadsto <em>b</em>
+            <ul>
+                <li> <em>a</em> inherits some of <em>b</em>'s 
+                desirability/praiseworthiness, and</li>
+                <li> the likelihood of <em>b</em> is increased when <em>a</em> 
+                occurs.</li>
+            </ul></li>
+            <li> <em>a</em> hinders <em>b</em>
+            <ul>
+                <li> <em>a</em> inherits the opposite of <em>b</em>'s 
+                desirability/praiseworthiness, and</li>
+                <li> the likelihood of <em>b</em> is decreased when <em>a</em> 
+                occurs.</li>
+            </ul></li>
+            <li> <em>a</em> supports <em>b</em>
+            <ul>
+                <li> if <em>a</em> is observed (realization = true), then 
+                <em>b</em> also has realization = true</li>
+            </ul></li>
+            <li> <em>a</em> hinders <em>b</em>
+            <ul>
+                <li> if <em>a</em> is observed (realization = true), then 
+                <em>b</em> has realization = false</li>
+            </ul></li>
+        </ul>
+
+        In these calculations, desirability and praiseworthiness are 
+        interchangeable: they appraise almost the same quality, except that 
+        desirability describes an event and praiseworthiness describes an 
+        action.  Thus, if <em>a</em> is an event and <em>b</em> is an action, 
+        <em>a</em>'s praiseworthiness will increase proportional to 
+        <em>b</em>'s desirablity.</p>
+
+        <p>The generated emotions are depicted in the character's facial 
+        expression, and he may also comment on them in his discourse.  His mood 
+        state is reflected in the gestures that accompany his speech and 
+        waiting, and also influences his lexical selection during natural 
+        language generation.</p>
+    </div>
+    <!--#include file="foot.html" -->
+</body>
+</html>

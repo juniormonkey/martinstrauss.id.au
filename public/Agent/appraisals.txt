@@ -1,0 +1,140 @@
+A
+i'd like to buy your (axe/staff/armour/etc) - offer the right price (joy, 
+pride, liking)
+[motive-consistent, appetitive, certain]
+[maxpleasant, mineffort, maxcertain, lowattractiveattention, lowselfresponsibility, highhumancontrol]
+all
+
+B
+i'd like to buy your (axe/staff/armour/etc) - offer above the right price 
+(surprise, pride, liking)
+[motive-consistent, appetitive, certain, unexpected]
+[maxpleasant, mineffort, maxcertain, lowattractiveattention, lowselfresponsibility, highhumancontrol]
+liking, joy, pride, boredom
+
+C
+i'd like to buy your (axe/staff/armour/etc) - offer below the right price 
+(surprise, challenge, hope)
+[motive-consistent, appetitive, uncertain, circumstance-caused unexpected]
+[lowpleasant, higheffort, maxcertain, lowattract, lowself, lowhuman]
+hope, challenge, interest, contempt, dislike, disgust
+
+D
+is that (axe/staff/armour/etc) for sale? (joy, hope, liking)
+[motive-consistent, appetitive, uncertain]
+[maxpleasant, mineffort, maxcertain, lowattractive, lowselfresp, lowsituational]
+all
+
+*****
+
+E
+here, buy this (axe/staff/armour/etc) off me - bargain price (joy, interest, liking)
+[motive-consistent, othercaused]
+[maxpleasant, medeffort, medcertain, highattractive, equalresp, lowsituational]
+liking, pride, joy
+
+F
+here, buy this (axe/staff/armour/etc) off me - reasonable price (joy, interest, liking)
+[motive-consistent, othercaused]
+[maxpleasant, medeffort, medcertain, highattractive, equalresp, lowsituational]
+liking, pride, joy
+
+G
+here, buy this (axe/staff/armour/etc) off me - unreasonable price (challenge, hope)
+[motive-consistent, circumstance-caused, uncertain]
+[lowpleasant, higheffort, highattract, lowself]
+sadness, shame, regret, contempt, dislike, hope, challenge
+
+H
+here, fix this (axe/staff/armour/etc), it's broken (challenge, liking)
+[motive-consistent, other-caused]
+[lowpleasant, higheffort, highcertain, highattract, equalcontrol, lowself]
+all
+
+I
+hoi, you sold me a crap (axe/staff/piece of armour/etc), i want my money back (dislike, anger, frustration)
+[motive-inconsistent, aversive, noncharacterological]
+[highunpleasant, higheffort, lowuncertain, highattract, equalcontrol, lowother]
+anger, frustration, dislike
+
+J
+you sold me that (axe/staff/armour/etc), it was really good, great work! (pride)
+[motive-consistent, self-caused]
+highpleasant, loweffort, highcertain, lowattract, highhuman, highself]
+joy, liking, pride
+
+K
+i think you sabotaged my (axe/staff/armour/etc), is that true? (guilt, shame)
+[motive-inconsistent, self-casued, highcontrolpotential]
+[lowunpleasant, higheffort, lowcertain, lowrepulsive, lowhuman, highself]
+anger, dislike, contempt, disgust
+
+***
+
+L
+i've kidnapped your wife and children, give me that (axe/staff/armour/etc) 
+(dislike, contempt, disgust, anger, distress)
+[motive-inconsistent, othercaused]
+[minpleasant, higheffort, highcertain, lowrepulsive, other, lowhuman]
+anger, contempt, dislike, disgust
+
+M
+i'm the guy that killed your wife and children, i'm terribly sorry, i didn't 
+realise (dislike, anger, sadness)
+[motive-inconsistent, othercaused, noncharacterological]
+[minpleasant, higheffort, highcertain, lowrepulsive, other, lowhuman]
+sadness, guilt, regret, shame
+
+N
+the monster who killed your wife and children is dead (joy, relief)
+[motive-consistent, circumstancecaused, certain]
+[maxpleasant, mineffort, highcertain, highattract, lowself, lowhuman]
+all
+
+O
+i'm the guy that killed the monster (liking, joy, surprise)
+[motive-consistent, othercaused, unexpected]
+[maxpleasant, mineffort, highcertain, highattract, lowself, lowhuman]
+pride, relief, joy, hope
+
+P
+i tried to kill the monster who killed your wife and children, but failed (fear, distress, frustration)
+[motive-inconsistent, circumstancecaused, aversive, lowcontrolpotential]
+[highunpleasant, higheffort, highattention, lowuncertain, equalcontrol, lowother]
+all
+
+Q
+a monster killed your wife and children (distress, fear)
+[motive-inconsistent, circumstance-caused, lowcontrolpotential, aversisve]
+[unpleasant, higheffort, highuncertain, neutralattention, highsituational, equal]
+anger, fear, frustration, distress
+
+R
+i made the monster that killed your wife and children (dislike, contempt, disgust)
+[motive-inconsistent, othercaused, aversive, characterological]
+[unpleasant, medeffort, repulsive, lowcertain, human, other]
+anger, fear, frustration, dislike
+
+S
+i think YOU made the monster that killed your wife and children (fear, shame, guilt, regret)
+[motive-inconsistent, self-caused]
+[lowunpleasant, higheffort, veryuncertain, neutralattention, highsituational, equalresp]
+anger, fear, contempt, distress, frustration, dislike, disgust
+
+T
+is there any work for me around here? (liking, interest)
+[motive-consistent, othercaused]
+[maxpleasant, medeffort, medcertain, highattractive, equalresp, lowsituational]
+hope, challenge, interest, liking, pride, joy, boredom
+
+U
+i'm actually a woman (surprise)
+[unexpected, certain, motiveConsistent, appetitive, circumstanceCaused]
+[maxpleasant, mineffort, highuncertain, highattract, lowhuman, lowother]
+liking, relief, joy, pride
+
+V
+Did you see the dress the Queen was wearing at the parade? (boredom, hope)
+[motiveconsistent, circumstance, uncertain]
+[loweffort, unpleasant, highrepulsive, certain, lowother, lowsituational]
+joy, relief, liking, pride, hope, interest, surprise, challenge

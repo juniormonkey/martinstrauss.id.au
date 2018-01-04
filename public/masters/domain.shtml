@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <!--#include file="head.html" -->
+<body>
+    <!--#include file="header.html" -->
+    <div id="colOne">
+        <div id="menu1">
+            <!--#include file="menu.html" -->
+        </div>
+        <div id="margin-news">
+            <!--#include file="news.html" -->
+        </div>
+    </div>
+
+	<div id="colTwo">
+        <h2>The HorseRaceReporter's Domain Knowledge</h2>
+        <p><strong>Domain Knowledge</strong> is obviously necessary for a 
+        commentary agent to be able to reason about its environment; especially 
+        if (as in the case of the RaceSim horse race simulator) the information 
+        the agent can perceive from its environment is very limited.  Clearly 
+        the knowledge reasoning module will be domain-dependent.</p>
+
+        <p>In the case of the RaceSim horse race simulator, the agent receives 
+        one signal every second containing the current location and speed of 
+        each of the four horses in the simulated race.  In order to be able to 
+        provide interesting and engaging commentary, the agent needs to deduce 
+        more interesting facts from this information, ranging from simple 
+        things such as the relative positions of the four horses to more 
+        sophisticated judgements such as whether a horse is about to overtake 
+        another, or how much the order of the horses has been 
+        changing.</p>
+
+        <p>A deductive system such as this knowledge reasoning module is 
+        ideally suited to implementation in a rule-based language: in fact this 
+        is really a kind of expert system.  The rule-based environment <a 
+            href='http://herzberg.ca.sandia.gov/jess/'>JESS</a> was chosen for 
+        this role; JESS is implemented in Java and has an extensive API for 
+        controlling the fact base, rule base and reasoning engine, making it 
+        ideal for use in the modular parallel architecture of the 
+        HorseRaceReporter.  In this rule-based environment, deductions of more 
+        sophisticated facts from our sparse input are simply represented as 
+        rules, for example:</p>
+        <pre>
+(defrule firstplace
+    "A horse is in first place if all other horses are behind or
+        level with it"
+    (location (timestamp ?t) (horse ?h1) (loc ?l1))
+    (location (timestamp ?t)
+        (horse ?h2&:(neq ?h1 ?h2))
+        (loc ?l2&:(<= ?l2 ?l1)))
+    (location (timestamp ?t)
+        (horse ?h3&:(neq ?h1 ?h3)&:(neq ?h2 ?h3))
+        (loc ?l3&:(<= ?l3 ?l1)))
+    (location (timestamp ?t)
+        (horse ?h4&:(neq ?h1 ?h4)&:(neq ?h2 ?h4)&:(neq ?h3 ?h4))
+        (loc ?l4&:(<= ?l4 ?l1)))
+    =>
+    (assert (position (timestamp ?t) (horse ?h1) (position 1)))
+    )
+
+(defrule aboutto-overtake
+    "When a horse is about to overtake another"
+   (location (timestamp ?t) (horse ?h1) (loc ?l1))
+   (location (timestamp ?t) (horse ?h2)
+       {loc < ?l1 && loc > (- ?l1 10)})
+   (speed (timestamp ?t) (horse ?h1) (speed ?s1))
+   (speed (timestamp ?t) (horse ?h2) {speed > ?s1})
+   =>
+   (assert (aboutto-overtake (timestamp ?t)
+       (overtaker ?h2) (overtakee ?h1)))
+   )
+       </pre>
+        <p>Here the "location" and "speed" facts are the facts we receive from 
+        the RaceSim interface, and "position" and "aboutto-overtake" facts are 
+        internal facts that the knowledge reasoner deduces.</p>
+
+    
+    </div>
+    <!--#include file="foot.html" -->
+</body>
+</html>

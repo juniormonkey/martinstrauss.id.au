@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+    <ModulePrefs title="Google Search" scrolling="true">
+<Require feature="dynamic-height"/>
+<Require feature="views"/>
+<Require feature="settitle"/>
+</ModulePrefs>
+<UserPref name="query" display_name="Search Query" datatype="string" default_value="google" />
+<Content type="html" view="home,canvas"><![CDATA[
+    <script src="http://www.google.com/jsapi?key=ABQIAAAAHZA5zN4NenTQzcqSH-555RQPT-xYZ3eeJeSWByYstAY3PfJ30xS29bwjuQIj4w0XWzPqPB765ybTMw" type="text/javascript"></script>
+    <script language="Javascript" type="text/javascript">
+    google.load("search", "1");
+
+    var prefs = new _IG_Prefs();
+
+    function OnLoad() {
+      // Create a search control
+      var searchControl = new google.search.SearchControl();
+
+      // Add in a full set of searchers
+      searchControl.addSearcher(new google.search.WebSearch());
+      searchControl.addSearcher(new google.search.ImageSearch());
+      searchControl.addSearcher(new google.search.NewsSearch());
+      searchControl.addSearcher(new google.search.LocalSearch());
+
+      if (gadgets.views.getCurrentView().getName() == "canvas") {
+        searchControl.setResultSetSize(google.search.Search.LARGE_RESULTSET);
+      }
+
+      // draw in tabbed layout mode
+      var drawOptions = new google.search.DrawOptions();
+      drawOptions.setSearchFormRoot("none");
+      drawOptions.setDrawMode(GSearchControl.DRAW_MODE_TABBED);
+      // Tell the searcher to draw itself and tell it where to attach
+      searchControl.draw(document.getElementById("searchcontrol"), drawOptions);
+
+      // Execute an inital search
+      searchControl.execute(prefs.getString("query"));
+
+      gadgets.window.adjustHeight()
+      gadgets.window.setTitle(prefs.getString("query"));
+    }
+    gadgets.util.registerOnLoadHandler(OnLoad);
+
+    </script>
+
+    <div id="searchcontrol">Loading...</div>
+]]>
+</Content>
+<Content type="html" view="canvas"><![CDATA[
+<style>
+.gsc-control {
+width: 100%;
+}
+</style>
+]]></Content>
+<Content type="html" view="home"><![CDATA[
+    <style>
+.gs-snippet {
+    display: none;
+}
+.gs-visibleUrl {
+    display: none;
+}
+</style>
+]]></Content>
+</Module>

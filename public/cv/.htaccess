@@ -1,0 +1,7 @@
+AuthUserFile /home/ockleor/www/martinstrauss/cv/.htpasswd
+AuthType Basic
+AuthName "CV"
+
+<Files "cv.php>
+  Require valid-user
+</Files>

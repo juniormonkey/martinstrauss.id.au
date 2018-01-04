@@ -1,0 +1,34 @@
+<container>
+  <viewer>
+    <person id="darcy@gmail.com" name="Fitzwilliam Darcy" email="darcy@gmail.com"></person>
+  </viewer>
+
+  <owner>
+    <person id="liz@gmail.com" name="Elizabeth Bennett" email="liz@gmail.com"></person>
+  </owner>
+
+  <viewerFriends>
+     <person id="jane@gmail.com" name="Jane Bennett"></person>
+     <person id="liz@gmail.com" name="Fitzwilliam Darcy"></person>
+  </viewerFriends>
+
+  <ownerFriends>
+     <person id="darcy@gmail.com" name="Fitzwilliam Darcy"></person>
+     <person id="wick@gmail.com" name="George Wickham"></person>
+     <person id="anne@gmail.com" name="Anne de Bourgh"></person>
+  </ownerFriends>
+
+  <globalAppData>
+  </globalAppData>
+
+  <instanceAppData></instanceAppData>
+
+  <personAppData>
+  </personAppData>
+
+  <activities>
+    <activity stream="stream 1" title="title 1" url="http://1.com" summary="sample 1" folder="general" body="body 1"></activity>
+    <activity stream="stream 2" title="title 2" url="http://2.com" summary="sample 2" folder="special" body="body 2"></activity>
+  </activities>
+
+</container>

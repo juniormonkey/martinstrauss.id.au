@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <!--#include file="head.html" -->
+<body>
+    <!--#include file="header.html" -->
+    <div id="colOne">
+        <div id="menu1">
+            <!--#include file="menu.html" -->
+        </div>
+        <div id="margin-news">
+            <!--#include file="news.html" -->
+        </div>
+    </div>
+
+	<div id="colTwo">
+        <h2>ERIC: an embodied real-time intelligent commentary agent</h2>
+        <p><strong>Future work</strong> includes reflecting the character's 
+        affect in the prosody of his speech, generating gestures based on the 
+        semantic content of his speech, and generalising the agent's production 
+        of coherent discourse.</p>
+        <p>The prosody module will take the character's current affective 
+        state, and produce prosodic specifications to depict the affective 
+        state.  The prosody will be generated according to established 
+        relationships between affective state and speech prosody in humans.</p>
+        <p>The gesture module currently generates some gestures in response to 
+        events it receives from the knowledge reasoning module.  It would be 
+        desirable to replace this link with a link to semantic information 
+        coming from the NLG module, thus making the gesture generation module 
+        domain-independent.</p>
+        <p>Discourse coherence is currently maintained by the fusion module, 
+        integrated with priority-based and random selection of a single 
+        utterance from all the candidates.  We wish to have the discourse 
+        coherence selection separate from the final selection, such that an 
+        intermediate module between the NLG and fusion modules forms a 
+        shortlist of templates according to the discourse theory rules, and the 
+        fusion module only chooses from this shortlist.  Then the role of 
+        maintaining discourse coherence could be filled by several 
+        interchangeable modules modelling different theories of discourse 
+        coherence.</p>
+    </div>
+    <!--#include file="foot.html" -->
+</body>
+</html>

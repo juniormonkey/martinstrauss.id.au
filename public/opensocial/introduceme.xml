@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+<ModulePrefs
+  title="Introduce me to a friend"
+  author="Martin Strauss"
+  author_email="martin.strauss+opensocial@gmail.com"
+  author_location="Zurich, Switzerland"
+  screenshot=""
+  thumbnail=""
+  description="Ask a friend to introduce you to one of their friends.  Introduce two of your friends to each other."
+  scrolling="true">
+  <Require feature="opensocial-0.5"/>
+</ModulePrefs>
+
+<Content type="html"><![CDATA[
+    <script type="text/javascript" src="http://www.foopee.com/gadgets/json.js"></script>
+    <script type="text/javascript" src="http://www.foopee.com/gadgets/SocialNorms.js"></script>
+  <style> @import url(http://www.foopee.com/gadgets/styles.css); </style>
+  <div id='main'></div>
+  <script type="text/javascript" src="http://www.martinstrauss.id.au/opensocial/introduceme.js"></script>
+]]></Content>
+</Module>

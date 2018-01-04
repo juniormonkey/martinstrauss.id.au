@@ -1,0 +1,9 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "au.id.martinstrauss.martinstrauss",
+    "sha256_cert_fingerprints":
+    ["3A:4E:87:F0:AE:11:61:92:9B:7A:4C:66:D2:5C:69:E2:02:10:65:85:2F:93:48:1B:AF:B1:31:AE:9E:DB:64:40"]
+  }
+}]

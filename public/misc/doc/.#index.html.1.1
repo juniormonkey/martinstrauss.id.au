@@ -1,0 +1,250 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2K.1beta (1.48)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Santa's Little Helper</TITLE>
+<META NAME="description" CONTENT="Santa's Little Helper">
+<META NAME="keywords" CONTENT="slh">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2K.1beta">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="slh.css">
+</HEAD>
+
+<BODY >
+<P>
+
+<P>
+<H1 ALIGN="CENTER">Santa's Little Helper</H1>
+<BR>
+<p align=center>
+<a href="slh.html">
+<IMG
+ WIDTH="478" HEIGHT="510" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="A graphical outline of the components of SLH"
+ ismap
+ usemap="#map2">
+</a>
+
+<map name="map2">
+	<area coords="0,70,73,115" href=#ldap>
+	<area coords="130,70,215,115" href=#pam>
+	<area coords="260,0,445,185" href=#proxy>
+	<area coords="265,235,335,275" href=#mysql>
+	<area coords="120,180,190,220" href=#knockoff>
+	<area coords="110,310,210,470" href=#reset>
+	<area coords="310,330,370,410" href=#webpages>
+</map>
+</P>
+<BR>
+<BR>
+
+<p>
+(Ellipses represent modules written at Ormond, rectangles represent
+existing packages, and rounded rectangles represent data sources.)
+</p>
+
+<a name=ldap>
+<h1>LDAP</h1>
+<p>
+is provided by slapd (at Ormond, we use the University of Michigan's
+version, Debian package 'openldapd'). It uses sections of the Ormond
+directory strucure, namely it requires users to be members of the
+objectclass 'inetAccount', and have attributes 'uid', 'userPassword',
+and 'inetstatus'. 'inetstatus' can take three values - 'naughty',
+'nice', and 'exempt'.
+</p>
+
+<a name=pam>
+<h1>PAM</h1>
+<p>
+authenticates the various proxy services via the pam_ldap module
+(provided through the Debian package 'libpam_ldap'). PAM checks the
+supplied username and password against LDAP attributes 'uid' and 'userPassword'
+respectively, and then checks to make sure that the user's 'inetstatus'
+attribute is not set to 'naughty'. If it is, the PAM authentication
+fails and the user is unable to access the internet; otherwise, PAM
+authenticates the user and they can access the internet.
+</p>
+
+<a name=proxy>
+<h1>Squid and Dante</h1>
+<p>
+both provide log output that contains the source
+ip, destination ip, username and packet size. These are processed
+in real-time by the parsers 'sparse' and 'dparse', which extract this
+information and input it into the MySQL database. This is easily expandable
+by adding new proxying services and appropriate parsers, so long as
+the proxies log all this required information.
+</p>
+
+<a name=mysql>
+<h1>MySQL</h1>
+<p>
+contains the download histories and weekly download information
+of all users. This is organised in the following tables:
+</p>
+
+<h2>'weekly'</h2>
+<p>
+is the download information of the current week:
+<br><br>
+<pre>
+mysql&gt; describe weekly;
++--------------------+---------------+------+-----+---------+-------+
+| Field              | Type          | Null | Key | Default | Extra |
++--------------------+---------------+------+-----+---------+-------+
+| username           | char(10)      | YES  |     | NULL    |       |
+| web_last_updated   | datetime      | YES  |     | NULL    |       |
+| socks_last_updated | datetime      | YES  |     | NULL    |       |
+| tcp_up             | decimal(15,2) | YES  |     | NULL    |       |
+| tcp_down           | decimal(15,2) | YES  |     | NULL    |       |
+| udp_up             | decimal(15,2) | YES  |     | NULL    |       |
+| udp_down           | decimal(15,2) | YES  |     | NULL    |       |
+| last_reset         | datetime      | YES  |     | NULL    |       |
+| web_local          | decimal(15,2) | YES  |     | NULL    |       |
+| web_mirror         | decimal(15,2) | YES  |     | NULL    |       |
+| web_vrn            | decimal(15,2) | YES  |     | NULL    |       |
+| web_intl           | decimal(15,2) | YES  |     | NULL    |       |
+| quota              | decimal(15,2) | YES  |     | NULL    |       |
++--------------------+---------------+------+-----+---------+-------+
+13 rows in set (0.00 sec)
+</pre>
+The columns represent:
+<ul>
+<li>username - the user's username
+<li>web_last_updated - the time of the last packet that was added to
+the totals from the squid parser (time)
+<li>socks_last_updated - the time of the last packet that was added to
+the totals from the socks parser (time)
+<li>tcp_up - tcp uploads through the socks proxy (bytes)
+<li>tcp_down - tcp downloads through the socks proxy (bytes)
+<li>udp_up - udp uploads through the socks proxy (bytes)
+<li>udp_down - udp downloads through the socks proxy (bytes)
+<li>last_reset - the time that the record was last reset to zero (time)
+<li>web_local - squid downloads from .unimelb.edu.au and .mu.oz.au sites (bytes)
+<li>web_mirror - squid downloads from mirror.aarnet.edu.au (bytes)
+<li>web_vrn - squid downloads from VRN hosts (bytes)
+<li>web_intl - other squid downloads (bytes)
+<li>quota - the user's individual quota (dollars)
+</ul>
+</p>
+
+<h2>$username</h2>
+<p>
+are a set of tables, one for each user, which record the user's traffic
+history:
+<br><br>
+<pre>
+mysql&gt; describe mstrauss;
++-----------+---------------+------+-----+---------+-------+
+| Field     | Type          | Null | Key | Default | Extra |
++-----------+---------------+------+-----+---------+-------+
+| date      | datetime      | YES  |     | NULL    |       |
+| total     | decimal(15,2) | YES  |     | NULL    |       |
+| totalcost | decimal(15,2) | YES  |     | NULL    |       |
+| quota     | decimal(15,2) | YES  |     | NULL    |       |
++-----------+---------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+</pre>
+These tables have columns 'date', 'total', 'totalcost' and 'quota'; 'date'
+stores the date of the week for which 'total' stores the total traffic,
+'totalcost' the total cost incurred, and 'quota' the weekly quota for
+that user.
+</p>
+
+<h2>gtotal</h2>
+<p>
+This table stores the grand totals of all downloads by week (for IT
+administrators' records).
+<br><br>
+<pre>
+mysql&gt; describe gtotal;
++------------+---------------+------+-----+---------+-------+
+| Field      | Type          | Null | Key | Default | Extra |
++------------+---------------+------+-----+---------+-------+
+| date       | datetime      | YES  |     | NULL    |       |
+| tcp_up     | decimal(15,2) | YES  |     | NULL    |       |
+| tcp_down   | decimal(15,2) | YES  |     | NULL    |       |
+| udp_up     | decimal(15,2) | YES  |     | NULL    |       |
+| udp_down   | decimal(15,2) | YES  |     | NULL    |       |
+| web        | decimal(15,2) | YES  |     | NULL    |       |
+| web_local  | decimal(15,2) | YES  |     | NULL    |       |
+| web_mirror | decimal(15,2) | YES  |     | NULL    |       |
+| web_vrn    | decimal(15,2) | YES  |     | NULL    |       |
+| web_intl   | decimal(15,2) | YES  |     | NULL    |       |
++------------+---------------+------+-----+---------+-------+
+10 rows in set (0.00 sec)
+</pre>
+these fields represent the same values as in the table 'weekly', apart from
+the 'web' field - this is a legacy field left over from the previous
+accounting traffic, where all traffic through the squid proxy was accounted
+equally (and thus was consolidated in only one field).
+</p>
+<a name=knockoff>
+<h1>knockoff</h1>
+<p>
+is a perl script run by cron at a fixed interval (currently
+every 10 minutes). It runs through the list of users for whom 'inetstatus'
+is set to 'nice', and checks whether their total data transfer cost is greater
+than their individual quota (column 'quota' in the database). If it is, then
+knockoff sets that user's 'inetstatus' to 'naughty', and they are unable to
+access the internet for the rest of that week.
+</p>
+
+<a name=reset>
+<h1>inet-reset</h1>
+<p>
+is a shell script that is run by cron at a weekly interval.
+It runs three perl-scripts:
+</p>
+
+<h2>reinstate</h2>
+<p>
+finds all the users whose 'inetstatus' is 'naughty' and
+resets it to 'nice'
+</p>
+
+<h2>reset-all</h2>
+<p>
+goes through the 'weekly' table and adds up each user's
+data transfer total and transfers that to that user's history table.
+It then sets all down- and upload records in 'weekly' to zero, and
+sets the 'last_reset' to the current date.
+</p>
+
+<h2>makegraphs</h2>
+<p>
+goes through each user's history table in MySQL and plots
+a history graph for each user using gnuplot. These graphs are used
+on the history website.
+</p>
+
+<a name=webpages>
+<h1>the webpages</h1>
+<p>
+are written in php, and constist of two pages: one
+which shows a user's downloads since the beginning of the week (that
+is, how much of their quota they have used), and one which shows a
+user's weekly history since their account was created. There are also
+pages for the IT Administrators to view all users' downloads sorted
+both alphabetically and by download volume.
+</p>
+
+<BR><HR>
+<ADDRESS>
+Martin Strauss
+2002-09-02
+</ADDRESS>
+</BODY>
+</HTML>

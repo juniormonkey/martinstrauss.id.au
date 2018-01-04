@@ -1,0 +1,48 @@
+#!/usr/local/bin/swipl -s
+
+go :-
+	outside( [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] ).
+
+outside(Mood) :-
+	write('You are outside the shop.  '),
+	write('There is a shopkeeper beckoning you in.\n\n'),
+	read(Term),
+	(
+		Term = end_of_file -> write('Goodbye!\n\n');
+		Term = [hello] ->
+			write('You enter the shop.\n'),
+			exchange(Mood, Term, NewMood),
+			inside(NewMood);
+		write('He can\'t make out what you\'re saying.  '),
+		write('Perhaps you should approach him first?\n'),
+		outside(Mood)
+	).
+
+inside(Mood) :-
+	read(Term),
+	(
+		Term = end_of_file -> write('Goodbye!\n\n');
+		Term = [hello] -> write('"[Well, hello again!  '), 
+			write('[Eccles] I tink dis man\'s a bit stoopid!)]"\n\n'),
+			inside(Mood);
+		exchange(Mood, Term, NewMood),
+		(
+			Term = [goodbye] -> write('You leave the shop.\n'), outside(NewMood);
+			inside(NewMood)
+		)
+	).
+
+exchange(Mood, Event, NewMood) :-
+	cognitiverate(Mood, Event, NewMood, Emotions),
+	write('(Emotion: '), write(Emotions), write(')\n'),
+	whatMood(NewMood, ThisMood),
+	write('(Mood: '), write(ThisMood), write(')\n\n'),
+	respond(Event, Emotions, ThisMood, Response),
+	write('"'), write(Response), write('"\n\n').
+
+:- [agent].
+:- go.
+
+:- halt.
+
+% vim: set syntax=prolog

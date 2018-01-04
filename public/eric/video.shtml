@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <!--#include file="head.html" -->
+<body>
+    <!--#include file="header.html" -->
+    <div id="colOne">
+        <div id="menu1">
+            <!--#include file="menu.html" -->
+        </div>
+        <div id="margin-news">
+            <!--#include file="news.html" -->
+        </div>
+    </div>
+
+	<div id="colTwo">
+        <h2>ERIC in action</h2>
+        <p>Here you will find some <strong>videos</strong> of ERIC in 
+        action.</p>
+
+        <p align=center>
+        <embed style="width:400px; height:326px;" id="VideoPlayback" 
+        type="application/x-shockwave-flash" 
+        src="http://video.google.com/googleplayer.swf?docId=-3359908228753111530&hl=en-AU" 
+        flashvars=""> </embed>
+        </p>
+
+        <p>Download this video as a <a href=videos/ERIC_big.avi>640x40 DivX</a> 
+        (31M) or a <a href=videos/ERIC_sm.avi>352x288 DivX</a> (17M).
+
+    </div>
+    <!--#include file="foot.html" -->
+</body>
+</html>

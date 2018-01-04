@@ -1,0 +1,4 @@
+AuthUserFile /home/ockleor/.htpasswd
+AuthType Basic
+AuthName "Misc stuff"
+Require valid-user

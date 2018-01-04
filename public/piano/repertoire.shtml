@@ -1,0 +1,44 @@
+<html>
+<head>
+<title>Martin Strauss</title>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-90396-1']);
+  _gaq.push(['_setDomainName', 'ockle.org']);
+  _gaq.push(['_setAllowLinker', true]);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+
+<body>
+
+<center>
+<h1>Martin Strauss - Current Repertoire</h1>
+</center>
+<br>
+<p align=left>
+Chopin, F - Ballade No 2 in F Major, Op 38<br>
+Haydn, F J - Sonata in F, Hob XVI/50<br>
+Rachmaninov, S - Etude Tableaux in C minor, Op 39 No 1<br>
+Rachmaninov, S - Etude Tableaux in D, Op 39 No 9<br>
+Scarlatti, D - Sonata K 492
+Scarlatti, D - Sonata K 547<br>
+Vine, C - Five Bagatelles<br>
+Vine, C - Piano Concerto<br>
+Schumann, R - Phantasiestücke, Op 12<br>
+Busoni, F - All' Italia<br>
+Balakirev, M - Islamey (Fantasie Orientale)<br>
+</p>
+
+<!--#include virtual="contents.html" -->
+
+</body>
+</html>

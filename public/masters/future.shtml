@@ -1,0 +1,23 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <!--#include file="head.html" -->
+<body>
+    <!--#include file="header.html" -->
+    <div id="colOne">
+        <div id="menu1">
+            <!--#include file="menu.html" -->
+        </div>
+        <div id="margin-news">
+            <!--#include file="news.html" -->
+        </div>
+    </div>
+
+	<div id="colTwo">
+        <h2>RaceReporter: an embodied agent providing real-time commentary</h2>
+        <p><strong>Future work</strong> includes reflecting the character's 
+        affect in the prosody of his speech, and generating gestures based on 
+        the semantic content of his speech.</p>
+    </div>
+    <!--#include file="foot.html" -->
+</body>
+</html>

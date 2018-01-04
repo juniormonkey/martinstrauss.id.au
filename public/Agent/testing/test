@@ -1,0 +1,63 @@
+#!/usr/local/bin/swipl -s
+
+:- [smithellsworth].
+
+:- write('[i, did, killMother]'), write('\n').
+:- smithEllsworthEmotions([i, did, killMother], _NewState, Emotions), write(Emotions), write('\n\n').
+:- write('[i, did, wantsToKillMother]'), write('\n').
+:- smithEllsworthEmotions([i, did, wantsToKillMother], _NewState, Emotions), write(Emotions), write('\n\n').
+:- write('[i, did, buyAxe]'), write('\n').
+:- smithEllsworthEmotions([i, did, buyAxe], _NewState, Emotions), write(Emotions), write('\n\n').
+:- write('[i, did, killMonster]'), write('\n').
+:- smithEllsworthEmotions([i, did, killMonster], _NewState, Emotions), write(Emotions), write('\n\n').
+:- write('[i, will, killMother]'), write('\n').
+:- smithEllsworthEmotions([i, will, killMother], _NewState, Emotions), write(Emotions), write('\n\n').
+:- write('[i, will, wantsToKillMother]'), write('\n').
+:- smithEllsworthEmotions([i, will, wantsToKillMother], _NewState, Emotions), write(Emotions), write('\n\n').
+:- write('[i, will, buyAxe]'), write('\n').
+:- smithEllsworthEmotions([i, will, buyAxe], _NewState, Emotions), write(Emotions), write('\n\n').
+:- write('[i, will, killMonster]'), write('\n').
+:- smithEllsworthEmotions([i, will, killMonster], _NewState, Emotions), write(Emotions), write('\n\n').
+:- write('[they, did, killMother]'), write('\n').
+:- smithEllsworthEmotions([they, did, killMother], _NewState, Emotions), write(Emotions), write('\n\n').
+:- write('[they, did, wantsToKillMother]'), write('\n').
+:- smithEllsworthEmotions([they, did, wantsToKillMother], _NewState, Emotions), write(Emotions), write('\n\n').
+:- write('[they, did, buyAxe]'), write('\n').
+:- smithEllsworthEmotions([they, did, buyAxe], _NewState, Emotions), write(Emotions), write('\n\n').
+:- write('[they, did, killMonster]'), write('\n').
+:- smithEllsworthEmotions([they, did, killMonster], _NewState, Emotions), write(Emotions), write('\n\n').
+:- write('[they, will, killMother]'), write('\n').
+:- smithEllsworthEmotions([they, will, killMother], _NewState, Emotions), write(Emotions), write('\n\n').
+:- write('[they, will, wantsToKillMother]'), write('\n').
+:- smithEllsworthEmotions([they, will, wantsToKillMother], _NewState, Emotions), write(Emotions), write('\n\n').
+:- write('[they, will, buyAxe]'), write('\n').
+:- smithEllsworthEmotions([they, will, buyAxe], _NewState, Emotions), write(Emotions), write('\n\n').
+:- write('[they, will, killMonster]'), write('\n').
+:- smithEllsworthEmotions([they, will, killMonster], _NewState, Emotions), write(Emotions), write('\n\n').
+:- write('[you, did, killMother]'), write('\n').
+:- smithEllsworthEmotions([you, did, killMother], _NewState, Emotions), write(Emotions), write('\n\n').
+:- write('[you, did, wantsToKillMother]'), write('\n').
+:- smithEllsworthEmotions([you, did, wantsToKillMother], _NewState, Emotions), write(Emotions), write('\n\n').
+:- write('[you, did, buyAxe]'), write('\n').
+:- smithEllsworthEmotions([you, did, buyAxe], _NewState, Emotions), write(Emotions), write('\n\n').
+:- write('[you, did, killMonster]'), write('\n').
+:- smithEllsworthEmotions([you, did, killMonster], _NewState, Emotions), write(Emotions), write('\n\n').
+:- write('[you, will, killMother]'), write('\n').
+:- smithEllsworthEmotions([you, will, killMother], _NewState, Emotions), write(Emotions), write('\n\n').
+:- write('[you, will, wantsToKillMother]'), write('\n').
+:- smithEllsworthEmotions([you, will, wantsToKillMother], _NewState, Emotions), write(Emotions), write('\n\n').
+:- write('[you, will, buyAxe]'), write('\n').
+:- smithEllsworthEmotions([you, will, buyAxe], _NewState, Emotions), write(Emotions), write('\n\n').
+:- write('[you, will, killMonster]'), write('\n').
+:- smithEllsworthEmotions([you, will, killMonster], _NewState, Emotions), write(Emotions), write('\n\n').
+ 
+didYouReally
+itHasOccurred
+whileYouSlept
+
+iKnow
+iveHeard
+didYouKnow
+
+typical
+whodaThunkIt

@@ -1,0 +1,34 @@
+<html>
+<head>
+<title>Martin Strauss</title>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-90396-1']);
+  _gaq.push(['_setDomainName', 'ockle.org']);
+  _gaq.push(['_setAllowLinker', true]);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+
+<body>
+
+<center>
+<h1>Martin Strauss - Photos</h1>
+<br>
+<p align=center>
+<a href="29A%20copy.jpg"><img src="29A_small.jpg" border=0></a><br>
+<br>
+<a href="29A%20copyB.jpg"><img src="29A_smallB.jpg" border=0></a><br>
+</p>
+<!--#include virtual="contents.html" -->
+
+</body>
+</html>

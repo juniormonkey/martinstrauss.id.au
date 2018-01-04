@@ -1,0 +1,15 @@
+#!/usr/bin/swipl -s
+
+main :-
+	current_prolog_flag(argv, Argv),
+	append(_, [--|Av], Argv), write(user_error, Av), write(user_error, '\n'), !, 
+	(
+		[Input, Output] = Av ->
+			loop([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], Input, Output) ;
+			write('Incorrect arguments!\n')
+	).
+
+:- [agent-base].
+:- main.
+:- halt.
+

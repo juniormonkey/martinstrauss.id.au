@@ -1,0 +1,103 @@
+/* cv.css */
+
+body {
+  font-size: 11px;
+  font-weight: normal;
+  font-family: verdana, arial, helvetica, sans-serif;
+  color: #000;
+/*  margin: 10px 20px 20px 20px; */
+  padding: 10px 20px 20px 20px; 
+}
+
+
+h1 {
+  color: #996666;
+}
+
+h2 {
+  color: #333333;
+  border-bottom: 1px solid #999999;
+}
+
+.position {
+  font-weight: bold;
+  font-size: 110%;
+}
+
+.location {
+  font-size: 110%;
+  color: #333333;
+}
+
+.heading {
+  font-weight: bold;
+  font-size: 120%;
+}
+
+.section {
+  padding: 10px;
+}
+
+dt {
+  margin: 10px 10px 10px 10px;
+}
+
+dl {
+  padding: 10px;
+  border: 1px solid #996666;
+  background: #eeeeee;
+}
+
+ul {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 10px;
+  border: 1px solid #996666;
+  background: #eeeeee;
+}
+
+ol {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 10px;
+  border: 1px solid #996666;
+  background: #eeeeee;
+}
+
+p {
+  padding: 10px;
+  border: 1px solid #996666;
+  background: #eeeeee;
+}
+
+table {
+  padding: 10px;
+  border: 1px solid #996666;
+  background: #eeeeee;
+}
+
+td {
+  font-size: 11px;
+  font-weight: normal;
+  font-family: verdana, arial, helvetica, sans-serif;
+  color: #000;
+}
+
+a:link {
+  color: #996666;
+  text-decoration: none;
+}
+
+a:active {
+  color: #996666;
+  text-decoration: underline;
+}
+
+a:visited {
+  color: #996666;
+  text-decoration: none;
+}
+
+.indent {
+  padding: 10px;
+}

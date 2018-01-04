@@ -1,0 +1,56 @@
+[i, did, killMother].
+[i, did, makeMonster].
+[i, did, buyAxe].
+[i, did, killMonster].
+[i, will, killMother].
+[i, will, makeMonster].
+[i, will, buyAxe].
+[i, will, killMonster].
+[they, did, killMother].
+[they, did, makeMonster].
+[they, did, buyAxe].
+[they, did, killMonster].
+[they, will, killMother].
+[they, will, makeMonster].
+[they, will, buyAxe].
+[they, will, killMonster].
+[you, did, killMother].
+[you, did, makeMonster].
+[you, did, buyAxe].
+[you, did, killMonster].
+[you, will, killMother].
+[you, will, makeMonster].
+[you, will, buyAxe].
+[you, will, killMonster].
+[yesYou, did, killMother].
+[yesYou, did, makeMonster].
+[yesYou, did, buyAxe].
+[yesYou, did, killMonster].
+[yesYou, will, killMother].
+[yesYou, will, makeMonster].
+[yesYou, will, buyAxe].
+[yesYou, will, killMonster].
+[someone, did, killMother].
+[someone, did, makeMonster].
+[someone, did, buyAxe].
+[someone, did, killMonster].
+[someone, will, killMother].
+[someone, will, makeMonster].
+[someone, will, buyAxe].
+[someone, will, killMonster].
+[youMissedSomeone, did, killMother].
+[youMissedSomeone, did, makeMonster].
+[youMissedSomeone, did, buyAxe].
+[youMissedSomeone, did, killMonster].
+[youMissedSomeone, will, killMother].
+[youMissedSomeone, will, makeMonster].
+[youMissedSomeone, will, buyAxe].
+[youMissedSomeone, will, killMonster].
+
+
+%iKnow
+%iveHeard
+%didYouKnow
+
+%typical
+%whodaThunkIt

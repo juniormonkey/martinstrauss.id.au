@@ -1,0 +1,32 @@
+#!/usr/local/bin/swipl -s
+
+go :-
+	open(moods, read, Moods),
+	test(Moods),
+	close(Moods).
+
+test(Moods) :-
+	read(Moods, Mood),
+	(
+		Mood = end_of_file -> write('**\n\n');
+		%Mood =\= end_of_file,
+		open(dialogues, read, Dialogues),
+		test1(Dialogues, Mood),
+		close(Dialogues),
+		test(Moods)
+	).
+
+test1(Dialogues, Mood) :-
+	read(Dialogues, Stimulus),
+	(
+		Stimulus = end_of_file -> write('***\n\n\n');
+		%Stimulus =\= end_of_file,
+		write('\''), write(Stimulus), write('\' & \''),
+		whatMood(Mood, ThisMood), write(ThisMood), write('\': '),
+		output(Mood, Stimulus),
+		test1(Dialogues, Mood)
+	).
+
+:- [agent-base].
+:- go.
+:- halt.

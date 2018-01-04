@@ -1,0 +1,148 @@
+4:02:44 36445942: i'd do it like NWN or Diablo's conversation thing
+4:02:52 36445942: you get 4 or 5 choices of response
+4:03:03 36445942: each character would have a huge tree
+4:03:13 68188739: you give the agent 4 or 5 choices? or the player?
+4:03:13 36445942: which is all the possible conversations
+4:03:20 36445942: the player has 4 or 5 choices
+4:03:22 36445942: the agent has heapsp
+4:03:34 36445942: and has to choose one that is consistent with its current 
+emotion
+4:03:40 36445942: (or mood, or personality)
+4:03:50 36445942: personality I can #define beforehand, i imagine
+4:03:54 68188739: is mood and personality part of what you've looked at?
+4:03:54 36445942: mood is just long-term emotion
+4:04:11 36445942: and emotion gets influenced by the player's conversation
+4:04:20 36445942: both whether the player is rude or nice to him
+4:04:27 36445942: and also the news the player brings
+4:04:42 36445942: cos a realistic NPC shopkeeper really only hears about the 
+outside world through the player
+4:04:55 36445942: "you mean you've killed the monster? that's wonderful! let me 
+give you this bag of gold.  What's that slobbering in the window?"
+4:05:01 68188739: don't want to add what he buys and sells too?
+4:05:09 36445942: yeah
+4:05:11 36445942: you'd add that too
+4:05:18 36445942: so player could complain about the quality of his axe
+4:05:31 36445942: NPC could be reluctant to part with his favourite shield
+4:05:32 36445942: etc
+4:05:32 68188739: mood goes down with bank balance :)
+4:05:35 36445942: yup
+4:05:43 36445942: so you model lots of goals
+4:05:45 36445942: 1. make money
+4:05:54 36445942: 2. get rid of the monster that's terrorizing the 
+neighbourhood
+4:06:05 36445942: etc
+4:06:07 68188739: what have you read about modelling personality?
+4:06:25 36445942: there's not much difference between mood, emotion and 
+personality on this level
+4:06:27 68188739: lots of people coming in and not buying makes a bad day? :)
+4:06:40 36445942: yeah
+4:06:42 36445942: well
+4:06:49 36445942: one person talking for ages and not buying
+4:06:53 36445942: makes me grumpy
+4:06:58 36445942: lots of people doing it put me in a bad mood
+4:07:05 36445942: and personality is a kind of bias
+4:07:13 36445942: if i'm a grumpy shopkeeper it doesn't take many people to put 
+me in a bad mood
+4:07:17 36445942: but it takes lots to make me happy again
+4:07:22 36445942: and if i'm a happy shopkeeper then vice versa
+4:08:21 36445942: i imagine at some point the shopkeeper would refuse to let 
+you in
+4:08:23 36445942: if you're awful to it
+4:08:36 36445942: and there's stuff he or she won't part with unless you build 
+a decent friendship with it
+4:09:12 36445942: you'll want to make it worth the player's while to be tactful 
+when complaining about the dullness of the sword they bought last week...
+4:09:19 36445942: "I want to complain about this parrot!"
+4:09:27 36445942: "ah yes, the Norwegian Blue.  What's, ah, what's wrong with 
+it?"
+4:09:27 68188739: "i like you, i'll show you my stash i keep only for my 
+favourite customers"
+4:10:03 36445942: so then a shopkeeper has reason to be proud of his work
+4:10:36 36445942: might give him some backstory too to bring in other emotions 
+like guilt and regret...
+4:10:48 36445942: maybe he made the sword that UberEvil the Bad Dude now 
+wields...
+4:11:06 68188739: "it was a sword just like that one...."
+4:12:15 68188739: "that sword is the one that killed my wife. where did you get 
+it?"
+4:20:58 68188739: i love that sword
+4:22:04 36445942: I have mixed feelings about selling you this sword
+4:22:08 36445942: it's the best thing i ever made
+4:22:12 36445942: i don't really want to let go
+4:23:02 36445942: "on the one hand it's the best thing I ever made so I don't 
+want to let it go, but on the other hand... well, i'm a shopkeeper and that's a 
+princely sum you're offering me!"
+4:23:16 36445942: "and I could think of worse vagabonds to sell it to than you.
+Use it wisely!"
+4:23:43 68188739: have grumpy, idealistic, etc etc
+4:24:02 36445942: so then you'd say "on the one hand, i've never seen so much 
+money in one place before..."
+4:24:08 36445942: "but that's the best thing I've ever made.  sorry, it's not 
+for sale."
+4:27:48 36445942: "did you know that Gzgrh burnt the town hall to the ground 
+yesterday?"
+4:28:02 36445942: "but I thought Gzgrh was dead!  John told me he'd slain him 
+last week!"
+4:28:15 36445942: "well, John's a vagabond and a liar, I wouldn't be consorting 
+with the likes of him if I was you..."
+4:28:15 68188739: "i am the warlord Excabar. you will sell me this sword"
+4:29:43 36445942: otherwise you would just always walk in there with sword 
+drawn and demand your wares
+4:30:10 36445942: i guess he'd just hide his best stuff
+4:30:14 36445942: not show it to you
+4:30:17 36445942: no matter how much you threatened
+4:30:33 36445942: maybe even at some stage hide his ordinary stuff
+4:30:42 36445942: and just sell you the cheap crap :)
+4:31:12 68188739: how much money would he need to offer to get the good stuff? 
+depends on your idealism rating? :)
+4:31:37 36445942: or maybe the idealism rating just decides whether or not the 
+good stuff is on display
+4:31:44 36445942: cos there's three options, really
+4:31:48 36445942: 1. hidden until he likes you enough
+4:31:58 36445942: 2. shown but without a price so he can make it up depending 
+on how much he likes you
+4:32:02 36445942: 3. openly on display
+4:32:12 36445942: there's no reason not to do 3 unless he's idealistic to some 
+degree
+4:33:03 36445942: i'd say depending on an idealism variable 1, 2, 3 are a sort 
+of sliding continuum, the value of which depends on how much he "likes" you
+4:33:25 36445942: so you start at 1 (unless he's completely mercenary, in which 
+case you're always at 3)
+4:33:30 36445942: and after a bit you get to 2
+4:33:40 36445942: and then he makes up prices until you achieve 3
+4:34:06 36445942: (or end up back at 1 for being rude to him or killing his 
+grandmother and offering her to the gods to try to appease the Great Demon 
+GrZzzzrh)
+4:34:36 36445942: and these are really just moods, as well
+4:34:53 36445942: you should get emotions as well based on other factors
+4:35:07 36445942: eg, if he's having a bad day, you might end up back at 1
+4:35:20 36445942: (all this goes for information he can tell you as well, i 
+guess)
+4:35:49 36445942: if you've just brought him bad news he might break out in 
+tears and cast you out of the shop
+4:36:06 36445942: or you can show up and there's a sign on the door saying 
+"closed. Having a bad day.  Go away."
+4:36:16 68188739: hehe
+4:36:21 68188739: "gone fishin'"
+4:36:25 36445942: hehe yeah
+4:36:31 36445942: or the opposite
+4:36:38 36445942: he's in a good mood because of some news
+4:37:03 36445942: you've told him that you've rescued his beautiful pet dragon 
+from the vicious princess that lives in yonder castle
+4:37:21 36445942: so he invites you in for a celebratory cup of mead and a chat
+4:37:43 36445942: so you can either say "no thanks, i'm in a hurry, just pick a 
+sword as reward and i'll run off doing good deeds" and you get an ordinary 
+reward
+4:37:44 68188739: why don't you write games for a living? :P
+4:38:07 36445942: or you stay the night and fall in love with his stunningly 
+gorgeous son
+4:38:17 36445942: and he gives you a vastly more valuable sword
+4:38:42 36445942: or maybe his best horse
+4:44:10 68188739: saying "i'd like to purchase that sword" would have different 
+effects depending on how many times you'd heard it before etc?
+4:45:00 36445942: yeah, i guess so
+4:45:56 36445942: "sell me that sword or I'll rend your head from your 
+shoulders!"
+4:54:59 36445942: :P well, i'd start with good/bad
+4:55:04 36445942: being one appraisal
+4:55:07 36445942: and then move to others

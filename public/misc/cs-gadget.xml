@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+<ModulePrefs title="Couchsurfing Groups" height="480" scrolling="true">
+    <!--<Require feature="locked-domain"/>-->
+</ModulePrefs>
+<UserPref name="login" datatype="string" display_name="CS username or email" required="true" />
+<UserPref name="password" datatype="string" display_name="CS password" required="true" />
+<Content type="html"><![CDATA[
+<style type="text/css">
+    @import url(http://www.couchsurfing.com/css/cs-indev.css);
+    @import url(http://www.couchsurfing.com/css/cs.css);
+    @import url(http://www.couchsurfing.com/css/classic.css);
+    body {
+        background:none;
+        background-color:#FFF;
+    }
+    .hidden {
+        display:none;
+    }
+    .thread {
+        /*height:434px;*/
+        min-height:100%;
+        overflow:auto;
+    }
+    select {
+        display:block;
+        width:100%
+    }
+</style>
+<form>
+    <select name="gid" id="gid" onchange="changeGroup()"></select>
+    <select name="post" id="post" onchange="changeThread()"></select>
+</form>
+<div id="iphone" class="thread"></div>
+<div id="groups" class="hidden"></div>
+<div id="messages" class="hidden"></div>
+<script type="text/javascript">
+    <!--
+function showGroups() {
+    var prefs = new _IG_Prefs();
+    var login = prefs.getString("login");
+    var password = prefs.getString("password");
+    var url = _IG_GetCachedUrl("http://www.couchsurfing.com/group.html", 1);
+    var params = "auth_login[un]=" + login + "&auth_login[pw]=" + password + "&auth_login[persistant]=yes";
+    var http = new XMLHttpRequest();
+    http.open("POST", url, true);
+    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    http.setRequestHeader("Content-length", params.length);
+    http.setRequestHeader("Connection", "close");
+
+    http.onreadystatechange = function() {
+      if (http.readyState == 4 && http.status == 200) {
+        extractGroups(http.responseText);
+      }
+    }
+    http.send(params);
+}
+function extractGroups(responseText) {
+    groups.innerHTML = responseText;
+    var personalbox = groups.getElementsByClassName("personalbox").item(0);
+    var std_bg = personalbox.getElementsByClassName("std_bg");
+    var alt_bg = personalbox.getElementsByClassName("alt_bg");
+    var select = _gel("gid");
+    select.innerHTML = "";
+    for (var i = 0; i < std_bg.length; i++) {
+        var link = std_bg.item(i).getElementsByTagName("a").item(0);
+        // this should be the <a> element link to the group
+        var href = link.href;
+        var gid = href.replace(/.*\/group.html\?gid=/, "");
+        var name = link.innerHTML;
+        select.innerHTML += "<option value=" + gid + ">" + name + "</option>";
+    }
+    for (var i = 0; i < alt_bg.length; i++) {
+        var link = alt_bg.item(i).getElementsByTagName("a").item(0);
+        // this should be the <a> element link to the group
+        var href = link.href;
+        var gid = href.replace(/.*\/group.html\?gid=/, "");
+        var name = link.innerHTML;
+        select.innerHTML += "<option value=" + gid + ">" + name + "</option>";
+    }
+    changeGroup();
+}
+function changeGroup() {
+// get gid from the selected item
+    var groups = _gel("gid");
+    var selectedGroup = groups.options[groups.selectedIndex];
+    var gid = selectedGroup.value;
+    showMessages(gid);
+}
+function showMessages(gid) {
+    var url='http://www.couchsurfing.com/feeds/group_rss.php?gid='+gid;
+    _IG_FetchFeedAsJSON(url, function(feed) {
+        if (feed == null) {
+            return;
+        }
+        var select = _gel("post");
+        select.innerHTML = "";
+        for (var i = 0; i < feed.Entry.length; i++) {
+            var entry = feed.Entry[i];
+            var post = entry.Link.replace(/http:\/\/www\.couchsurfing\.com\/group_read\.html\?gid=\d+&post=(\d+)/, "$1");
+            select.innerHTML += "<option value=" + gid + "/" + post + ">" + entry.Title + "</option>";
+        }
+        changeThread();
+    }, num_entries=20);
+}
+function changeThread() {
+// get gid and post from the selected items
+    var messages = _gel("post");
+    var selectedMessage = messages.options[messages.selectedIndex];
+    var postPath = selectedMessage.value;
+    var postPathArray = postPath.split("/");
+    var gid = postPathArray[0];
+    var post = postPathArray[1];
+    showGroupThread(gid, post);
+}
+function showGroupThread(gid, post) {
+
+    var messages = _gel("messages");
+    _IG_FetchContent('http://www.couchsurfing.com/group_read.html?gid=' + gid + '&post=' + post, 
+    function(responseText) {
+        messages.innerHTML = responseText;
+        var thread = messages.getElementsByClassName("thread");
+        var iphone = _gel("iphone");
+        if (thread) {
+            if (thread.length == 0) {
+                iphone.innerHTML = "<em>No thread found.</em>";
+            } else {
+                iphone.innerHTML = "";
+                for (var i = 0; i < thread.length; i++) {
+                    iphone.innerHTML += thread.item(i).innerHTML;
+                }
+            }
+        } else {
+            iphone.innerHTML = "<em>Could not find thread.</em>";
+        }
+        cleanLinks(iphone);
+    });
+}
+function cleanLinks(element) {
+// find all A children of element
+// set target=_blank
+// make URL relative to www.couchsurfing.com
+}
+    
+function onLoad() {
+  showGroups();
+  //showMessages(1241);
+}
+_IG_RegisterOnloadHandler(onLoad());
+            -->
+        </script>
+]]></Content>
+</Module>

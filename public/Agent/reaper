@@ -1,0 +1,70 @@
+#!/usr/bin/perl -w
+use strict;
+
+my $ls = "/bin/ls";
+my $tmpdir = "tmp";
+my %mtime = ( input => 0, output => 0 );
+
+my $currenttime = time;
+my %staleness = ( input => 0, output => 0 );
+my $maxage = 300; # maximum age is 5 minutes
+
+my $sessid = $ARGV[0] or die "Invalid session ID!\n";
+
+my %filename = ( input => "tmp/input.$sessid", output => "tmp/output.$sessid" );
+my $prolog;
+
+my $id;
+
+# loop forever
+OUTER_LOOP: while(1) {
+	$prolog = get_prolog_pid($sessid);
+	if (not -e $filename{'input'}	and
+			not -e $filename{'output'} and $prolog eq 0) {
+		die "no session to kill!\n";
+	}
+
+	$currenttime = time;
+
+	foreach $id ('input', 'output') {
+		# check the modification time of the files
+		(undef,undef,undef,undef,undef,undef,undef,undef,
+			undef,$mtime{$id},undef,undef,undef)
+				= stat($filename{$id}) or do {
+			print "unable to stat() ".$filename{$id}."\n";
+			next;
+		};
+
+		# staleness is its age in seconds
+		$staleness{$id} = $currenttime - $mtime{$id};
+
+		if($staleness{$id} > $maxage) {
+			print STDERR "Cleaning up session $sessid...\n";
+			foreach $id ('input', 'output') {
+				unlink($filename{$id});
+				print STDERR "Deleted file ".$filename{$id}." - too old!\n";
+			}
+			kill 9, $prolog;
+			print STDERR "Killed process $prolog - too old!\n";
+			last OUTER_LOOP;
+		}
+	}
+
+	# wait another minute
+	sleep(10);
+}
+
+print STDERR "Done!\n";
+
+
+sub get_prolog_pid {
+	my $sessid = shift;
+	my $pid;
+	my $psline = `ps ax | grep swipl | grep $sessid | grep -v grep`;
+	if($psline =~ /^ (\d+)\s*.\s*\W.\s*.*\s.*/) {
+		$pid = $1;
+	} else {
+		$pid = 0;
+	}
+	return $pid;
+}

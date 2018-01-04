@@ -1,0 +1,76 @@
+<html>
+<head>
+<title>The Lego/Mindstorms Train</title>
+<script LANGUAGE="JavaScript">
+<!-- hide
+// "var speed" is the refresh rate adjustment in seconds.
+var speed = 1;
+var y = 1;
+var x = speed + y;
+var time = x - y;
+var now;
+campicture = new Image();
+function stopClock() {
+	x = "off";
+	document.form0.clock.value = x;
+}
+function startClock() {
+        if (x != "off") {
+	x = x - y;
+	document.form0.clock.value = x;
+	if (x <= 1)
+        {
+          reload()
+        }
+	timerID = setTimeout("startClock()", 1000);
+        }
+}
+function reload() {
+	now = new Date();
+	var camImg = "http://neville.ockle.org:9192/singleframe/" + "?" + now.getTime();
+	document.campicture.src = camImg;
+    x = speed;
+    document.form0.clock.value = x;
+              	  }
+//end hide -->
+
+</script>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-90396-1']);
+  _gaq.push(['_setDomainName', 'ockle.org']);
+  _gaq.push(['_setAllowLinker', true]);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+<body bgcolor="black" text="white" onload="startClock()">
+
+<h1 align="center">The Lego/Mindstorms Train</h1>
+
+<p align="center">This works especially for Internet Explorer.  If you have a real browser such as <a href=http://www.mozilla.org/>Mozilla</a>, you'll want to use the <a href=index.html>better</a> webcam.</p>
+
+      <FORM action="index-ie.html" name="form0">
+        <CENTER>
+<IMG name="campicture" src="webcamstream.jpg" alt="Picture" border=0 reload="60" height=240 width=320>
+        </CENTER>
+        <CENTER>
+          <INPUT type="hidden" name="clock" size="3" value="">
+        </CENTER>
+      </FORM>
+<p align=center>
+<font size=1>
+Brought to you by <a href="http://packages.debian.org/camserv">camserv</a>.
+</font></p>
+
+<!--#include virtual="info.html" -->
+</body>
+</html>

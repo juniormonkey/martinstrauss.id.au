@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <!--#include file="head.html" -->
+<body>
+    <!--#include file="header.html" -->
+    <div id="colOne">
+        <div id="menu1">
+            <!--#include file="menu.html" -->
+        </div>
+        <div id="margin-news">
+            <!--#include file="news.html" -->
+        </div>
+    </div>
+
+	<div id="colTwo">
+        <h2>The architecture of ERIC</h2>
+        <p><strong>The architecture</strong> of ERIC is designed to be highly 
+        modular and parallel.  The key modules in ERIC are those concerned with 
+        <a href='domain.shtml'>knowledge reasoning</a> (the domain model), <a 
+            href='language.shtml'>natural language generation</a>, and <a 
+            href='affect.shtml'>affective appraisal</a>.  The other pages on 
+        this website explain these modules, as well as the <a 
+            href='gestures.shtml'>gesture and facial expression generation</a>, 
+        in more detail.  As well as these modules, the agent has a fusion 
+        module which is responsible for combining generated language, facial 
+        expressions and gestures into a form that can be sent to the Charamel 
+        character.  The modular structure of ERIC is shown below (<a 
+            href='images/architecture.png'>click to enlarge</a>).</p>
+
+        <p align=center>
+        <a href='images/architecture.png'>
+            <img src='images/architecture-sm.png' />
+        </a>
+        </p>
+
+        <p>The rectangular modules each consist of a Jess engine executing a 
+        rule-based Jess program that generates the outputs based on the 
+        received 
+        information.  Modules and connections in dotted lines are still future 
+        work.  Each component is responsible for a single aspect of the 
+        reasoning and generation, and runs in its own Java thread.<sup><a 
+                href="#fn1">1</a></sup>  In addition, the affect module uses <a 
+            href='http://www.dfki.de/~gebhard/alma.html'>ALMA</a> to generate 
+        affective states based on cognitive appraisals.  To minimise coupling 
+        between modules, the Java <a 
+            href='http://en.wikipedia.org/wiki/Observer_pattern'>Observer</a> 
+        pattern is used to pass data between modules.  </p>
+
+        <p>The dotted box contains the domain-independent part of ERIC: all 
+        modules shown in blue can be reused without modification.  Modules 
+        shown in green must be reimplemented for each new domain.  Modules 
+        shown in yellow are "off-the-shelf" components.</p>
+
+        <p>In addition to the Jess modules, there is a module interfacing with 
+        the RaceSim horse race simulator; and a module that sends the generated
+        character commands to Charamel.  The text-to-speech capability is 
+        provided by <a href='http://www.nuance.com/realspeak/solo/'>Nuance 
+            RealSpeak Solo</a>.</p>
+
+        <hr/>
+        <fn id=fn1><p><small><sup>1</sup> There is one exception: although the 
+        "affect observer" is shown as a separate module here, in fact it runs 
+        as part of the "affective appraisal" Jess thread.  It is shown as a 
+        separate module because it is domain-dependent, whereas the rest of the 
+        affective apprasial is domain-independent.</small></p>
+    </div>
+    <!--#include file="foot.html" -->
+</body>
+</html>

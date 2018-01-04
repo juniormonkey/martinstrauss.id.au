@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+    <ModulePrefs author="M" title="AppEngine Friends Demo">
+        <Require feature="opensocial-0.8"/>
+        <Require feature="dynamic-height"/>
+    </ModulePrefs>
+    <Content type="html"><![CDATA[
+        <!-- ALm6fM2uCGCBECeaXtUjEHq3tfHksfRUv-i9T0Q04HM45-CKAcOk52lhsBgkpjcepNc9dly-dV-BBK7D9oSQ0vn7XRLKxDY_CLrpJhvtF_G2HoNmvjapaupwHH5jz74b0k4f8FJn9m9nmhS_sdasJS9BEJVnH39dXw== -->
+
+        <div id="output"></div>
+        <script>
+            function getFriends() {
+              console.log("getFriends()");
+              var url = "http://friends-demo.prom.corp.google.com/friends";
+              var callback = function(response) {
+                console.log("callback()");
+                output = document.getElementById("output");
+                if (response.oauthErrorText) {
+                  output.innerHTML = response.oauthErrorText;
+                } else {
+                  output.innerHTML = response.text;
+                }
+                gadgets.window.adjustHeight();
+              };
+              var headers = {};
+              headers["Pragma"] = "no-cache";
+              headers["Cache-Control"] = "no-cache";
+              headers["Expires"] = "Fri, 30 Oct 1998 14:19:41 GMT";
+              var params = {};
+              params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.TEXT;
+              params[gadgets.io.RequestParameters.AUTHORIZATION] = gadgets.io.AuthorizationType.SIGNED;
+              params[gadgets.io.RequestParameters.HEADERS] = headers;
+              console.log("about to makeRequest()");
+              gadgets.io.makeRequest(url, callback, params);
+            }
+            gadgets.util.registerOnLoadHandler(getFriends);
+        </script>
+    ]]></Content>
+</Module>

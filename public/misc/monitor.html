@@ -1,0 +1,346 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en_US">
+<head>
+
+<title>SquirrelMail</title>
+<script language="JavaScript" type="text/javascript">
+<!--
+function sendMDN() {
+    mdnuri=window.location+'&sendreceipt=1'; var newwin = window.open(mdnuri,'right');
+}
+
+// -->
+</script>
+
+<style type="text/css">
+<!--
+  /* avoid stupid IE6 bug with frames and scrollbars */
+  body { 
+      voice-family: "\"}\""; 
+      voice-family: inherit; 
+      width: expression(document.documentElement.clientWidth - 30);
+  }
+-->
+</style>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-90396-1']);
+  _gaq.push(['_setDomainName', 'ockle.org']);
+  _gaq.push(['_setAllowLinker', true]);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+
+<body text="#000000" bgcolor="#FFFFFF" link="#0000CC" vlink="#0000CC" alink="#0000CC" >
+
+<a name="pagetop"></a>
+<table bgcolor="#FFFFFF" border="0" width="100%" cellspacing="0" cellpadding="2">
+<tr bgcolor="#ABABAB">
+<td align="left">
+         Current Folder: <b>INBOX&nbsp;</b>
+      </td>
+<td align="right"><b>
+<a href="/src/signout.php" target="_top">Sign Out</a></b></td>
+   </tr>
+<tr bgcolor="#FFFFFF">
+<td align="left">
+<a href="/src/compose.php?mailbox=INBOX&startMessage=76">Compose</a>&nbsp;&nbsp;
+<a href="/src/addressbook.php">Addresses</a>&nbsp;&nbsp;
+<a href="/src/folders.php">Folders</a>&nbsp;&nbsp;
+<a href="/src/options.php">Options</a>&nbsp;&nbsp;
+<a href="/src/search.php?mailbox=INBOX">Search</a>&nbsp;&nbsp;
+<a href="/src/help.php">Help</a>&nbsp;&nbsp;
+<a href="/plugins/bug_report/bug_report.php">Bug</a>&nbsp;&nbsp;
+      </td>
+<td align="right">
+<a href="http://www.squirrelmail.org/" target="_blank">SquirrelMail</a></td>
+   </tr>
+</table><br>
+
+<table width="100%" cellpadding="3" cellspacing="0" align="center" border="0"><tr><td align="left" colspan="2" style="border: 1px solid #ABABAB;"><small>[<a href="/src/read_body.php?passed_id=233&amp;mailbox=INBOX&amp;sort=0&amp;startMessage=76&amp;show_more=0">Previous</a>&nbsp;|&nbsp;<a href="/src/read_body.php?passed_id=199&amp;mailbox=INBOX&amp;sort=0&amp;startMessage=76&amp;show_more=0">Next</a>]&nbsp;&nbsp;&nbsp;&nbsp;[<a href="/src/read_body.php?passed_id=233&amp;mailbox=INBOX&amp;sort=0&amp;startMessage=76&amp;show_more=0&amp;delete_id=215">Delete & Prev</a>&nbsp;|&nbsp;<a href="/src/read_body.php?passed_id=199&amp;mailbox=INBOX&amp;sort=0&amp;startMessage=76&amp;show_more=0&amp;delete_id=215">Delete & Next</a>]&nbsp;&nbsp;&nbsp;&nbsp;[<a href="/src/right_main.php?sort=0&amp;startMessage=76&amp;mailbox=INBOX">Message List</a>]</small></td></tr><tr bgcolor="#ABABAB"><td><small><a href="/src/compose.php?passed_id=215&amp;mailbox=INBOX&amp;startMessage=76&amp;passed_ent_id=0&amp;smaction=reply">Reply</a>&nbsp;|&nbsp;<a href="/src/compose.php?passed_id=215&amp;mailbox=INBOX&amp;startMessage=76&amp;passed_ent_id=0&amp;smaction=reply_all">Reply All</a>&nbsp;|&nbsp;<a href="/src/compose.php?passed_id=215&amp;mailbox=INBOX&amp;startMessage=76&amp;passed_ent_id=0&amp;smaction=forward">Forward</a>&nbsp;|&nbsp;<a href="/src/compose.php?passed_id=215&amp;mailbox=INBOX&amp;startMessage=76&amp;passed_ent_id=0&amp;smaction=forward_as_attachment">Forward as Attachment</a>&nbsp;|&nbsp;<a href="/src/delete_message.php?mailbox=INBOX&amp;message=215&amp;sort=0&amp;startMessage=76">Delete</a>&nbsp;(<a href="/src/delete_message.php?mailbox=INBOX&amp;message=215&amp;sort=0&amp;startMessage=76&amp;bypass_trash=1">Bypass Trash</a>)</small></td><td align="right"><form action="read_body.php?mailbox=INBOX&sort=0&startMessage=76&passed_id=199" method="post"><small><input type="hidden" name="show_more" value="0" /><input type="hidden" name="move_id" value="215" />Move to:<select name="targetMailbox" style="padding: 0px; margin: 0px"><OPTION VALUE="INBOX">INBOX</OPTION>
+<OPTION VALUE="INBOX.Drafts">INBOX.Drafts</OPTION>
+<OPTION VALUE="INBOX.Trash">INBOX.Trash</OPTION>
+<OPTION VALUE="mail/sent-mail">&nbsp;&nbsp;sent-mail</OPTION>
+<OPTION VALUE="INBOX.Sent">INBOX.Sent</OPTION>
+<OPTION VALUE="mail/archives/ben">&nbsp;&nbsp;&nbsp;&nbsp;ben</OPTION>
+<OPTION VALUE="mail/archives/bugzilla">&nbsp;&nbsp;&nbsp;&nbsp;bugzilla</OPTION>
+<OPTION VALUE="mail/archives/europe01.gz">&nbsp;&nbsp;&nbsp;&nbsp;europe01.gz</OPTION>
+<OPTION VALUE="mail/archives/misc">&nbsp;&nbsp;&nbsp;&nbsp;misc</OPTION>
+<OPTION VALUE="mail/archives/music">&nbsp;&nbsp;&nbsp;&nbsp;music</OPTION>
+<OPTION VALUE="mail/archives/semester1-02.gz">&nbsp;&nbsp;&nbsp;&nbsp;semester1-02.gz</OPTION>
+<OPTION VALUE="mail/archives/sept01.gz">&nbsp;&nbsp;&nbsp;&nbsp;sept01.gz</OPTION>
+<OPTION VALUE="mail/archives/summer02.gz">&nbsp;&nbsp;&nbsp;&nbsp;summer02.gz</OPTION>
+<OPTION VALUE="mail/archives/ufidgcs">&nbsp;&nbsp;&nbsp;&nbsp;ufidgcs</OPTION>
+<OPTION VALUE="mail/archives/wong.gz">&nbsp;&nbsp;&nbsp;&nbsp;wong.gz</OPTION>
+<OPTION VALUE="mail/archives/work">&nbsp;&nbsp;&nbsp;&nbsp;work</OPTION>
+<OPTION VALUE="mail/bnetd-discuss">&nbsp;&nbsp;bnetd-discuss</OPTION>
+<OPTION VALUE="mail/caughtspam">&nbsp;&nbsp;caughtspam</OPTION>
+<OPTION VALUE="mail/chessbrain">&nbsp;&nbsp;chessbrain</OPTION>
+<OPTION VALUE="mail/cvs">&nbsp;&nbsp;cvs</OPTION>
+<OPTION VALUE="mail/dante-misc">&nbsp;&nbsp;dante-misc</OPTION>
+<OPTION VALUE="mail/darwin">&nbsp;&nbsp;darwin</OPTION>
+<OPTION VALUE="mail/debian-curiosa">&nbsp;&nbsp;debian-curiosa</OPTION>
+<OPTION VALUE="mail/debian-devel-announce">&nbsp;&nbsp;debian-devel-announce</OPTION>
+<OPTION VALUE="mail/debian-news">&nbsp;&nbsp;debian-news</OPTION>
+<OPTION VALUE="mail/debian-pilot">&nbsp;&nbsp;debian-pilot</OPTION>
+<OPTION VALUE="mail/debian-release">&nbsp;&nbsp;debian-release</OPTION>
+<OPTION VALUE="mail/debian-security">&nbsp;&nbsp;debian-security</OPTION>
+<OPTION VALUE="mail/debian-security-announce">&nbsp;&nbsp;debian-security-announce</OPTION>
+<OPTION VALUE="mail/debian-user">&nbsp;&nbsp;debian-user</OPTION>
+<OPTION VALUE="mail/dilbert">&nbsp;&nbsp;dilbert</OPTION>
+<OPTION VALUE="mail/elfling">&nbsp;&nbsp;elfling</OPTION>
+<OPTION VALUE="mail/emily">&nbsp;&nbsp;emily</OPTION>
+<OPTION VALUE="mail/frisbee">&nbsp;&nbsp;frisbee</OPTION>
+<OPTION VALUE="mail/jokes">&nbsp;&nbsp;jokes</OPTION>
+<OPTION VALUE="mail/ormond-horde">&nbsp;&nbsp;ormond-horde</OPTION>
+<OPTION VALUE="mail/quenya">&nbsp;&nbsp;quenya</OPTION>
+<OPTION VALUE="mail/rootmail">&nbsp;&nbsp;rootmail</OPTION>
+<OPTION VALUE="mail/studentlists">&nbsp;&nbsp;studentlists</OPTION>
+<OPTION VALUE="mail/uni-stuff">&nbsp;&nbsp;uni-stuff</OPTION>
+<OPTION VALUE="mail/work">&nbsp;&nbsp;work</OPTION>
+</select> <input type="submit" value="Move" style="padding: 0px; margin: 0px"/></small></form></td></tr></table>
+<TABLE BGCOLOR="#ABABAB" WIDTH="100%" CELLPADDING="1" CELLSPACING="0" BORDER="0" ALIGN="center">
+<TR><TD HEIGHT="5" COLSPAN="2" BGCOLOR="#FFFFFF"></TD></TR><TR><TD align=center>
+<TABLE WIDTH="100%" CELLPADDING="0" CELLSPACING="2" BORDER="0" ALIGN="center" BGCOLOR="#DCDCDC"><TR><td align="right" VALIGN="TOP" WIDTH="20%"><B>Subject:&nbsp;&nbsp;</B></td>
+<td align="left" VALIGN="TOP" WIDTH="80%">text&#32;below:</td>
+</TR><TR><td align="right" VALIGN="TOP" WIDTH="20%"><B>From:&nbsp;&nbsp;</B></td>
+<td align="left" VALIGN="TOP" WIDTH="80%">&quot;David&#32;Kellam&quot;&#32;&lt;general@drkellam.com&gt;</td>
+</TR><TR><td align="right" VALIGN="TOP" WIDTH="20%"><B>Date:&nbsp;&nbsp;</B></td>
+<td align="left" VALIGN="TOP" WIDTH="80%">Fri, September 19, 2003 6:09 pm</td>
+</TR><TR><td align="right" VALIGN="TOP" WIDTH="20%"><B>To:&nbsp;&nbsp;</B></td>
+<td align="left" VALIGN="TOP" WIDTH="80%">&quot;JuniorMonkey&quot;&#32;&lt;martin@ockle.org&gt;</td>
+</TR><TR><td align="right" VALIGN="TOP" WIDTH="20%"><B>Priority:&nbsp;&nbsp;</B></td>
+<td align="left" VALIGN="TOP" WIDTH="80%">Normal</td>
+</TR><TR>
+<td align="right" VALIGN="MIDDLE" WIDTH="20%"><B>Options:&nbsp;&nbsp;</B></TD>
+<td align="left" VALIGN="MIDDLE" WIDTH="80%"><SMALL><a href="/src/view_header.php?mailbox=INBOX&passed_id=215&startMessage=76">View Full Header</a>&nbsp;|&nbsp;<script language="javascript" type="text/javascript">
+<!--
+  function printFormat() {
+    window.open("../src/printer_friendly_main.php?passed_ent_id=0&mailbox=INBOX&passed_id=215","Print","width=800,height=600");
+  }
+// -->
+</script>
+<a href="javascript:printFormat();">View Printable Version</a>
+<script type="text/javascript" language="javascript">
+<!--
+  function MessageSource() {
+    window.open("../plugins/message_details/message_details_main.php?passed_ent_id=&mailbox=INBOX&passed_id=215","MessageDetails","width=800,height=600");
+  }
+// -->
+</script>
+&nbsp;|&nbsp;<A HREF="javascript:MessageSource();">View Message details</A>
+</SMALL></TD>
+</TR>
+</TABLE></TD></TR><TR><TD HEIGHT="5" COLSPAN="2" BGCOLOR="#FFFFFF"></TD></TR>
+</TABLE><table width="100%" cellpadding="0" cellspacing="0" align="center" border="0">  <tr><td>    <table width="100%" cellpadding="1" cellspacing="0" align="center" border="0" bgcolor="#ABABAB">      <tr><td>        <table width="100%" cellpadding="3" cellspacing="0" align="center" border="0">          <tr bgcolor="#FFFFFF"><td><table align="left" cellpadding="1" cellspacing="5" border="0">              <tr><td align="left"><br><pre>Sorry, couldn't forward - Windows being dumb:
+
+Martin,
+
+Firstly, you replied to just me, but I'm assuming you wanted this to go to
+cs.gripes too ;-) [well, it didn't come up in my display, so I'm assuming it
+didn't get sent properly]
+
+Secondly, you're right. My monitor _was_ actually running at 75Hz. My
+cursory glance at the display, and the fact that I knew someone (&lt;cough&gt;more
+anal&lt;/cough&gt;) would come along with the Physics to back it up, meant I
+didn't pay too much attention to the fact that my monitor was actually
+running at &quot;75Hz&quot; as specified in the control panel, but with &quot;79.9KHz&quot;
+(assuming vertical refresh rate here?). When I click the 'menu' (i.e.
+status) button on the monitor, it shows these two values side-by-side, hence
+confusion. Again, the mathematical basis shows what's what... So yeah ;p
+
+DRK
+
+&quot;Martin Strauss&quot; &lt;<a href="/src/compose.php?send_to=mstrauss%40ockle.org">mstrauss@ockle.org</a>&gt; wrote in message
+news:<a href="/src/compose.php?send_to=E19zps0-0001ch-00%40bruce.ockle.org">E19zps0-0001ch-00@bruce.ockle.org</a>...
+<font color="#800000">&gt; In cs.gripes, you wrote:</font>
+<font color="#FF0000">&gt; &gt; I personally start getting sore eyes within about 5 minutes of using</font>
+<font color="#FF0000">&gt; &gt; anything less than 75-80Hz. My current setup is on 1280x1024 @ 80Hz</font>
+(Sony
+<font color="#FF0000">&gt; &gt; 17&quot; E230 CRT), as that's a tradeoff I'm willing to make. I'd rather have</font>
+one
+<font color="#FF0000">&gt; &gt; of the Apple displays running at 117Hz - they are MUCH less of an</font>
+eyestrain,
+<font color="#FF0000">&gt; &gt; but they only do that for low resolutions, which is useless :-(</font>
+<font color="#FF0000">&gt; &gt;</font>
+<font color="#FF0000">&gt; &gt; Oh, and a little test/game for you - stand about a metre or two back</font>
+from
+<font color="#FF0000">&gt; &gt; your monitor, and with your mouth closed, hum a bottom D or E-flat</font>
+(almost
+<font color="#FF0000">&gt; &gt; two octaves below middle-C), and you'll see the picture on the monitor</font>
+<font color="#FF0000">&gt; &gt; &quot;wobble&quot;. At least they're the frequencies for my monitor (mileage may</font>
+<font color="#FF0000">&gt; &gt; vary - on mine, D produces a &quot;wide wobble&quot;, E produces a &quot;fast wobble&quot;.</font>
+Yes,
+<font color="#FF0000">&gt; &gt; that's my technical terminology :p)</font>
+<font color="#FF0000">&gt; &gt;</font>
+<font color="#800000">&gt; Okay, that's just freaky.</font>
+<font color="#800000">&gt;</font>
+<font color="#800000">&gt; Hypothesis:</font>
+<font color="#800000">&gt; * Monitor running at 75Hz (mine, at least)</font>
+<font color="#800000">&gt; * bottom D is about 75Hz (by my log calculations, using the information</font>
+<font color="#800000">&gt;   I know, ie middle A = 440Hz, and an octave up doubles the frequency,</font>
+<font color="#800000">&gt;   so I can calculate that our pitch system, vis equal temperament [1],</font>
+<font color="#800000">&gt;   works at f = 10^(0.04N+1.7), where f is the frequency in Hz, and N is</font>
+<font color="#800000">&gt;   the number of the note if the A below the lowest note I can sing is</font>
+<font color="#800000">&gt;   number 1 and they increase up the scale...)</font>
+<font color="#800000">&gt; * My head resonates at about the frequency of the note I'm singing, vis</font>
+<font color="#800000">&gt;   75 Hz.</font>
+<font color="#800000">&gt; * Given that OpenOffice Calc tells me that bottom D is actually 74.02</font>
+<font color="#800000">&gt;   Hz, and assuming that I'm not singing sharp, there's a beat frequency</font>
+<font color="#800000">&gt;   between my head and the monitor of 0.98Hz, ie almost one wobble per</font>
+<font color="#800000">&gt;   second.  This is what we see.  Bottom E is 81.73 Hz, hence a 6.73Hz</font>
+<font color="#800000">&gt;   beat frequency, hence faster wobble.</font>
+<font color="#800000">&gt; * Either (1) Dave's monitor is actually running at 75Hz, so his</font>
+<font color="#800000">&gt;   observations agree with mine, since we're both running 75Hz, or (2)</font>
+<font color="#800000">&gt;   since he doesn't have perfect pitch, he's singing sharp, cos that's</font>
+<font color="#800000">&gt;   actually a bloody low note, and I'm gonna go out on a limb and say he</font>
+<font color="#800000">&gt;   hasn't warmed his voice up just to prove a point to cs.gripes.</font>
+<font color="#800000">&gt;</font>
+<font color="#800000">&gt; I could be wrong.</font>
+<font color="#800000">&gt;</font>
+<font color="#800000">&gt; Martin.</font>
+<font color="#800000">&gt;</font>
+<font color="#800000">&gt; That was fun, wasn't it?</font>
+<font color="#800000">&gt;</font>
+<font color="#800000">&gt; [1] no, i'm not going anywhere _near_ true pitch.</font>
+<font color="#800000">&gt;</font>
+<font color="#800000">&gt;</font>
+<font color="#800000">&gt;</font>
+<font color="#800000">&gt; -- </font>
+<font color="#800000">&gt; I know what his secret is. He found a way to end SPAM. It involves</font>
+<font color="#800000">&gt; Lasers, GPS, and Traceroute.</font>
+<font color="#800000">&gt; martin            *at*           ockle          *dot*          org</font>
+<font color="#800000">&gt;</font>
+
+</pre><center><small><a href="download.php?absolute_dl=true&amp;passed_id=215&amp;ent_id=1&amp;mailbox=INBOX&amp;sort=0&amp;startMessage=76&amp;show_more=0&amp;passed_ent_id=0">Download this as a file</a></small></center><br>
+
+</td></tr>            </table>          </td></tr>        </table></td></tr>    </table>  </td></tr><TR><TD HEIGHT="5" COLSPAN="2" BGCOLOR="#FFFFFF"></TD></TR>
+  </table>    <table width="100%" cellpadding="1" cellspacing="0" align="center" border="0" bgcolor="#ABABAB">     <tr><td>       <table width="100%" cellpadding="0" cellspacing="0" align="center" border="0" bgcolor="#FFFFFF">        <tr><td bgcolor="#ABABAB" align="left">           <b>Attachments:</b>        </td></tr>        <tr><td>          <table width="100%" cellpadding="2" cellspacing="2" align="center" border="0" bgcolor="#DCDCDC"><tr><td><TR><TD><A HREF="../src/view_text.php?mailbox=INBOX&passed_id=215&startMessage=76&amp;override_type0=text&amp;override_type1=html&ent_id=2">untitled-[2]</A>&nbsp;</TD><TD><SMALL><b>4.8<small>&nbsp;k</small></b>&nbsp;&nbsp;</small></TD><TD><SMALL>[ text/html ]&nbsp;</SMALL></TD><TD><SMALL><b></b></SMALL></TD><TD><SMALL>&nbsp;<a href="../src/download.php?absolute_dl=true&amp;passed_id=215&amp;mailbox=INBOX&amp;ent_id=2">download</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="../src/view_text.php?mailbox=INBOX&passed_id=215&startMessage=76&amp;override_type0=text&amp;override_type1=html&ent_id=2">view</a></TD></TR>
+          </td></tr></table>       </td></tr></table>  </td></tr><TR><TD HEIGHT="5" COLSPAN="2" BGCOLOR="#FFFFFF"></TD></TR></table><table width="100%" cellpadding="3" cellspacing="0" align="center" border="0"><tr bgcolor="#ABABAB"><td><small><a href="/src/compose.php?passed_id=215&amp;mailbox=INBOX&amp;startMessage=76&amp;passed_ent_id=0&amp;smaction=reply">Reply</a>&nbsp;|&nbsp;<a href="/src/compose.php?passed_id=215&amp;mailbox=INBOX&amp;startMessage=76&amp;passed_ent_id=0&amp;smaction=reply_all">Reply All</a>&nbsp;|&nbsp;<a href="/src/compose.php?passed_id=215&amp;mailbox=INBOX&amp;startMessage=76&amp;passed_ent_id=0&amp;smaction=forward">Forward</a>&nbsp;|&nbsp;<a href="/src/compose.php?passed_id=215&amp;mailbox=INBOX&amp;startMessage=76&amp;passed_ent_id=0&amp;smaction=forward_as_attachment">Forward as Attachment</a>&nbsp;|&nbsp;<a href="/src/delete_message.php?mailbox=INBOX&amp;message=215&amp;sort=0&amp;startMessage=76">Delete</a>&nbsp;(<a href="/src/delete_message.php?mailbox=INBOX&amp;message=215&amp;sort=0&amp;startMessage=76&amp;bypass_trash=1">Bypass Trash</a>)</small></td><td align="right"><form action="read_body.php?mailbox=INBOX&sort=0&startMessage=76&passed_id=199" method="post"><small><input type="hidden" name="show_more" value="0" /><input type="hidden" name="move_id" value="215" />Move to:<select name="targetMailbox" style="padding: 0px; margin: 0px"><OPTION VALUE="INBOX">INBOX</OPTION>
+<OPTION VALUE="INBOX.Drafts">INBOX.Drafts</OPTION>
+<OPTION VALUE="INBOX.Trash">INBOX.Trash</OPTION>
+<OPTION VALUE="mail/sent-mail">&nbsp;&nbsp;sent-mail</OPTION>
+<OPTION VALUE="INBOX.Sent">INBOX.Sent</OPTION>
+<OPTION VALUE="mail/archives/ben">&nbsp;&nbsp;&nbsp;&nbsp;ben</OPTION>
+<OPTION VALUE="mail/archives/bugzilla">&nbsp;&nbsp;&nbsp;&nbsp;bugzilla</OPTION>
+<OPTION VALUE="mail/archives/europe01.gz">&nbsp;&nbsp;&nbsp;&nbsp;europe01.gz</OPTION>
+<OPTION VALUE="mail/archives/misc">&nbsp;&nbsp;&nbsp;&nbsp;misc</OPTION>
+<OPTION VALUE="mail/archives/music">&nbsp;&nbsp;&nbsp;&nbsp;music</OPTION>
+<OPTION VALUE="mail/archives/semester1-02.gz">&nbsp;&nbsp;&nbsp;&nbsp;semester1-02.gz</OPTION>
+<OPTION VALUE="mail/archives/sept01.gz">&nbsp;&nbsp;&nbsp;&nbsp;sept01.gz</OPTION>
+<OPTION VALUE="mail/archives/summer02.gz">&nbsp;&nbsp;&nbsp;&nbsp;summer02.gz</OPTION>
+<OPTION VALUE="mail/archives/ufidgcs">&nbsp;&nbsp;&nbsp;&nbsp;ufidgcs</OPTION>
+<OPTION VALUE="mail/archives/wong.gz">&nbsp;&nbsp;&nbsp;&nbsp;wong.gz</OPTION>
+<OPTION VALUE="mail/archives/work">&nbsp;&nbsp;&nbsp;&nbsp;work</OPTION>
+<OPTION VALUE="mail/bnetd-discuss">&nbsp;&nbsp;bnetd-discuss</OPTION>
+<OPTION VALUE="mail/caughtspam">&nbsp;&nbsp;caughtspam</OPTION>
+<OPTION VALUE="mail/chessbrain">&nbsp;&nbsp;chessbrain</OPTION>
+<OPTION VALUE="mail/cvs">&nbsp;&nbsp;cvs</OPTION>
+<OPTION VALUE="mail/dante-misc">&nbsp;&nbsp;dante-misc</OPTION>
+<OPTION VALUE="mail/darwin">&nbsp;&nbsp;darwin</OPTION>
+<OPTION VALUE="mail/debian-curiosa">&nbsp;&nbsp;debian-curiosa</OPTION>
+<OPTION VALUE="mail/debian-devel-announce">&nbsp;&nbsp;debian-devel-announce</OPTION>
+<OPTION VALUE="mail/debian-news">&nbsp;&nbsp;debian-news</OPTION>
+<OPTION VALUE="mail/debian-pilot">&nbsp;&nbsp;debian-pilot</OPTION>
+<OPTION VALUE="mail/debian-release">&nbsp;&nbsp;debian-release</OPTION>
+<OPTION VALUE="mail/debian-security">&nbsp;&nbsp;debian-security</OPTION>
+<OPTION VALUE="mail/debian-security-announce">&nbsp;&nbsp;debian-security-announce</OPTION>
+<OPTION VALUE="mail/debian-user">&nbsp;&nbsp;debian-user</OPTION>
+<OPTION VALUE="mail/dilbert">&nbsp;&nbsp;dilbert</OPTION>
+<OPTION VALUE="mail/elfling">&nbsp;&nbsp;elfling</OPTION>
+<OPTION VALUE="mail/emily">&nbsp;&nbsp;emily</OPTION>
+<OPTION VALUE="mail/frisbee">&nbsp;&nbsp;frisbee</OPTION>
+<OPTION VALUE="mail/jokes">&nbsp;&nbsp;jokes</OPTION>
+<OPTION VALUE="mail/ormond-horde">&nbsp;&nbsp;ormond-horde</OPTION>
+<OPTION VALUE="mail/quenya">&nbsp;&nbsp;quenya</OPTION>
+<OPTION VALUE="mail/rootmail">&nbsp;&nbsp;rootmail</OPTION>
+<OPTION VALUE="mail/studentlists">&nbsp;&nbsp;studentlists</OPTION>
+<OPTION VALUE="mail/uni-stuff">&nbsp;&nbsp;uni-stuff</OPTION>
+<OPTION VALUE="mail/work">&nbsp;&nbsp;work</OPTION>
+</select> <input type="submit" value="Move" style="padding: 0px; margin: 0px"/></small></form></td></tr><tr><td align="left" colspan="2" style="border: 1px solid #ABABAB;"><small>[<a href="/src/read_body.php?passed_id=233&amp;mailbox=INBOX&amp;sort=0&amp;startMessage=76&amp;show_more=0">Previous</a>&nbsp;|&nbsp;<a href="/src/read_body.php?passed_id=199&amp;mailbox=INBOX&amp;sort=0&amp;startMessage=76&amp;show_more=0">Next</a>]&nbsp;&nbsp;&nbsp;&nbsp;[<a href="/src/read_body.php?passed_id=233&amp;mailbox=INBOX&amp;sort=0&amp;startMessage=76&amp;show_more=0&amp;delete_id=215">Delete & Prev</a>&nbsp;|&nbsp;<a href="/src/read_body.php?passed_id=199&amp;mailbox=INBOX&amp;sort=0&amp;startMessage=76&amp;show_more=0&amp;delete_id=215">Delete & Next</a>]&nbsp;&nbsp;&nbsp;&nbsp;[<a href="/src/right_main.php?sort=0&amp;startMessage=76&amp;mailbox=INBOX">Message List</a>]</small></td></tr></table>
+<form action="http://www.tranexp.com:2000/InterTran" method="post" target="_blank">
+<table align="center" cellpadding=3 cellspacing=0 border=0 bgcolor=#666666>
+    <tr>
+      <td>
+        <table cellpadding=2 cellspacing=1 border=0 bgcolor="#FFFFCC">
+          <tr>
+            <td><INPUT TYPE="hidden" NAME="topframe" VALUE="yes"><INPUT TYPE="hidden" NAME="type" VALUE="text"><input type="hidden" name="text" value="Sorry, couldn't forward - Windows being dumb:  Martin,  Firstly, you replied to just me, but I'm assuming you wanted this to go to cs.gripes too ;-) [well, it didn't come up in my display, so I'm assuming it didn't get sent properly]  Secondly, you're right. My monitor _was_ actually running at 75Hz. My cursory glance at the display, and the fact that I knew someone (more anal) would come along with the Physics to back it up, meant I didn't pay too much attention to the fact that my monitor was actually running at ''75Hz'' as specified in the control panel, but with ''79.9KHz'' (assuming vertical refresh rate here?). When I click the 'menu' (i.e. status) button on the monitor, it shows these two values side-by-side, hence confusion. Again, the mathematical basis shows what's what... So yeah ;p  DRK  ''Martin Strauss'' mstrauss@ockle.org> wrote in message news:E19zps0-0001ch-00@bruce.ockle.org... > In cs.gripes, you wrote: > > I personally start getting sore eyes within about 5 minutes of using > > anything less than 75-80Hz. My current setup is on 1280x1024 @ 80Hz (Sony > > 17'' E230 CRT), as that's a tradeoff I'm willing to make. I'd rather have one > > of the Apple displays running at 117Hz - they are MUCH less of an eyestrain, > > but they only do that for low resolutions, which is useless :-( > > > > Oh, and a little test/game for you - stand about a metre or two back from > > your monitor, and with your mouth closed, hum a bottom D or E-flat (almost > > two octaves below middle-C), and you'll see the picture on the monitor > > ''wobble''. At least they're the frequencies for my monitor (mileage may > > vary - on mine, D produces a ''wide wobble'', E produces a ''fast wobble''. Yes, > > that's my technical terminology :p) > > > Okay, that's just freaky. > > Hypothesis: > * Monitor running at 75Hz (mine, at least) > * bottom D is about 75Hz (by my log calculations, using the information >   I know, ie middle A = 440Hz, and an octave up doubles the frequency, >   so I can calculate that our pitch system, vis equal temperament [1], >   works at f = 10^(0.04N 1.7), where f is the frequency in Hz, and N is >   the number of the note if the A below the lowest note I can sing is >   number 1 and they increase up the scale...) > * My head resonates at about the frequency of the note I'm singing, vis >   75 Hz. > * Given that OpenOffice Calc tells me that bottom D is actually 74.02 >   Hz, and assuming that I'm not singing sharp, there's a beat frequency >   between my head and the monitor of 0.98Hz, ie almost one wobble per >   second.  This is what we see.  Bottom E is 81.73 Hz, hence a 6.73Hz >   beat frequency, hence faster wobble. > * Either (1) Dave's monitor is actually running at 75Hz, so his >   observations agree with mine, since we're both running 75Hz, or (2) >   since he doesn't have perfect pitch, he's singing sharp, cos that's >   actually a bloody low note, and I'm gonna go out on a limb and say he >   hasn't warmed his voice up just to prove a point to cs.gripes. > > I could be wrong. > > Martin. > > That was fun, wasn't it? > > [1] no, i'm not going anywhere _near_ true pitch. > > > > --  > I know what his secret is. He found a way to end SPAM. It involves > Lasers, GPS, and Traceroute. > martin            *at*           ockle          *dot*          org >  Download this as a file "><SELECT name="from">  <option value="pob">Brazilian Portuguese</option>
+  <option value="bul">Bulgarian (CP 1251)</option>
+  <option value="cro">Croatian (CP 1250)</option>
+  <option value="che">Czech (CP 1250)</option>
+  <option value="dan">Danish</option>
+  <option value="dut">Dutch</option>
+  <option value="eng" SELECTED>English</option>
+  <option value="tag">Filipino (Tagalog)</option>
+  <option value="fin">Finnish</option>
+  <option value="fre">French</option>
+  <option value="ger">German</option>
+  <option value="grk">Greek</option>
+  <option value="hun">Hungarian (CP 1250)</option>
+  <option value="ice">Icelandic</option>
+  <option value="ita">Italian</option>
+  <option value="jpn">Japanese (Shift JIS)</option>
+  <option value="ltt">Latin</option>
+  <option value="spl">Latin American Spanish</option>
+  <option value="nor">Norwegian</option>
+  <option value="pol">Polish (ISO 8859-2)</option>
+  <option value="poe">Portuguese</option>
+  <option value="rom">Romanian (CP 1250)</option>
+  <option value="rus">Russian (CP 1251)</option>
+  <option value="sel">Serbian (CP 1250)</option>
+  <option value="slo">Slovenian (CP 1250)</option>
+  <option value="spa">Spanish</option>
+  <option value="swe">Swedish</option>
+  <option value="tur">Turkish (CP 1254)</option>
+  <option value="wel">Welsh</option>
+</SELECT> to <SELECT name="to">  <option value="pob">Brazilian Portuguese</option>
+  <option value="bul">Bulgarian (CP 1251)</option>
+  <option value="cro">Croatian (CP 1250)</option>
+  <option value="che">Czech (CP 1250)</option>
+  <option value="dan">Danish</option>
+  <option value="dut">Dutch</option>
+  <option value="eng" SELECTED>English</option>
+  <option value="tag">Filipino (Tagalog)</option>
+  <option value="fin">Finnish</option>
+  <option value="fre">French</option>
+  <option value="ger">German</option>
+  <option value="grk">Greek</option>
+  <option value="hun">Hungarian (CP 1250)</option>
+  <option value="ice">Icelandic</option>
+  <option value="ita">Italian</option>
+  <option value="jpn">Japanese (Shift JIS)</option>
+  <option value="ltt">Latin</option>
+  <option value="spl">Latin American Spanish</option>
+  <option value="nor">Norwegian</option>
+  <option value="pol">Polish (ISO 8859-2)</option>
+  <option value="poe">Portuguese</option>
+  <option value="rom">Romanian (CP 1250)</option>
+  <option value="rus">Russian (CP 1251)</option>
+  <option value="sel">Serbian (CP 1250)</option>
+  <option value="slo">Slovenian (CP 1250)</option>
+  <option value="spa">Spanish</option>
+  <option value="swe">Swedish</option>
+  <option value="tur">Turkish (CP 1254)</option>
+  <option value="wel">Welsh</option>
+</SELECT>InterTran: <input type=submit value="Translate"></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+  </form>
+  <br /><form action="../plugins/abook_take/take.php" method="post"><center>
+<input type="hidden" name="email[]" value="general@drkellam.com" />
+<input type="hidden" name="email[]" value="martin@ockle.org" />
+<input type="submit" value="Take Address" /></center></form></body>
+</html>

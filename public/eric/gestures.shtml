@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <!--#include file="head.html" -->
+<body>
+    <!--#include file="header.html" -->
+    <div id="colOne">
+        <div id="menu1">
+            <!--#include file="menu.html" -->
+        </div>
+        <div id="margin-news">
+            <!--#include file="news.html" -->
+        </div>
+    </div>
+
+	<div id="colTwo">
+        <h2>Gestures and Facial Expressions in ERIC</h2>
+        <p><strong>Gesture and Facial Expression Generation</strong> is covered 
+        by two modules in ERIC.  The facial expression module is quite simple: 
+        the Charamel character provides a selection of facial "morphs" that can 
+        be expressed, and the facial expression module merely maintains a 
+        dictionary mapping each emotional component of an affective state to a 
+        Charamel morph.</p>
+
+        <p>Gesture generation in the RaceReporter takes two forms: on the one 
+        hand, various events that are recognised by the knowledge reasoning 
+        module trigger specific individual gestures in the character.  On the 
+        other hand, the character has two set of "background" or base gestures, 
+        one for idle times and one for while he is speaking.  The gesture 
+        generation module maps each mood component of an affective state onto a 
+        set each of idle and speaking gestures, so that (for example) the agent 
+        moves around much more when he is exuberant or excited than when he is 
+        bored or sad.</p>
+
+        <p>In addition, the gesture generation module generates commands to 
+        change the camera angle according to the intensity of the character's 
+        mood: the more intense the mood, the closer the shot.</p>
+    </div>
+    <!--#include file="foot.html" -->
+</body>
+</html>

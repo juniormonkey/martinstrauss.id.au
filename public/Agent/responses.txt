@@ -1,0 +1,93 @@
+AA "Most certainly, sir!  I'll just put it into your inventory."
+ A, B, C; joy, pride, hope
+AB "I can't possibly take that much money off you for such a worthless item!  Let me sell it to you for half that."
+ A, B; liking, interest, surprise
+AC "Oh dear, sir, it's certainly worth much more than that, you'll have to make a higher offer."
+ A, C; dislike, fear, challenge, sadness, relief, regret, shame
+BA "Well, you've talked me into it.  Here it is."
+ B: dislike, fear, challenge, sadness, relief, regret, shame
+AD "I'm sorry, sir, that item is not for sale."
+ A, B, C, D; contempt, fear, anger, boredom, distress, disgust, dislike, regret, sadness, shame
+DA "Yes, sir, it is; but you'll have to make an offer.  Valuables such as these cannot have a price tag!"
+ D; challenge, hope, interest, joy, liking, pride, relief, surprise
+
+********
+
+EA "Well, sir, you are most reasonable; I'll add it to my collection."
+ E, F, G; hope, joy, liking, pride, relief, surprise
+EB "Well, I guess I can't turn down a price like that.  Give it here."
+ E; contempt, challenge, interest, anger, boredom, dislike, distress, fear, frustratino, sadness, guilt, regret, shame, disgust
+FA "My dear sir, you can't possibly expect me to be able to afford that!"
+ F, G; challenge, interest, anger, boredom, dislike, distress, fear, frustration, sadness, guilt, regret, shame, disgust
+HA "What a beautiful piece of art; I'll do my best to restore its beauty."
+ H; challenge, hope, interest, joy, liking, pride, relief, surprise
+HB "I'm sorry sir, this is not a repair-shop for petty trinkets!"
+ H; anger, boredom, contempt, dislike, distress, disgust, fear, frustration, guilt, regret, sadness, shame
+IA "My most abject apologies Sir, please accept my full refund."
+ I; sadness, liking, relief, hope, joy
+IB "Here's a free Latin lesson: caveat emptor.  Which means: you lucked out, pal! hahahahaha!"
+ I; dislike, boredom, distress
+IC "I would never sell such a piece of shoddy handiwork.  You are trying to defraud me!"
+ I; anger, contempt, disgust, pride, surprise
+JA "Why thankyou, I live only to serve."
+ J; challenge, hope interest, joy, liking, pride, relief, surprise
+JB "Flattery won't get you anywhere, you'll have to pay full price, just like everybody else!"
+ J; anger, boredom, contempt, dislike, distress, disgust, fear, frustration, guilt, regret, sadness, shame
+KA "Fine, I admit it; I've been selling you fakes."
+ K, I; shame, guilt, regret, hope, liking, relief, joy, pride
+KB "Never!  I would not think of such a thing!"
+ K, I; fear, frustration, distress, anger, contempt, disgust, surprise
+
+****
+
+LA "You brute!  How could you do such a thing!"
+ L, M, R; sadness, distress, regret, guilt, shame, boredom
+LB "My name is Inigo Montoya.  You killed my father.  Prepare to die."
+ L, M, R; anger, dislike, frustration
+LC "You poor creature, you must be hunted all over the Disc for that..."
+ L, M, R; challenge, hope, interest, joy, liking, pride, relief, surprise
+LD "I knew from the start there was something not right about you, but never in my wildest dreams did I suspect..."
+ L, M, R
+NA "Huzzah!  What a relief!  That monster has destroyed many lives."
+ N, O; joy, pride, relief, surprise, challenge
+NB "Congratulations!  This town owes you an enormous debt."
+ N, O; liking, hope, interest
+NC "Well, that's a relief... you did something right for a change."
+ N, O; anger, boredom, contempt, dislike, distress, disgust, fear, frustration, guilt, regret, sadness, shame
+PA "Many have tried, and many have failed.  You stand in great company."
+ P; challenge, hope, interest, joy, liking, pride, relief, surprise
+PB "But you ran away, and let it escape?  Coward!"
+ P; anger, boredom, contempt, dislike, distress, disgust, fear, frustration, guilt, regret, sadness, shame
+LD "I knew from the start there was something not right about you, but never in my wildest dreams did I suspect.... GET OUT!"
+ L, M, R; contempt, disgust, fear
+SA "How dare you make such an outrageous accusation!  Me, who has never so much as hurt a fly in his entire life..."
+ S; anger, boredom, contempt, dislike, distress, disgust, frustration, challenge, pride
+SB "It's true... it was an old experiment gone horribly wrong... I was hoping nobody would discover our connection!"
+ S; guilt, regret, sadness, shame, hope, interest, joy, liking, relief, surprise
+QA "No! Not my precious Lily! Please, let it not be true!"
+ Q; boredom, distress, fear, frustration, guilt, regret, sadness, shame, joy, relief, liking, interest
+QB "I knew it would happen... you adventuring types should have killed the monster long ago!  And now it's done this..."
+ Q; anger, contempt, dislike, disgust, challenge, hope, pride, surprise
+
+TA "I don't have any at the moment, but I could recommend you to a friend, who always needs a hand in the shop..."
+ T; liking, pride, surprise, challenge, interest
+TB "We don't have a need for the likes of you!"
+ T; dislike, anger, contempt, distress, disgust, fear, frustration
+TC "Well, there is that monster who's been terrorising the neighbourhood..."
+ T; boredom, guilt, regret, sadness, shame, hope, joy, relief, surprise
+
+UA "Oh dear, I've completely misjudged you!  My most abject apologies."
+ U; surprise, hope, interest
+UB "I thought I spotted a bit of a limp wrist..."
+ U; boredom, guilt, regret, sadness, shame, challenge, pride, relief
+UC "Well, really.  What kind of a woman goes around wearing breeches anyway?"
+ U; dislike, contempt, disgust, fear, frustration, anger, distress
+UD "Thank goodness!  We don't get nearly enough oestrogen in these parts!"
+ U; joy, liking
+
+VA "Yes, wasn't it just delightful!  But in my eyes she was put in shadow by Princess Mary... wasn't that just the most spectacular train?"
+ V; joy, liking, pride, relief, interest
+VB "Yes, lovely.  May I show you my wares?"
+ V; challenge, surprise, hope; boredom, guilt, regret, sadness, shame
+VC "Listen, I'd love to stand around chatting, but there's other customers to serve.  Buy something, or get out."
+ V; anger, contempt, dislike, distress, disgust, fear, frustration
